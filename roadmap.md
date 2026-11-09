@@ -44,12 +44,12 @@ flowchart LR
 - **Goal:** Build the secure data storage, cryptographic passport identity, and provenance-tracked brand size chart ingestion layer.
 - **Assigned Agents:** `backend-engineer`, `security-privacy`, `qa-verification`
 - **Milestone Slices:**
-  - [ ] **2.1 Database Schema & Migrations:** Implement tables for `users`, `anatomical_profiles`, `garments`, `garment_dimensions`, `brand_charts`, and `staged_contributions`.
-  - [ ] **2.2 Biometric Privacy Layer:** Encrypt anatomical profiles at rest using AES-256; enforce private-by-default database queries.
-  - [ ] **2.3 Provenance Ingestion Service:** Service that stores external sizing data with source URI, verification checksums, and license attribution.
-  - [ ] **2.4 Contributor Staging Queue:** Implement `draft` $\rightarrow$ `pending_review` $\rightarrow$ `verified_published` workflow. Rejects unverified submissions from recommendation queries.
-  - [ ] **2.5 Sovereign Sizing Token API:** Generate scoped, time-bound tokens for size matching without exposing raw biometric dimensions.
-  - [ ] **2.6 Verification:** Execute test suites `TC-P-001` through `TC-P-003` and `TC-SEC-001` through `TC-SEC-003`.
+  - [x] **2.1 Database Schema & Migrations:** Implement tables for `users`, `anatomical_profiles`, `garments`, `garment_dimensions`, `brand_charts`, and `staged_contributions`.
+  - [x] **2.2 Biometric Privacy Layer:** Encrypt anatomical profiles at rest using AES-256; enforce private-by-default database queries.
+  - [x] **2.3 Provenance Ingestion Service:** Service that stores external sizing data with source URI, verification checksums, and license attribution.
+  - [x] **2.4 Contributor Staging Queue:** Implement `draft` $\rightarrow$ `pending_review` $\rightarrow$ `verified_published` workflow. Rejects unverified submissions from recommendation queries.
+  - [x] **2.5 Sovereign Sizing Token API:** Generate scoped, time-bound tokens for size matching without exposing raw biometric dimensions.
+  - [x] **2.6 Verification:** Execute test suites `TC-P-001` through `TC-P-003` and `TC-SEC-001` through `TC-SEC-003`.
 - **Phase Exit Criteria:** Clean schema migrations; zero biometric leakage in API responses; provenance validation tests passing 100%.
 
 ---

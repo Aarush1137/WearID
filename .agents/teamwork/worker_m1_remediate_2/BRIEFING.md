@@ -1,4 +1,4 @@
-# BRIEFING — 2026-11-09T21:18:00Z
+# BRIEFING — 2026-11-09T21:24:00Z
 
 ## Mission
 Remediate Milestone 1 reviewer and challenger findings across `docs/database-schema.sql`, `docs/recommendation-pseudocode.md`, and `docs/brand-data-audit.md`.
@@ -31,19 +31,27 @@ Remediate Milestone 1 reviewer and challenger findings across `docs/database-sch
 - **Interface contracts**: PROJECT.md / AGENTS.md Invariants 2, 3, 4, 8.
 
 ## Key Decisions Made
-- Initial setup and requirements analysis.
+- `docs/database-schema.sql`: Updated all dimensional columns to `_mm INTEGER` and mass to `weight_g INTEGER`. Enforced canonical check constraints `(source_type IN ('brand_official', 'retailer_api', 'curated_dataset', 'user_measured_physical', 'contributor_verified'))` and provenance metadata (`source_uri`, `retrieved_at`, `verification_hash`, `license_or_permission`). Added cascading foreign key deletion on `profile_id` for feedback and recommendations. Added complete suite of RLS policies for users, catalog tables, contributions review, and size recommendations insertion.
+- `docs/recommendation-pseudocode.md`: Implemented plateau/trapezoidal Gaussian ease scoring giving 1.0 within ideal range `[minMm, maxMm]`, cumulative calibration clamped to `[-0.15, 0.15]`, and division-by-zero protection `Math.max(1, chart.chestMaxMm - chart.chestMinMm)`. Synchronized `docs/recommendation-engine-spec.md` for consistency.
+- `docs/brand-data-audit.md`: Table 2 structured into Core Pilot Brands (8 Indian brands matching Section 3: Westside, FabIndia, Raymond, Snitch, Roadster/Myntra, H&M India, Marks & Spencer India, Zara India), Reference Benchmark Brands (Uniqlo, Levi's), and Supplementary Audited Brands (Van Heusen, Max Fashion).
 
 ## Artifact Index
 - `docs/database-schema.sql` — Canonical database schema with integer mm/g, provenance, cascade deletes, and comprehensive RLS.
 - `docs/recommendation-pseudocode.md` — Recommendation engine pseudocode with clamped calibration, div-zero guards, and trapezoidal ease scoring.
+- `docs/recommendation-engine-spec.md` — Synchronized recommendation algorithm specification.
 - `docs/brand-data-audit.md` — Synchronized brand audit covering 8 pilot brands plus 2 international benchmarks.
+- `.agents/teamwork/worker_m1_remediate_2/handoff.md` — Self-contained completion report.
 
 ## Change Tracker
-- **Files modified**: None yet
-- **Build status**: Pending
+- **Files modified**:
+  - `docs/database-schema.sql`: Converted all measurement columns to canonical `_mm INTEGER` / `weight_g INTEGER`, added provenance columns, ON DELETE CASCADE, and missing RLS policies.
+  - `docs/recommendation-pseudocode.md`: Added plateau/trapezoidal Gaussian scoring, clamped cumulative calibration to `[-0.15, 0.15]`, and guarded against zero division.
+  - `docs/recommendation-engine-spec.md`: Added division-by-zero guard for Layer 2 fallback consistency.
+  - `docs/brand-data-audit.md`: Synchronized Table 2 with Section 3, explicitly listing all 8 pilot brands, 2 benchmarks, and supplementary brands.
+- **Build status**: Pass (`npx vitest run tests/e2e/tier1-features.test.ts` passed 125/125 tests)
 - **Pending issues**: None
 
 ## Quality Status
-- **Build/test result**: Pending
-- **Lint status**: Pending
-- **Tests added/modified**: Pending
+- **Build/test result**: 125/125 tier1-features tests pass
+- **Lint status**: 0 `_cm` or `_kg` measurement occurrences in database schema; all RLS policies verified
+- **Tests added/modified**: Verified against existing suite

@@ -97,7 +97,7 @@ function evaluateSizeRecommendation(input: RecommendationInput): ExplanationTree
       if (chart.chestMinMm && chart.chestMaxMm) {
         if (input.profile.chestMm >= chart.chestMinMm && input.profile.chestMm <= chart.chestMaxMm) {
           const mid = (chart.chestMinMm + chart.chestMaxMm) / 2;
-          score = 1.0 - (Math.abs(input.profile.chestMm - mid) / (chart.chestMaxMm - chart.chestMinMm));
+          score = 1.0 - (Math.abs(input.profile.chestMm - mid) / Math.max(1, chart.chestMaxMm - chart.chestMinMm));
         }
       }
       candidateScores.push({

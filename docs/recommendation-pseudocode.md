@@ -10,8 +10,12 @@
 In strict adherence to **`AGENTS.md` (Invariants 1, 3, 4, 8, and 10)** and **`MASTER_PROMPT.md` Product Rule 11**:
 - **Zero Black-Box Machine Learning:** The sizing engine operates purely deterministically using transparent geometric and textile physics.
 - **Canonical Integer Millimeters (`mm`):** All lengths, girths, flat widths, and ease calculations execute in integer millimeters. No floating-point accumulation errors are permitted in internal logic.
-- **Gaussian Ease Scoring:** Dimensional fit is scored using a Gaussian distribution centered on the optimal ease midpoint ($\mu$) with a designated variance ($\sigma$):
-  $$\text{Score}(\text{Ease}) = \exp\left( - \frac{(\text{Ease}_{\text{actual}} - \mu)^2}{2\sigma^2} \right)$$
+- **Plateau / Trapezoidal Gaussian Ease Scoring:** Ideal ease values inside the target range ($\text{min} \le \text{Ease} \le \text{max}$) receive a score of 1.0. Beyond range boundaries, ease scores decay according to a half-Gaussian curve with designated variance ($\sigma$):
+  $$\text{Score}(\text{Ease}) = \begin{cases} 
+  1.0 & \text{if } \text{min} \le \text{Ease} \le \text{max} \\
+  \exp\left( - \frac{(\text{Ease} - \text{min})^2}{2\sigma^2} \right) & \text{if } \text{Ease} < \text{min} \\
+  \exp\left( - \frac{(\text{Ease} - \text{max})^2}{2\sigma^2} \right) & \text{if } \text{Ease} > \text{max}
+  \end{cases}$$
 - **Strict Separation of Data Layers:**
   - **Layer 1:** User Anatomical Profile (`AnatomicalProfile`).
   - **Layer 2:** Brand Body-Fit Ranges (`BrandSizeChart`).
@@ -173,12 +177,19 @@ export class InsufficientDataError extends Error {
 }
 
 /**
- * Evaluates Gaussian fit score for a specific ease delta against an ease range.
+ * Evaluates plateau/trapezoidal Gaussian fit score for a specific ease delta against an ease range.
+ * Values inside the target ease band [minMm, maxMm] receive an ideal score of 1.0.
+ * Beyond the band, scores decay smoothly according to a half-Gaussian distribution.
  */
 export function calculateGaussianScore(actualEaseMm: number, target: EaseRange): number {
-  const delta = actualEaseMm - target.idealMm;
-  // Standard normal curve: exp( - (delta^2) / (2 * sigma^2) )
-  const score = Math.exp(-Math.pow(delta, 2) / (2 * Math.pow(target.sigmaMm, 2)));
+  if (actualEaseMm >= target.minMm && actualEaseMm <= target.maxMm) {
+    return 1.0;
+  }
+  const deviation = actualEaseMm < target.minMm 
+    ? target.minMm - actualEaseMm 
+    : actualEaseMm - target.maxMm;
+  // Half-Gaussian decay: exp( - (deviation^2) / (2 * sigma^2) )
+  const score = Math.exp(-Math.pow(deviation, 2) / (2 * Math.pow(target.sigmaMm, 2)));
   return Math.min(1.0, Math.max(0.0, score));
 }
 
@@ -303,21 +314,25 @@ export function evaluateGarmentFit(
     let finalScore = rawScore / normalizedWeight;
 
     // --------------------------------------------------------------------------
-    // Step 4: Reference Garment Calibration Adjustment (Up to ±0.15 Delta)
+    // Step 4: Reference Garment Calibration Adjustment (Clamped to ±0.15 Delta)
     // --------------------------------------------------------------------------
+    let totalCalibrationDelta = 0;
     for (const ref of referenceGarments) {
       if (ref.category === "t-shirt" && ref.verifiedChestFlatMm) {
         const flatDeltaMm = Math.abs(size.chestFlatMm - ref.verifiedChestFlatMm);
         // If this size matches the user's validated reference item within 10mm flat
         if (flatDeltaMm <= 10) {
           if (ref.userFitRating === "perfect") {
-            finalScore = Math.min(1.0, finalScore + 0.15); // +15 point calibration boost
+            totalCalibrationDelta += 0.15; // Calibration boost
           } else if (ref.userFitRating === "too_tight" && size.chestFlatMm <= ref.verifiedChestFlatMm) {
-            finalScore = Math.max(0.0, finalScore - 0.15); // Penalty for matching known tight item
+            totalCalibrationDelta -= 0.15; // Penalty for matching known tight item
           }
         }
       }
     }
+    // Clamp cumulative calibration adjustment: multiple reference garments cannot exceed ±0.15 total adjustment
+    const clampedCalibration = Math.max(-0.15, Math.min(0.15, totalCalibrationDelta));
+    finalScore = Math.min(1.0, Math.max(0.0, finalScore + clampedCalibration));
 
     sizeEvaluations.push({
       sizeLabel: size.sizeLabel,
@@ -411,7 +426,7 @@ export function evaluateBrandChartFallback(
     if (chart.chestMinMm && chart.chestMaxMm) {
       if (body.chestMm >= chart.chestMinMm && body.chestMm <= chart.chestMaxMm) {
         const mid = (chart.chestMinMm + chart.chestMaxMm) / 2;
-        const range = chart.chestMaxMm - chart.chestMinMm;
+        const range = Math.max(1, chart.chestMaxMm - chart.chestMinMm);
         score = 1.0 - (Math.abs(body.chestMm - mid) / range);
       } else if (body.chestMm < chart.chestMinMm) {
         const diff = chart.chestMinMm - body.chestMm;

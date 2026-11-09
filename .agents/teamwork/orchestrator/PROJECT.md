@@ -43,7 +43,7 @@
 | # | Name | Scope | Dependencies | Status |
 |---|------|-------|-------------|--------|
 | M0 | E2E Testing Track | Design E2E test infra, runner, and test cases (Tiers 1-4) deriving from requirements; publish TEST_READY.md | none | DONE |
-| M1 | Phase 0 Research & Architecture Docs | Produce `docs/competitor-analysis.md`, `docs/indian-sizing-research.md`, `docs/product-opportunities.md`, `docs/brand-data-audit.md`, DDL & spec docs | none | IN_REMEDIATION |
+| M1 | Phase 0 Research & Architecture Docs | Produce `docs/competitor-analysis.md`, `docs/indian-sizing-research.md`, `docs/product-opportunities.md`, `docs/brand-data-audit.md`, DDL & spec docs | none | DONE |
 | M2 | Design System Tokens & Primitives | Implement token classes in `styles/tokens.css` and UI primitives in `src/components/ui/` | none | PLANNED |
 | M3 | Deterministic Sizing Recommendation Engine | Implement `src/core/` (types, units, ease, calibration, borderline, explanation, engine) + unit tests | none | PLANNED |
 | M4 | Phase 1 PWA Proof of Concept & Local Dev | Implement PWA manifest, service worker, icons, offline fallback, mock Supabase store, and App Router pages | M2, M3 | PLANNED |

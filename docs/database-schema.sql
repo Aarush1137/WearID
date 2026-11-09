@@ -409,16 +409,36 @@ CREATE POLICY "Contributors can view their own submissions"
   ON community_contributions FOR SELECT
   USING (auth.uid() = contributor_id);
 
+CREATE POLICY "Reviewers and admins can view all contributions"
+  ON community_contributions FOR SELECT
+  USING (
+    EXISTS (
+      SELECT 1 FROM users
+      WHERE users.id = auth.uid()
+      AND users.role IN ('verifier', 'admin')
+    )
+  );
+
 CREATE POLICY "Contributors can insert submissions"
   ON community_contributions FOR INSERT
   WITH CHECK (auth.uid() = contributor_id);
+
+CREATE POLICY "Reviewers and admins can update contributions"
+  ON community_contributions FOR UPDATE
+  USING (
+    EXISTS (
+      SELECT 1 FROM users
+      WHERE users.id = auth.uid()
+      AND users.role IN ('verifier', 'admin')
+    )
+  );
 
 -- ------------------------------------------------------------------------------
 -- 11. COMMUNITY FIT FEEDBACK TABLE
 -- ------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS community_fit_feedback (
   id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  profile_id           UUID NOT NULL REFERENCES profiles(id),
+  profile_id           UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   product_id           UUID REFERENCES products(id),
   brand_id             UUID REFERENCES brands(id),
   category             TEXT,
@@ -447,7 +467,7 @@ CREATE POLICY "Users can create and view feedback for their profiles"
 -- ------------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS size_recommendations (
   id                  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  profile_id          UUID NOT NULL REFERENCES profiles(id),
+  profile_id          UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   product_id          UUID REFERENCES products(id),
   brand_id            UUID NOT NULL REFERENCES brands(id),
   category            TEXT NOT NULL,
@@ -475,6 +495,16 @@ CREATE POLICY "Users can view recommendations generated for their profiles"
     )
   );
 
+CREATE POLICY "Users can insert recommendations for their profiles"
+  ON size_recommendations FOR INSERT
+  WITH CHECK (
+    EXISTS (
+      SELECT 1 FROM profiles
+      WHERE profiles.id = size_recommendations.profile_id
+      AND profiles.user_id = auth.uid()
+    )
+  );
+
 -- ------------------------------------------------------------------------------
 -- 13. INDIASIZE REFERENCE TABLE (Read-Only Anthropometric Baseline)
 -- Enforces empty state until formal NIFT licensing is confirmed.
@@ -483,10 +513,10 @@ CREATE TABLE IF NOT EXISTS indiasize_reference (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   gender          TEXT CHECK (gender IN ('male', 'female')),
   size_code       TEXT NOT NULL,
-  chest_min_cm    NUMERIC(5,1), chest_max_cm    NUMERIC(5,1),
-  waist_min_cm    NUMERIC(5,1), waist_max_cm    NUMERIC(5,1),
-  hips_min_cm     NUMERIC(5,1), hips_max_cm     NUMERIC(5,1),
-  height_min_cm   NUMERIC(5,1), height_max_cm   NUMERIC(5,1),
+  chest_min_mm    INTEGER, chest_max_mm    INTEGER,
+  waist_min_mm    INTEGER, waist_max_mm    INTEGER,
+  hips_min_mm     INTEGER, hips_max_mm     INTEGER,
+  height_min_mm   INTEGER, height_max_mm   INTEGER,
   source          TEXT DEFAULT 'NIFT INDIAsize January 2026',
   license_status  TEXT DEFAULT 'pending_confirmation',
   license_notes   TEXT,

@@ -56,7 +56,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www.uniqlo.com/in/en/products/E425974-000",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-u98124b89ca01287e0fa12894b912c",
+      verificationHash: "sha256-u98124b89ca01287e0fa12894b912c", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -74,7 +74,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www2.hm.com/en_in/customer-service/size-guide/men.html",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-hm49102847a98b01c37d8912ef01a2",
+      verificationHash: "sha256-hm49102847a98b01c37d8912ef01a2", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -92,7 +92,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www.snitch.co.in/products/oversized-t-shirt",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-sn7192837bc901ef45a89201bcde34",
+      verificationHash: "sha256-sn7192837bc901ef45a89201bcde34", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -110,7 +110,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www.levi.in/size-guide",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-lv81920384bc1920ae847291bc923a",
+      verificationHash: "sha256-lv81920384bc1920ae847291bc923a", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -128,7 +128,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www.zara.com/in/en/size-guide",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-za92018471bc0192ea84729104bc12",
+      verificationHash: "sha256-za92018471bc0192ea84729104bc12", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -146,7 +146,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www.westside.com/pages/size-guide",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-ws83920194bc0194fa82910471ab23",
+      verificationHash: "sha256-ws83920194bc0194fa82910471ab23", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -164,7 +164,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
       sourceType: "brand_official",
       sourceUrl: "https://vanheusenindia.abfrl.in/size-guide",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-vh83910294bc1094fa83910247bc45",
+      verificationHash: "sha256-vh83910294bc1094fa83910247bc45", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -182,7 +182,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www.maxfashion.in/in/en/size-guide",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-mf91029384bc1094fa83910294bc56",
+      verificationHash: "sha256-mf91029384bc1094fa83910294bc56", // DEV_SEED_ONLY: not a real checksum
     },
   },
 ];
@@ -253,7 +253,7 @@ export const PILOT_PRODUCTS: PilotProduct[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www.uniqlo.com/in/en/products/E425974-000",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-uq425974a9810283bca8910283bcde",
+      verificationHash: "sha256-uq425974a9810283bca8910283bcde", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -321,7 +321,7 @@ export const PILOT_PRODUCTS: PilotProduct[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www.uniqlo.com/in/en/products/E422990-000",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-uq422990b9810283bca8910283bc99",
+      verificationHash: "sha256-uq422990b9810283bca8910283bc99", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -405,7 +405,7 @@ export const PILOT_PRODUCTS: PilotProduct[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www2.hm.com/en_in/productpage.0685814001.html",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-hm0685814a091823bca8910283bc41",
+      verificationHash: "sha256-hm0685814a091823bca8910283bc41", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -473,7 +473,7 @@ export const PILOT_PRODUCTS: PilotProduct[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www.snitch.co.in/products/oversized-black-tshirt",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-sn98120384bc1094fa83910283bc78",
+      verificationHash: "sha256-sn98120384bc1094fa83910283bc78", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -537,7 +537,7 @@ export const PILOT_PRODUCTS: PilotProduct[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www.levi.in/men/clothing/t-shirts/housemark-tee/224910001.html",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-lv98120384bc1094fa83910294bc11",
+      verificationHash: "sha256-lv98120384bc1094fa83910294bc11", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -621,7 +621,7 @@ export const PILOT_PRODUCTS: PilotProduct[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www.westside.com/products/wes-casuals-linen-shirt-3009102",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-ws98120384bc1094fa83910294bc99",
+      verificationHash: "sha256-ws98120384bc1094fa83910294bc99", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -705,7 +705,7 @@ export const PILOT_PRODUCTS: PilotProduct[] = [
       sourceType: "brand_official",
       sourceUrl: "https://vanheusenindia.abfrl.in/p/men-white-regular-fit-formal-shirt-389102.html",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-vh98120384bc1094fa83910294bc12",
+      verificationHash: "sha256-vh98120384bc1094fa83910294bc12", // DEV_SEED_ONLY: not a real checksum
     },
   },
   {
@@ -781,7 +781,7 @@ export const PILOT_PRODUCTS: PilotProduct[] = [
       sourceType: "brand_official",
       sourceUrl: "https://www.zara.com/in/en/textured-t-shirt-p00722300.html",
       retrievedAt: "2026-03-01T10:00:00Z",
-      verificationHash: "sha256-za98120384bc1094fa83910294bc77",
+      verificationHash: "sha256-za98120384bc1094fa83910294bc77", // DEV_SEED_ONLY: not a real checksum
     },
   },
 ];

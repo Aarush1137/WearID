@@ -31,16 +31,32 @@ In strict compliance with **`AGENTS.md` (Invariants 1, 2, 5, and 6)** and **`MAS
 
 ## 2. Comprehensive Pilot Brands Audit Matrix
 
+### 2.1 Core Pilot Brands (8 Indian Market Brands)
+
 | # | Brand & Group | Official Indian Domain | Size Guide Location | Format & Tech | robots.txt Status | ToS Restrictions | Available Layers | Automated Extraction Feasibility |
 |---|:---|:---|:---|:---|:---|:---|:---:|:---|
-| **1** | **Uniqlo** (Uniqlo India) | `uniqlo.com/in` | Dedicated size chart tab on every PDP | High-fidelity HTML + Clean JSON API State | Permitted on product pages with rate limit (3 sec delay) | Permits non-commercial crawling | **Layer 3 (Garment flat specs)** + Layer 2 | **Gold Standard:** JSON state extraction |
-| **2** | **H&M** (H&M India) | `hm.com/en_in` | Universal Size Guide modal & static page | Structured HTML Table | Permitted on `/customer-service/size-guide` | Standard commercial terms | **Layer 2 (Body fit ranges)** | **High:** Static HTML parser on official guide URL |
-| **3** | **Zara** (Zara India) | `zara.com/in` | "Size Assistant" pop-up & static guide | Dynamic React SPA / Akamai Bot Manager | Restrictive; disallows automated crawling | Strictly prohibits automated tools & bots | **Layer 2 (Body fit ranges)** | **Low (Blocked):** Headless Playwright strictly throttled, or manual contributor ingestion |
-| **4** | **Levi's** (Levi's India) | `levi.in` | "Size & Fit" guide drawer on PDP | Structured HTML Table (cm / in toggles) | Permitted on catalog | Standard commercial restrictions | **Layer 2 (Body fit ranges)** + **Layer 3 (Garment flat specs)** | **High:** Static HTML parser capturing dual units |
-| **5** | **Van Heusen** (ABFRL) | `vanheusenindia.abfrl.in` | Size guide accordion on product pages | Semantic HTML Table | Permitted on catalog PDPs | ABFRL standard browse terms | **Layer 2 (Body fit ranges)** | **High:** Static HTML parser |
-| **6** | **Westside** (Tata Trent) | `westside.com` | PDP modal & footer guide link | Structured HTML Table | Permitted on catalog PDPs (`Allow: /products/*`) | Standard commercial browse terms | **Layer 2 (Body fit ranges)** | **High:** Static BeautifulSoup / Cheerio HTML parser |
-| **7** | **Max Fashion** (Landmark Group) | `maxfashion.in` | Size modal beside size selector | Structured HTML Table | Permitted on catalog | Landmark standard web terms | **Layer 2 (Body fit ranges)** | **High:** Static HTML parser with 3 sec delay |
-| **8** | **Snitch** | `snitch.co.in` | Shopify PDP modal / product metafields | HTML Tables + Infographic Images | Standard Shopify `robots.txt` (allowed on PDP) | Prohibits aggressive crawling without consent | **Layer 2 (Body fit ranges)** + **Layer 3 (Garment flat specs)** | **Medium:** HTML parser for tables; staging queue for human review |
+| **1** | **Westside** (Tata Trent) | `westside.com` | PDP modal & footer guide link | Structured HTML Table | Permitted on catalog PDPs (`Allow: /products/*`) | Standard commercial browse terms | **Layer 2 (Body fit ranges)** | **High:** Static BeautifulSoup / Cheerio HTML parser |
+| **2** | **FabIndia** | `fabindia.com` | "Size Guide" tab on PDP (Short/Long Kurta, Shirts) | Structured HTML Tables | Catalog PDPs crawlable; disallows account/checkout (>= 3s delay) | Standard commercial browse terms | **Layer 2 (Body fit ranges)** | **High:** Static parser targeting `.size-chart-table` |
+| **3** | **Raymond** (MyRaymond) | `myraymond.com` | "Size Guide" pop-up button adjacent to size selector | Responsive HTML modal tables + JSON state | Catalog pages crawlable; standard rate limits | Standard commercial terms | **Layer 2 (Body ranges)** + **Layer 3 (Garment flat specs)** | **High:** Playwright/DOM parser bifurcating body ranges and flat specs |
+| **4** | **Snitch** | `snitch.co.in` | Shopify PDP slide-over drawer / metafields | HTML Tables + Infographic Images | Standard Shopify `robots.txt` (allowed on PDP) | Prohibits aggressive crawling without consent | **Layer 2 (Body ranges)** + **Layer 3 (Garment flat specs)** | **Medium:** HTML parser for tables; vision OCR + human review for graphics |
+| **5** | **Roadster** (Myntra Private Label) | `myntra.com` | "Size Chart" pop-up modal within React SPA | React SPA / Dynamic client-rendered JSON state | Restrictive `robots.txt`; Akamai Bot Manager & PerimeterX | Strictly prohibits automated scrapers and bots | **Layer 2 (Generic Marketplace Template)** | **Zero Automated Crawl (Invariant 6):** Physical contributor / benchmark tape measurement only |
+| **6** | **H&M India** | `hm.com/en_in` | Universal Size Guide modal & static guide URL | Structured HTML Table | Permitted on `/customer-service/size-guide` | Standard commercial terms | **Layer 2 (Body fit ranges)** | **High:** Static HTML parser on official guide URL |
+| **7** | **Marks & Spencer India** | `marksandspencer.in` | "Size Guide" drawer sliding out from PDP | Structured HTML tables with dual toggle (`Inches` / `CM`) | Permitted on catalog; standard rate limits | Standard commercial browse terms | **Layer 2 (Body fit ranges)** | **High:** Static DOM parser capturing metric tables |
+| **8** | **Zara India** | `zara.com/in` | "Size Guide" pop-up & "Size Assistant" questionnaire | Dynamic React SPA / Akamai Bot Manager | Restrictive; disallows automated crawling | Strictly prohibits automated tools & bots | **Layer 2 (Body fit ranges)** | **Low (Restricted):** Contributor-submitted physical specs or static help page |
+
+### 2.2 Reference Benchmark Brands (Global Sizing Transparency)
+
+| # | Brand & Group | Official Indian Domain | Size Guide Location | Format & Tech | robots.txt Status | ToS Restrictions | Available Layers | Automated Extraction Feasibility |
+|---|:---|:---|:---|:---|:---|:---|:---:|:---|
+| **9** | **Uniqlo India** (Gold Standard Benchmark) | `uniqlo.com/in` | Dedicated "Size Chart" tab on every PDP | High-fidelity HTML + Clean JSON API State | Permitted on product pages with rate limit (3 sec delay) | Permits non-commercial crawling | **Layer 3 (Garment flat specs)** + Layer 2 | **Gold Standard:** JSON state extraction |
+| **10** | **Levi's India** (Denim Benchmark) | `levi.in` | "Size & Fit" guide drawer on PDP | Structured HTML Table (cm / in toggles) | Permitted on catalog | Standard commercial restrictions | **Layer 2 (Body fit ranges)** + **Layer 3 (Garment flat specs)** | **High:** Static HTML parser capturing dual units |
+
+### 2.3 Supplementary Audited Brands
+
+| # | Brand & Group | Official Indian Domain | Size Guide Location | Format & Tech | robots.txt Status | ToS Restrictions | Available Layers | Automated Extraction Feasibility |
+|---|:---|:---|:---|:---|:---|:---|:---:|:---|
+| **11** | **Van Heusen** (ABFRL) | `vanheusenindia.abfrl.in` | Size guide accordion on product pages | Semantic HTML Table | Permitted on catalog PDPs | ABFRL standard browse terms | **Layer 2 (Body fit ranges)** | **High:** Static HTML parser |
+| **12** | **Max Fashion** (Landmark Group) | `maxfashion.in` | Size modal beside size selector on PDPs | Structured HTML Table | Permitted on catalog with 3 sec delay | Landmark standard web terms | **Layer 2 (Body fit ranges)** | **High:** Static HTML parser with 3 sec delay |
 
 ---
 
