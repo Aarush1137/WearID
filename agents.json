@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "project": {
+    "name": "WearID",
+    "tagline": "Your clothing identity, everywhere.",
+    "description": "Universal clothing identity and sovereign, deterministic size matching engine."
+  },
+  "roles": {
+    "coordinator": {
+      "id": "coordinator",
+      "name": "WearID Coordinator",
+      "description": "System orchestrator and workflow director. Decomposes tasks, aligns agent assignments with roadmap milestones, and enforces compliance with AGENTS.md invariants.",
+      "permissions": ["read_all", "orchestrate_subagents", "write_roadmap", "review_prs"],
+      "allowed_write_scope": ["roadmap.md", "architecture.md", "AGENTS.md", ".agents/"],
+      "model_preference": "pro"
+    },
+    "sizing-engine": {
+      "id": "sizing-engine",
+      "name": "Sizing & Fit Algorithm Specialist",
+      "description": "Designs and implements the core deterministic sizing engine, canonical unit calculations (mm/g), ease tolerances, grading transformations, and explainability generators.",
+      "permissions": ["read_all", "write_core_engine", "write_tests"],
+      "allowed_write_scope": ["src/core/", "src/sizing/", "tests/sizing/", "tests/unit/"],
+      "model_preference": "inherit"
+    },
+    "backend-engineer": {
+      "id": "backend-engineer",
+      "name": "Backend & Data Platform Engineer",
+      "description": "Builds REST/GraphQL APIs, database persistence schemas, data provenance pipelines, user authentication, and third-party retailer integration tokens.",
+      "permissions": ["read_all", "write_backend", "write_db", "write_api_tests"],
+      "allowed_write_scope": ["src/server/", "src/api/", "src/db/", "src/services/", "tests/api/", "tests/integration/"],
+      "model_preference": "inherit"
+    },
+    "frontend-engineer": {
+      "id": "frontend-engineer",
+      "name": "Frontend & UI/UX Builder",
+      "description": "Constructs client applications, interactive body/garment measurement canvases, responsive sizing visualizers, and user privacy preference controls.",
+      "permissions": ["read_all", "write_frontend", "write_ui_tests"],
+      "allowed_write_scope": ["src/client/", "src/components/", "src/pages/", "src/styles/", "tests/ui/"],
+      "model_preference": "inherit"
+    },
+    "qa-verification": {
+      "id": "qa-verification",
+      "name": "QA & Verification Specialist",
+      "description": "Autonomous quality verification engineer. Executes the test matrix (tests.md), runs regression suites, benchmarks mathematical tolerances, and asserts invariant satisfaction.",
+      "permissions": ["read_all", "run_tests", "write_tests", "write_benchmarks"],
+      "allowed_write_scope": ["tests/", "scripts/verify*", "tests.md"],
+      "model_preference": "inherit"
+    },
+    "security-privacy": {
+      "id": "security-privacy",
+      "name": "Security & Biometric Privacy Auditor",
+      "description": "Audits privacy-by-default constraints, cryptographic token generation for WearID passports, data minimization, sandboxing, and secure mock environments.",
+      "permissions": ["read_all", "write_security_specs", "write_mock_configs"],
+      "allowed_write_scope": ["env.template.md", "src/security/", "tests/security/"],
+      "model_preference": "inherit"
+    }
+  }
+}
