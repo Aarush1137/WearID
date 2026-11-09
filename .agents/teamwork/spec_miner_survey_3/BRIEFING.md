@@ -1,4 +1,4 @@
-# BRIEFING — 2026-11-09T20:46:00Z
+# BRIEFING — 2026-11-09T20:53:00Z
 
 ## Mission
 Discover, probe, extract, and document all mathematical models, algorithm specifications, and verification test requirements for Requirement 3 (Deterministic Sizing Recommendation Engine) and the comprehensive Test Matrix.
@@ -19,7 +19,7 @@ Discover, probe, extract, and document all mathematical models, algorithm specif
 
 ## Current Parent
 - Conversation ID: 6cddc279-aaf6-4945-a9c0-cf8f046d0f14
-- Updated: not yet
+- Updated: 2026-11-09T20:53:00Z
 
 ## Task Summary
 - **What to build**: Comprehensive specification report on Deterministic Sizing Recommendation Engine & Test Matrix.
@@ -28,7 +28,13 @@ Discover, probe, extract, and document all mathematical models, algorithm specif
 - **Code layout**: e:\Projects\WearID\
 
 ## Key Decisions Made
-- Initial setup completed; proceeding to read all authoritative references.
+- Extracted and formalized Layer 1-4 separation rules and schema models in canonical `mm` and `g`.
+- Documented Gaussian ease scoring formula, target ease ranges (Slim 40-80mm, Regular 80-140mm, Relaxed 140-200mm, Oversized 200-300mm), and fabric elasticity mechanics (rigid 0% elastane vs stretch knit).
+- Documented category dimension weighting for Tops, Bottoms, Outerwear, and Ethnic Wear.
+- Documented reference garment calibration (±0.15 score adjustment) and borderline detection (|score0 - score1| < 0.08) with tradeoff narrative generation.
+- Formulated structured ExplanationTree and zero-hallucination missing data policies.
+- Mapped all test suites into 4 Tiers (Tier 1: Unit & Domain Segregation, Tier 2: Algorithmic & Sizing Engine, Tier 3: Integration & Provenance/Database, Tier 4: Security & E2E/Performance).
+- Produced comprehensive handoff.md report with 26 discovered features and 18 edge cases.
 
 ## Artifact Index
 - e:\Projects\WearID\.agents\teamwork\spec_miner_survey_3\DISPATCH.md — Task assignment
