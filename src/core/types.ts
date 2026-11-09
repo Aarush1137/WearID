@@ -109,6 +109,41 @@ export const FabricSpecSchema = z.object({
 
 export type FabricSpec = z.infer<typeof FabricSpecSchema>;
 
+export type UserFitRating = "too_tight" | "slightly_tight" | "perfect" | "slightly_loose" | "too_loose";
+
+/**
+ * Reference Garment Anchor / Calibration
+ */
+export const ReferenceGarmentSchema = z.object({
+  id: z.string().uuid().optional(),
+  brandId: z.string().optional(),
+  brandNameRaw: z.string().optional(),
+  category: z.string(),
+  sizeLabel: z.string(),
+  userFitRating: z.enum(["too_tight", "slightly_tight", "perfect", "slightly_loose", "too_loose"]).optional(),
+  fitQuality: z.enum(["too_tight", "slightly_tight", "perfect", "slightly_loose", "too_loose"]).optional(),
+  verifiedChestFlatMm: z.number().int().positive().optional(),
+});
+
+export type ReferenceGarment = z.infer<typeof ReferenceGarmentSchema>;
+export type ReferenceGarmentAnchor = ReferenceGarment;
+export type ReferenceGarmentCalibration = ReferenceGarment;
+
+export interface TargetEaseRange {
+  min: number;
+  max: number;
+  midpoint: number;
+  sigma: number;
+}
+export type EaseRange = TargetEaseRange;
+
+export class InsufficientDataError extends Error {
+  constructor(message: string = "Insufficient data: Required measurements or size charts unavailable.") {
+    super(message);
+    this.name = "InsufficientDataError";
+  }
+}
+
 /**
  * Recommendation Result & Explanation Tree
  */
@@ -133,6 +168,12 @@ export interface ExplanationTree {
   borderlineTradeoff?: string;
   summaryText: string;
   dimensionBreakdown: DimensionExplanation[];
+  fabricConsiderations?: {
+    material: string;
+    elastanePercentage: number;
+    stretchLevel: "none" | "low" | "medium" | "high";
+    note: string;
+  };
   dataSources: {
     layerUsed: "Layer3_Garment" | "Layer2_BrandChart";
     provenance: string;

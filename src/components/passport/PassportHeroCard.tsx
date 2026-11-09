@@ -163,6 +163,14 @@ export function PassportHeroCard() {
           <Share2 className="w-4 h-4 text-text-secondary" />
           Export Tailor Card
         </Link>
+
+        <Link
+          href="/app/privacy-settings"
+          className="min-h-[44px] px-4 rounded-btn border border-border-strong bg-bg-surface hover:bg-bg-elevated transition-colors inline-flex items-center justify-center gap-2 text-sm font-medium text-text-primary shadow-xs"
+        >
+          <ShieldCheck className="w-4 h-4 text-accent" />
+          Privacy & Tokens
+        </Link>
       </div>
     </div>
   );

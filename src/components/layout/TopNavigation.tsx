@@ -81,6 +81,16 @@ export function TopNavigation() {
             >
               Tailor Card
             </Link>
+            <Link
+              href="/app/privacy-settings"
+              className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
+                pathname === "/app/privacy-settings"
+                  ? "text-accent bg-accent-subtle/50 font-semibold"
+                  : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+              }`}
+            >
+              Privacy & Tokens
+            </Link>
           </nav>
         </div>
 

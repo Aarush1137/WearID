@@ -17,6 +17,7 @@ import {
   ThumbsUp,
   RotateCcw,
 } from "lucide-react";
+import { FitZoneVisualizer } from "./FitZoneVisualizer";
 
 export function RecommendationView() {
   const { getActiveProfile, displayUnit, addReferenceGarment } = useProfileStore();
@@ -233,8 +234,16 @@ export function RecommendationView() {
           </p>
         </div>
 
+        {/* Fit Zone Radar & Tension Visualizer */}
+        <div className="pt-6">
+          <FitZoneVisualizer
+            dimensionBreakdown={recommendation.dimensionBreakdown}
+            displayUnit={displayUnit}
+          />
+        </div>
+
         {/* Expandable Dimension Breakdown Accordion */}
-        <div className="mt-4 pt-4 border-t border-border">
+        <div className="mt-6 pt-4 border-t border-border">
           <button
             type="button"
             onClick={() => setIsAccordionOpen(!isAccordionOpen)}
@@ -250,7 +259,7 @@ export function RecommendationView() {
           </button>
 
           {isAccordionOpen && (
-            <div className="mt-3 overflow-x-auto">
+            <div className="mt-3 overflow-x-auto space-y-4">
               <table className="w-full text-left text-xs border border-border rounded-card overflow-hidden">
                 <thead className="bg-bg-elevated/70 text-text-secondary uppercase tracking-wider border-b border-border">
                   <tr>
@@ -263,45 +272,65 @@ export function RecommendationView() {
                 </thead>
                 <tbody className="divide-y divide-border bg-bg-surface">
                   {recommendation.dimensionBreakdown.map((dim, idx) => (
-                    <tr key={idx} className="hover:bg-bg-elevated/30 transition-colors">
-                      <td className="py-3 px-3 font-medium text-text-primary capitalize">
-                        {dim.dimension}
-                      </td>
-                      <td className="py-3 px-3 text-text-secondary">
-                        {formatMeasurement(dim.bodyMeasurementMm, displayUnit)}
-                        <span className="text-[10px] text-text-tertiary block">
-                          {dim.bodyMeasurementMm} mm
-                        </span>
-                      </td>
-                      <td className="py-3 px-3 text-text-secondary">
-                        {formatMeasurement(dim.garmentSpecMm, displayUnit)}
-                        <span className="text-[10px] text-text-tertiary block">
-                          {dim.garmentSpecMm} mm
-                        </span>
-                      </td>
-                      <td className="py-3 px-3 font-semibold text-text-primary">
-                        {dim.easeDeltaMm > 0 ? `+${dim.easeDeltaMm} mm` : `${dim.easeDeltaMm} mm`}
-                        <span className="text-[10px] text-text-tertiary block font-normal">
-                          Target: {dim.easeTargetMm.min}–{dim.easeTargetMm.max}mm
-                        </span>
-                      </td>
-                      <td className="py-3 px-3">
-                        <span
-                          className={`inline-flex items-center px-2 py-0.5 rounded-badge text-[10px] font-semibold uppercase tracking-wider ${
-                            dim.status === "ideal"
-                              ? "bg-emerald-100 text-emerald-800"
-                              : dim.status === "tight"
-                              ? "bg-rose-100 text-rose-800"
-                              : "bg-amber-100 text-amber-800"
-                          }`}
-                        >
-                          {dim.status}
-                        </span>
-                      </td>
-                    </tr>
+                    <React.Fragment key={idx}>
+                      <tr className="hover:bg-bg-elevated/30 transition-colors">
+                        <td className="py-3 px-3 font-medium text-text-primary capitalize">
+                          {dim.dimension}
+                        </td>
+                        <td className="py-3 px-3 text-text-secondary">
+                          {formatMeasurement(dim.bodyMeasurementMm, displayUnit)}
+                          <span className="text-[10px] text-text-tertiary block">
+                            {dim.bodyMeasurementMm} mm
+                          </span>
+                        </td>
+                        <td className="py-3 px-3 text-text-secondary">
+                          {formatMeasurement(dim.garmentSpecMm, displayUnit)}
+                          <span className="text-[10px] text-text-tertiary block">
+                            {dim.garmentSpecMm} mm
+                          </span>
+                        </td>
+                        <td className="py-3 px-3 font-semibold text-text-primary">
+                          {dim.easeDeltaMm > 0 ? `+${dim.easeDeltaMm} mm` : `${dim.easeDeltaMm} mm`}
+                          <span className="text-[10px] text-text-tertiary block font-normal">
+                            Target: {dim.easeTargetMm.min}–{dim.easeTargetMm.max}mm
+                          </span>
+                        </td>
+                        <td className="py-3 px-3">
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded-badge text-[10px] font-semibold uppercase tracking-wider ${
+                              dim.status === "ideal"
+                                ? "bg-emerald-100 text-emerald-800"
+                                : dim.status === "tight"
+                                ? "bg-rose-100 text-rose-800"
+                                : "bg-amber-100 text-amber-800"
+                            }`}
+                          >
+                            {dim.status}
+                          </span>
+                        </td>
+                      </tr>
+                      {dim.rationale && (
+                        <tr className="bg-bg-elevated/20">
+                          <td colSpan={5} className="py-2 px-3 text-[11px] text-text-secondary italic">
+                            &quot;{dim.rationale}&quot;
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
                   ))}
                 </tbody>
               </table>
+
+              {/* Fabric Stretch & Tension Notes */}
+              <div className="p-4 rounded-card bg-bg-elevated/30 border border-border text-xs text-text-secondary space-y-1">
+                <span className="font-semibold text-text-primary block">
+                  Fabric Elasticity & Shrinkage Profile:
+                </span>
+                <p>
+                  Composed of {selectedProduct.fabric.materialComposition} with {selectedProduct.fabric.elastanePercentage}% elastane ({selectedProduct.fabric.stretchLevel} stretch).
+                  Estimated post-wash shrinkage rate is {selectedProduct.fabric.estimatedShrinkagePct}%.
+                </p>
+              </div>
             </div>
           )}
         </div>

@@ -70,3 +70,25 @@ export function lbsToGrams(lbs: number): number {
   }
   return Math.round(lbs * GRAMS_PER_LB);
 }
+
+/**
+ * Converts canonical grams to kilograms.
+ */
+export function gramsToKg(g: number, precision: number = 2): number {
+  if (g < 0) {
+    throw new RangeError("Weight cannot be negative.");
+  }
+  const factor = Math.pow(10, precision);
+  return Math.round((g / GRAMS_PER_KG) * factor) / factor;
+}
+
+/**
+ * Converts canonical grams to pounds (lbs).
+ */
+export function gramsToLbs(g: number, precision: number = 2): number {
+  if (g < 0) {
+    throw new RangeError("Weight cannot be negative.");
+  }
+  const factor = Math.pow(10, precision);
+  return Math.round((g / GRAMS_PER_LB) * factor) / factor;
+}

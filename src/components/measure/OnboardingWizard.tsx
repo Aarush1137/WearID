@@ -60,6 +60,8 @@ export function OnboardingWizard() {
   const [tapeWaist, setTapeWaist] = useState<string>("82");
   const [tapeHips, setTapeHips] = useState<string>("96");
   const [tapeInseam, setTapeInseam] = useState<string>("79");
+  const [tapeNeck, setTapeNeck] = useState<string>("39");
+  const [tapeSleeve, setTapeSleeve] = useState<string>("62");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [activeStepTape, setActiveStepTape] = useState<number>(0);
@@ -140,6 +142,8 @@ export function OnboardingWizard() {
     const waistMm = parseToCanonicalMm(tapeWaist);
     const hipsMm = parseToCanonicalMm(tapeHips);
     const inseamMm = parseToCanonicalMm(tapeInseam);
+    const neckMm = parseToCanonicalMm(tapeNeck);
+    const sleeveMm = parseToCanonicalMm(tapeSleeve);
 
     updateMeasurements(activeProfile.id, {
       chestMm: chestMm || 980,
@@ -147,12 +151,16 @@ export function OnboardingWizard() {
       waistMm: waistMm || 820,
       hipsMm: hipsMm || 960,
       inseamMm: inseamMm || 790,
+      neckMm: neckMm || 390,
+      sleeveLengthMm: sleeveMm || 620,
       measurementMethod: {
         chestMm: "physical_tape",
         shoulderWidthMm: "physical_tape",
         waistMm: "physical_tape",
         hipsMm: "physical_tape",
         inseamMm: "physical_tape",
+        neckMm: "physical_tape",
+        sleeveLengthMm: "physical_tape",
       },
     });
 
@@ -509,13 +517,13 @@ export function OnboardingWizard() {
               </p>
             </div>
             <div className="text-xs font-semibold text-accent bg-accent-subtle/70 px-2.5 py-1 rounded-badge">
-              Step {activeStepTape + 1} of 5
+              Step {activeStepTape + 1} of 7
             </div>
           </div>
 
           {/* Stepper Tabs */}
           <div className="flex items-center gap-1.5 mb-6 overflow-x-auto pb-2">
-            {["Chest", "Shoulders", "Waist", "Hips", "Inseam"].map((step, idx) => (
+            {["Chest", "Shoulders", "Waist", "Hips", "Inseam", "Collar / Neck", "Sleeve"].map((step, idx) => (
               <button
                 key={step}
                 type="button"
@@ -564,6 +572,12 @@ export function OnboardingWizard() {
                 )}
                 {activeStepTape === 4 && (
                   <line x1="50" y1="90" x2="50" y2="135" stroke="var(--terracotta)" strokeWidth="3" strokeDasharray="2 2" />
+                )}
+                {activeStepTape === 5 && (
+                  <ellipse cx="50" cy="34" rx="8" ry="4" stroke="var(--terracotta)" strokeWidth="3" fill="none" strokeDasharray="2 2" />
+                )}
+                {activeStepTape === 6 && (
+                  <line x1="26" y1="42" x2="22" y2="80" stroke="var(--terracotta)" strokeWidth="3" strokeDasharray="2 2" />
                 )}
               </svg>
             </div>
@@ -683,6 +697,52 @@ export function OnboardingWizard() {
                   </div>
                 </div>
               )}
+
+              {activeStepTape === 5 && (
+                <div>
+                  <h3 className="font-semibold text-sm text-text-primary">
+                    6. Collar / Neck Circumference
+                  </h3>
+                  <p className="text-xs text-text-secondary mt-1 leading-relaxed">
+                    Wrap the tape around the base of the neck, placing one index finger between tape and skin for breathing comfort.
+                  </p>
+                  <div className="mt-3">
+                    <label className="text-xs font-semibold text-text-primary block mb-1">
+                      Collar ({displayUnit})
+                    </label>
+                    <input
+                      type="number"
+                      step="0.5"
+                      value={tapeNeck}
+                      onChange={(e) => setTapeNeck(e.target.value)}
+                      className="input-editorial w-48"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {activeStepTape === 6 && (
+                <div>
+                  <h3 className="font-semibold text-sm text-text-primary">
+                    7. Sleeve Span / Length
+                  </h3>
+                  <p className="text-xs text-text-secondary mt-1 leading-relaxed">
+                    With elbow slightly bent, measure from the acromion shoulder tip down to the prominent wrist bone.
+                  </p>
+                  <div className="mt-3">
+                    <label className="text-xs font-semibold text-text-primary block mb-1">
+                      Sleeve ({displayUnit})
+                    </label>
+                    <input
+                      type="number"
+                      step="0.5"
+                      value={tapeSleeve}
+                      onChange={(e) => setTapeSleeve(e.target.value)}
+                      className="input-editorial w-48"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -696,10 +756,10 @@ export function OnboardingWizard() {
               Previous Step
             </button>
 
-            {activeStepTape < 4 ? (
+            {activeStepTape < 6 ? (
               <button
                 type="button"
-                onClick={() => setActiveStepTape((prev) => Math.min(4, prev + 1))}
+                onClick={() => setActiveStepTape((prev) => Math.min(6, prev + 1))}
                 className="min-h-[44px] px-5 rounded-btn bg-accent text-white text-xs font-semibold inline-flex items-center gap-1.5"
               >
                 Next Landmark

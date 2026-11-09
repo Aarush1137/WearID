@@ -6,13 +6,27 @@ import { executePoliteCrawl, isPathAllowed, parseRobotsTxt } from "@/core/proven
 import { encryptBiometrics, decryptBiometrics } from "@/core/persistence/encryption";
 import { AnatomicalProfile } from "@/core/types";
 
+// Mock key injected from env.template.md line 28
+const MOCK_SIGNING_SECRET = "mock_jwt_secret_key_wearid_sandbox_2026_deterministic";
+
 describe("Matrix F: Security & Biometric Privacy Suite", () => {
   let repository: SecureProfileRepository;
   let tokenService: SizingTokenService;
 
   beforeEach(() => {
     repository = new SecureProfileRepository();
-    tokenService = new SizingTokenService();
+    tokenService = new SizingTokenService(MOCK_SIGNING_SECRET);
+  });
+
+  describe("SizingTokenService Constructor Security Guard", () => {
+    it("throws when signing secret is empty or under 32 characters", () => {
+      expect(() => new SizingTokenService("")).toThrow("at least 32 characters");
+      expect(() => new SizingTokenService("short-secret-key")).toThrow("at least 32 characters");
+    });
+
+    it("succeeds when signing secret is >= 32 characters", () => {
+      expect(() => new SizingTokenService(MOCK_SIGNING_SECRET)).not.toThrow();
+    });
   });
 
   // =========================================================================

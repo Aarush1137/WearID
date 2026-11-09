@@ -58,11 +58,11 @@ flowchart LR
 - **Goal:** Deliver an intuitive, responsive user interface allowing users to manage their WearID, input measurements with visual guidance, and inspect explainable sizing results.
 - **Assigned Agents:** `frontend-engineer`, `sizing-engine`
 - **Milestone Slices:**
-  - [ ] **3.1 UI Design System & Component Library:** Tailwind-based responsive components following clean typography and accessible contrast (WCAG 2.1 AA).
-  - [ ] **3.2 Interactive Measurement Input Canvas:** Step-by-step anatomical measurement input with visual body diagrams and instant unit conversion (`cm`/`in` display, canonical `mm` storage).
-  - [ ] **3.3 Garment Fit & Ease Visualizer:** Interactive fit radar / zone gauge displaying ease deltas (chest, waist, sleeve, inseam) with color-coded tension zones.
-  - [ ] **3.4 Explainability Panel:** Renders the `ExplanationTree` in clear, conversational prose with expandable technical breakdowns.
-  - [ ] **3.5 Privacy & Sovereignty Dashboard:** Settings to control third-party permissions, generate WearID portable links, and execute full data export or deletion.
+  - [x] **3.1 UI Design System & Component Library:** Tailwind-based responsive components following clean typography and accessible contrast (WCAG 2.1 AA).
+  - [x] **3.2 Interactive Measurement Input Canvas:** Step-by-step anatomical measurement input with visual body diagrams and instant unit conversion (`cm`/`in` display, canonical `mm` storage).
+  - [x] **3.3 Garment Fit & Ease Visualizer:** Interactive fit radar / zone gauge displaying ease deltas (chest, waist, sleeve, inseam) with color-coded tension zones.
+  - [x] **3.4 Explainability Panel:** Renders the `ExplanationTree` in clear, conversational prose with expandable technical breakdowns.
+  - [x] **3.5 Privacy & Sovereignty Dashboard:** Settings to control third-party permissions, generate WearID portable links, and execute full data export or deletion.
 - **Phase Exit Criteria:** UI renders correctly across mobile/desktop; unit conversions in the UI preserve sub-millimeter precision; accessibility checks pass.
 
 ---
