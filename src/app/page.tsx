@@ -1,17 +1,17 @@
 import React from "react";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, ShieldCheck, Ruler, Sparkles } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function HomePage() {
   const pilotBrands = [
-    { name: "Uniqlo India", status: "Verified Specs" },
-    { name: "H&M India", status: "Active Chart" },
-    { name: "Zara India", status: "Active Chart" },
-    { name: "Levi's India", status: "Active Chart" },
-    { name: "Van Heusen", status: "Active Chart" },
-    { name: "Westside", status: "Active Chart" },
-    { name: "Max Fashion", status: "Active Chart" },
-    { name: "Snitch", status: "Verified Specs" },
+    { name: "Uniqlo India", status: "Data pending" },
+    { name: "H&M India", status: "Data pending" },
+    { name: "Zara India", status: "Data pending" },
+    { name: "Levi's India", status: "Data pending" },
+    { name: "Van Heusen", status: "Data pending" },
+    { name: "Westside", status: "Data pending" },
+    { name: "Max Fashion", status: "Data pending" },
+    { name: "Snitch", status: "Data pending" },
   ];
 
   return (
@@ -48,7 +48,6 @@ export default function HomePage() {
       <main className="flex-1">
         <section className="py-20 md:py-28 px-6 max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-badge bg-accent-subtle text-accent text-xs font-medium tracking-wide uppercase mb-6">
-            <Sparkles className="w-3.5 h-3.5" />
             Universal Clothing Identity · India-First
           </div>
           
@@ -170,11 +169,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Verified Pilot Brands Strip */}
+        {/* Pilot Brands Strip */}
         <section className="py-12 border-t border-border bg-bg-surface">
           <div className="max-w-6xl mx-auto px-6">
             <p className="text-center text-xs uppercase tracking-wider text-text-secondary font-medium mb-8">
-              Phase 1 Supported Pilot Brands (Men&apos;s T-Shirts)
+              Phase 1 Pilot Research Targets (Men&apos;s T-Shirts)
             </p>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {pilotBrands.map((b, i) => (
@@ -183,7 +182,7 @@ export default function HomePage() {
                   className="p-3.5 rounded-btn border border-border bg-bg-base text-center flex flex-col items-center justify-center"
                 >
                   <span className="font-medium text-sm text-text-primary">{b.name}</span>
-                  <span className="text-2xs text-accent mt-0.5 font-medium">{b.status}</span>
+                  <span className="text-2xs text-text-tertiary mt-0.5 font-medium">{b.status}</span>
                 </div>
               ))}
             </div>

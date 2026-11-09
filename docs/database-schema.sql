@@ -1,6 +1,6 @@
 -- ==============================================================================
 -- Fit / WearID — Master Database Schema (Supabase PostgreSQL DDL)
--- All measurements internally stored in canonical units (cm display, mm internal where mapped)
+-- All measurements internally stored in canonical units (canonical integer millimeters _mm and grams weight_g)
 -- Row Level Security (RLS) enabled on all user-owned tables
 -- ==============================================================================
 
@@ -32,6 +32,10 @@ CREATE POLICY "Users can view their own user record"
 CREATE POLICY "Users can update their own user record"
   ON users FOR UPDATE
   USING (auth.uid() = id);
+
+CREATE POLICY "Users can insert their own user record"
+  ON users FOR INSERT
+  WITH CHECK (auth.uid() = id);
 
 -- ------------------------------------------------------------------------------
 -- 2. PROFILES TABLE (One user -> Many profiles: self, partner, parent, etc.)
@@ -65,40 +69,39 @@ CREATE TABLE IF NOT EXISTS body_measurements (
   id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   profile_id      UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   recorded_at     TIMESTAMPTZ DEFAULT now(),
-  is_current      BOOLEAN DEFAULT true,
+  is_current           BOOLEAN DEFAULT true,
 
-  -- Core measurements (stored in cm / sub-millimeter precision numeric)
-  height_cm       NUMERIC(5,1),
-  weight_kg       NUMERIC(5,1),          -- Optional; never sole sizing input
-  chest_cm        NUMERIC(5,1),
-  bust_cm         NUMERIC(5,1),          -- For women's profiles
-  waist_cm        NUMERIC(5,1),
-  hips_cm         NUMERIC(5,1),
-  shoulder_width_cm NUMERIC(5,1),
-  inseam_cm       NUMERIC(5,1),
-  foot_length_cm  NUMERIC(5,1),
+  -- Core measurements (stored in canonical integer millimeters mm / grams g - Invariant 4)
+  height_mm       INTEGER CHECK (height_mm > 0),
+  weight_g        INTEGER CHECK (weight_g > 0),          -- Optional; never sole sizing input
+  chest_mm        INTEGER CHECK (chest_mm > 0),
+  bust_mm         INTEGER,          -- For women's profiles
+  waist_mm        INTEGER,
+  hips_mm         INTEGER,
+  shoulder_width_mm INTEGER,
+  inseam_mm       INTEGER,
+  foot_length_mm  INTEGER,
 
   -- Extended measurements
-  neck_cm             NUMERIC(5,1),
-  sleeve_length_cm    NUMERIC(5,1),
-  body_length_cm      NUMERIC(5,1),      -- HPS to waist
-  arm_circumference_cm NUMERIC(5,1),
-  thigh_cm            NUMERIC(5,1),
-  knee_cm             NUMERIC(5,1),
-  ankle_cm            NUMERIC(5,1),
-  wrist_cm            NUMERIC(5,1),
-  head_circumference_cm NUMERIC(5,1),
-  torso_length_cm     NUMERIC(5,1),      -- Neckline to waist, for kurtas
+  neck_mm             INTEGER,
+  sleeve_length_mm    INTEGER,
+  body_length_mm      INTEGER,      -- HPS to waist
+  arm_circumference_mm INTEGER,
+  thigh_mm            INTEGER,
+  knee_mm             INTEGER,
+  ankle_mm            INTEGER,
+  wrist_mm            INTEGER,
+  head_circumference_mm INTEGER,
+  torso_length_mm     INTEGER,      -- Neckline to waist, for kurtas
 
-  -- Accessories
-  ring_index_mm    NUMERIC(4,1),
-  ring_middle_mm   NUMERIC(4,1),
-  ring_ring_mm     NUMERIC(4,1),
-  ring_pinky_mm    NUMERIC(4,1),
-  bangle_diameter_mm NUMERIC(4,1),
+  -- Accessories (canonical integer mm)
+  ring_index_mm    INTEGER,
+  ring_middle_mm   INTEGER,
+  ring_ring_mm     INTEGER,
+  ring_pinky_mm    INTEGER,
+  bangle_diameter_mm INTEGER,
 
   -- Provenance per field
-  -- e.g. {"chest_cm": "tape", "waist_cm": "estimate", "foot_length_cm": "paper_trace"}
   measurement_method JSONB DEFAULT '{}'::jsonb,
   notes TEXT
 );
@@ -176,12 +179,10 @@ CREATE TABLE IF NOT EXISTS brands (
 
 ALTER TABLE brands ENABLE ROW LEVEL SECURITY;
 
--- Public read access to brands directory
 CREATE POLICY "Public read access to brands"
   ON brands FOR SELECT
   USING (true);
 
--- Admin only write access
 CREATE POLICY "Admin write access to brands"
   ON brands FOR ALL
   USING (
@@ -206,22 +207,25 @@ CREATE TABLE IF NOT EXISTS brand_size_charts (
   size_system     TEXT DEFAULT 'IN' CHECK (size_system IN ('IN', 'UK', 'EU', 'US', 'numeric')),
   sort_order      INT DEFAULT 0,
 
-  -- Body fit ranges in cm
-  chest_min_cm    NUMERIC(5,1), chest_max_cm    NUMERIC(5,1),
-  waist_min_cm    NUMERIC(5,1), waist_max_cm    NUMERIC(5,1),
-  hips_min_cm     NUMERIC(5,1), hips_max_cm     NUMERIC(5,1),
-  shoulder_min_cm NUMERIC(5,1), shoulder_max_cm NUMERIC(5,1),
-  height_min_cm   NUMERIC(5,1), height_max_cm   NUMERIC(5,1),
-  inseam_min_cm   NUMERIC(5,1), inseam_max_cm   NUMERIC(5,1),
-  neck_min_cm     NUMERIC(5,1), neck_max_cm     NUMERIC(5,1),
-  sleeve_min_cm   NUMERIC(5,1), sleeve_max_cm   NUMERIC(5,1),
-  thigh_min_cm    NUMERIC(5,1), thigh_max_cm    NUMERIC(5,1),
+  -- Body fit ranges in canonical integer mm (Invariant 4)
+  chest_min_mm    INTEGER, chest_max_mm    INTEGER,
+  waist_min_mm    INTEGER, waist_max_mm    INTEGER,
+  hips_min_mm     INTEGER, hips_max_mm     INTEGER,
+  shoulder_min_mm INTEGER, shoulder_max_mm INTEGER,
+  height_min_mm   INTEGER, height_max_mm   INTEGER,
+  inseam_min_mm   INTEGER, inseam_max_mm   INTEGER,
+  neck_min_mm     INTEGER, neck_max_mm     INTEGER,
+  sleeve_min_mm   INTEGER, sleeve_max_mm   INTEGER,
+  thigh_min_mm    INTEGER, thigh_max_mm    INTEGER,
 
-  -- Provenance metadata
-  source_url           TEXT,
-  source_type          TEXT CHECK (source_type IN ('official_chart', 'product_page', 'pdf', 'image', 'community', 'brand_api')),
+  -- Provenance metadata (Invariant 2)
+  source_type          TEXT CHECK (source_type IN ('brand_official', 'retailer_api', 'curated_dataset', 'user_measured_physical', 'contributor_verified')),
+  source_uri           TEXT,
+  retrieved_at         TIMESTAMPTZ DEFAULT now(),
+  verification_hash    TEXT,
+  license_or_permission TEXT,
   collection_method    TEXT CHECK (collection_method IN ('scraped', 'manual', 'brand_submitted', 'community_contributed')),
-  original_unit        TEXT DEFAULT 'cm',
+  original_unit        TEXT DEFAULT 'mm',
   verified_by          UUID REFERENCES users(id),
   verified_at          TIMESTAMPTZ,
   last_checked_at      TIMESTAMPTZ,
@@ -236,6 +240,16 @@ ALTER TABLE brand_size_charts ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public read access to active brand size charts"
   ON brand_size_charts FOR SELECT
   USING (is_active = true);
+
+CREATE POLICY "Admin write access to brand size charts"
+  ON brand_size_charts FOR ALL
+  USING (
+    EXISTS (
+      SELECT 1 FROM users
+      WHERE users.id = auth.uid()
+      AND users.role = 'admin'
+    )
+  );
 
 -- ------------------------------------------------------------------------------
 -- 7. PRODUCTS TABLE (Master Product Catalog)
@@ -265,6 +279,16 @@ CREATE POLICY "Public read access to active products"
   ON products FOR SELECT
   USING (is_active = true);
 
+CREATE POLICY "Admin write access to products"
+  ON products FOR ALL
+  USING (
+    EXISTS (
+      SELECT 1 FROM users
+      WHERE users.id = auth.uid()
+      AND users.role = 'admin'
+    )
+  );
+
 -- ------------------------------------------------------------------------------
 -- 8. GARMENT MEASUREMENTS TABLE (Layer 3 — Physical Garment Dimensions Flat)
 -- ------------------------------------------------------------------------------
@@ -274,29 +298,36 @@ CREATE TABLE IF NOT EXISTS garment_measurements (
   size_label      TEXT NOT NULL,
   size_system     TEXT DEFAULT 'IN',
 
-  -- Garment dimensions (flat / half-circumference in cm)
-  chest_flat_cm       NUMERIC(5,1),  -- multiply x 2 for full circumference
-  shoulder_cm         NUMERIC(5,1),  -- seam to seam
-  length_cm           NUMERIC(5,1),  -- HPS to hem
-  sleeve_cm           NUMERIC(5,1),  -- shoulder seam to cuff
-  waist_flat_cm       NUMERIC(5,1),
-  hip_flat_cm         NUMERIC(5,1),
-  inseam_cm           NUMERIC(5,1),
-  thigh_flat_cm       NUMERIC(5,1),
-  neck_cm             NUMERIC(5,1),
-  rise_cm             NUMERIC(5,1),  -- waistband to crotch seam
+  -- Garment dimensions (flat / half-circumference in canonical integer mm - Invariant 3 & 4)
+  chest_flat_mm           INTEGER CHECK (chest_flat_mm > 0),  -- multiply x 2 for full circumference
+  shoulder_mm             INTEGER,  -- seam to seam
+  length_mm               INTEGER,  -- HPS to hem
+  waist_flat_mm           INTEGER,
+  hips_flat_mm            INTEGER,
+  sleeve_length_mm        INTEGER,
+  bicep_flat_mm           INTEGER,
+  cuff_flat_mm            INTEGER,
+  collar_circumference_mm INTEGER,
+  inseam_mm               INTEGER,
+  outseam_mm              INTEGER,
+  rise_mm                 INTEGER,  -- waistband to crotch seam
+  thigh_flat_mm           INTEGER,
+  leg_opening_flat_mm     INTEGER,
 
-  -- Provenance metadata
-  measurement_method  TEXT CHECK (measurement_method IN ('laid_flat', 'hanging', 'on_form')),
-  measured_by         TEXT CHECK (measured_by IN ('brand', 'admin', 'contributor')),
-  contributor_id      UUID REFERENCES users(id),
-  source_url          TEXT,
-  source_type         TEXT,
-  original_unit       TEXT DEFAULT 'cm',
-  verified_at         TIMESTAMPTZ,
-  verified_by         UUID REFERENCES users(id),
-  confidence          NUMERIC(3,2),
-  notes               TEXT
+  -- Provenance metadata (Invariant 2)
+  source_type             TEXT CHECK (source_type IN ('brand_official', 'retailer_api', 'curated_dataset', 'user_measured_physical', 'contributor_verified')),
+  source_uri              TEXT,
+  retrieved_at            TIMESTAMPTZ DEFAULT now(),
+  verification_hash       TEXT,
+  license_or_permission   TEXT,
+  measurement_method      TEXT CHECK (measurement_method IN ('laid_flat', 'hanging', 'on_form')),
+  measured_by             TEXT CHECK (measured_by IN ('brand', 'admin', 'contributor')),
+  contributor_id          UUID REFERENCES users(id),
+  original_unit           TEXT DEFAULT 'mm',
+  verified_at             TIMESTAMPTZ,
+  verified_by             UUID REFERENCES users(id),
+  confidence              NUMERIC(3,2),
+  notes                   TEXT
 );
 
 ALTER TABLE garment_measurements ENABLE ROW LEVEL SECURITY;
@@ -304,6 +335,16 @@ ALTER TABLE garment_measurements ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Public read access to verified garment measurements"
   ON garment_measurements FOR SELECT
   USING (verified_at IS NOT NULL);
+
+CREATE POLICY "Admin write access to garment measurements"
+  ON garment_measurements FOR ALL
+  USING (
+    EXISTS (
+      SELECT 1 FROM users
+      WHERE users.id = auth.uid()
+      AND users.role = 'admin'
+    )
+  );
 
 -- ------------------------------------------------------------------------------
 -- 9. REFERENCE GARMENTS TABLE (User's Owned Clothing Calibration Anchors)
@@ -318,9 +359,9 @@ CREATE TABLE IF NOT EXISTS reference_garments (
   fit_type        TEXT,
   fit_quality     TEXT NOT NULL
                   CHECK (fit_quality IN ('perfect', 'slightly_loose', 'slightly_tight', 'too_loose', 'too_tight')),
-  chest_flat_cm   NUMERIC(5,1),
-  shoulder_cm     NUMERIC(5,1),
-  length_cm       NUMERIC(5,1),
+  chest_flat_mm   INTEGER,
+  shoulder_mm     INTEGER,
+  length_mm       INTEGER,
   notes           TEXT,
   photo_url       TEXT,
   created_at      TIMESTAMPTZ DEFAULT now()

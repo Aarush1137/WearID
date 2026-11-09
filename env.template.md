@@ -22,6 +22,9 @@ Antigravity agents autonomously execute scripts, run test suites, and launch loc
 | `PORT` | No | `3000` | Local HTTP service port. |
 | `WEARID_API_URL` | Yes | `http://localhost:3000/api/v1` | Base API gateway URL. |
 | `DATABASE_URL` | Yes | `postgresql://wearid_user:mock_pass_local@localhost:5432/wearid_test` | PostgreSQL connection string (or `sqlite::memory:` in unit test mode). |
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes | `http://localhost:54321` | Supabase local development API endpoint. |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | `mock_supabase_anon_jwt_key_for_testing` | Public client anonymous Supabase key. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Yes | `mock_supabase_service_role_secret_key` | Server-only Supabase service key. |
 | `JWT_SECRET` | Yes | `mock_jwt_secret_key_wearid_sandbox_2026_deterministic` | Secret for user session and identity tokens. |
 | `JWT_EXPIRES_IN` | No | `7d` | Default token validity period. |
 | `BIOMETRIC_ENCRYPTION_KEY` | Yes | `mock_hex_key_0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef` | 256-bit AES key for resting encryption of raw anatomical metrics. |

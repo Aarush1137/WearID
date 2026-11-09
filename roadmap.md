@@ -33,9 +33,9 @@ flowchart LR
   - [x] **1.1 Scaffolding & Types:** TypeScript project setup with strict compiler options, linting rules, and directory layout (`src/core/`, `tests/`).
   - [x] **1.2 Domain Models:** Define `AnatomicalProfile`, `GarmentDimensions`, `EaseModel`, and `FabricSpec` with strict structural segregation.
   - [x] **1.3 Unit Normalizer:** Implement canonical conversion engine (`inches` $\leftrightarrow$ `mm`, `cm` $\leftrightarrow$ `mm`, `lbs` $\leftrightarrow$ `g`) with sub-millimeter precision.
-  - [ ] **1.4 Ease & Fit Calculator:** Implement deterministic fit scoring based on wearing ease, design ease, fabric stretch, and negative ease penalties.
-  - [ ] **1.5 Explainability Tree Generator:** Build the generator that creates human-readable and structured JSON explainability breakdowns.
-  - [ ] **1.6 Verification:** Complete test suites `TC-U-001` through `TC-U-005`, `TC-D-001` through `TC-D-003`, and `TC-S-001` through `TC-S-005` in [tests.md](file:///e:/Projects/WearID/tests.md).
+  - [x] **1.4 Ease & Fit Calculator:** Implement deterministic fit scoring based on wearing ease, design ease, fabric stretch, and negative ease penalties.
+  - [x] **1.5 Explainability Tree Generator:** Build the generator that creates human-readable and structured JSON explainability breakdowns.
+  - [x] **1.6 Verification:** Complete test suites `TC-U-001` through `TC-U-005`, `TC-D-001` through `TC-D-003`, and `TC-S-001` through `TC-S-005` in [tests.md](file:///e:/Projects/WearID/tests.md).
 - **Phase Exit Criteria:** All core unit tests pass with >= 95% coverage; zero invented size charts; canonical `mm` enforced everywhere.
 
 ---

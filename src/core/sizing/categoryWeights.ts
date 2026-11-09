@@ -1,0 +1,56 @@
+/**
+ * Category-Specific Measurement Weighting Distributions
+ * Reflects how critical each anatomical dimension is to the fit of that garment type.
+ */
+
+export interface DimensionWeights {
+  chest?: number;
+  waist?: number;
+  hips?: number;
+  shoulder?: number;
+  length?: number;
+  sleeve?: number;
+  neck?: number;
+  inseam?: number;
+  thigh?: number;
+  rise?: number;
+  torso_length?: number;
+  foot_length?: number;
+  [key: string]: number | undefined;
+}
+
+export function getCategoryWeights(category: string): DimensionWeights {
+  const normalized = category.toLowerCase().trim();
+  switch (normalized) {
+    case "tshirt":
+    case "t_shirt":
+    case "polo":
+      return { chest: 0.40, shoulder: 0.35, length: 0.15, sleeve: 0.10 };
+
+    case "casual_shirt":
+      return { chest: 0.30, shoulder: 0.30, sleeve: 0.20, neck: 0.20 };
+
+    case "formal_shirt":
+      return { chest: 0.25, shoulder: 0.25, sleeve: 0.25, neck: 0.25 };
+
+    case "hoodie":
+    case "sweatshirt":
+      return { chest: 0.45, shoulder: 0.30, length: 0.15, sleeve: 0.10 };
+
+    case "jeans":
+      return { waist: 0.40, inseam: 0.35, thigh: 0.25 };
+
+    case "trousers":
+    case "chinos":
+      return { waist: 0.40, inseam: 0.30, thigh: 0.20, rise: 0.10 };
+
+    case "kurta":
+      return { chest: 0.35, shoulder: 0.25, torso_length: 0.25, sleeve: 0.15 };
+
+    case "shoe":
+      return { foot_length: 1.0 };
+
+    default:
+      return { chest: 0.50, shoulder: 0.30, length: 0.20 };
+  }
+}

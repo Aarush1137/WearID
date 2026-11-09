@@ -9,11 +9,16 @@ export default defineConfig({
     coverage: {
       provider: "v8",
       reporter: ["text", "json", "html"],
+      include: [
+        "src/core/sizing/**",
+        "src/core/units.ts",
+        "src/core/formatters.ts",
+      ],
       thresholds: {
-        lines: 90,
-        branches: 85,
-        functions: 90,
-        statements: 90,
+        lines: 95,
+        branches: 90,
+        functions: 95,
+        statements: 95,
       },
     },
   },

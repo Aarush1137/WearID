@@ -1,1 +1,195 @@
-@import "../../styles/tokens.css";
+/* ==============================================================================
+   Fit / WearID — Design System Tokens
+   Editorial fashion-tech: Minimal, warm, precise.
+   ============================================================================== */
+
+:root {
+  /* ─── Surfaces ─── */
+  --bg-base:          #F5F3ED;  /* Warm ivory — page background */
+  --bg-surface:       #FFFFFF;  /* Card, panel, modal surface */
+  --bg-elevated:      #EFEDE6;  /* Slightly deeper surface, sidebar */
+  --bg-accent-subtle: #DDE4D9;  /* Sage — tinted accent background */
+
+  /* ─── Text ─── */
+  --text-primary:   #242821;    /* Ink — all body and heading text */
+  --text-secondary: #73776F;    /* Muted — labels, secondary copy */
+  --text-tertiary:  #A5A9A1;    /* Placeholder, disabled, hint text */
+  --text-on-accent: #FFFFFF;    /* Text on dark accent surfaces */
+  --text-link:      #425B48;    /* Link text */
+
+  /* ─── Accent (Forest Green) ─── */
+  --accent:         #425B48;    /* Primary action, CTA, focus ring */
+  --accent-hover:   #354A3A;    /* Hover state for accent elements */
+  --accent-active:  #2C3D30;    /* Pressed state */
+  --accent-subtle:  #DDE4D9;    /* Tinted background, tag fill */
+
+  /* ─── Terracotta (warm highlight) ─── */
+  --terracotta:        #C38367; /* Badges, warm accent, alt CTA */
+  --terracotta-hover:  #B0704F;
+  --terracotta-subtle: #F5EAE3; /* Terracotta tinted background */
+
+  /* ─── Semantic ─── */
+  --success:          #2D6A4F;
+  --success-subtle:   #E8F3ED;
+  --warning:          #B5621A;
+  --warning-subtle:   #FAF0E6;
+  --destructive:      #9B2335;
+  --destructive-subtle: #FAEAEC;
+  --info:             #2C567A;
+  --info-subtle:      #E8F1F8;
+
+  /* ─── Confidence indicators ─── */
+  --confidence-high:   #2D6A4F;  /* > 85% */
+  --confidence-medium: #B5621A;  /* 65–85% */
+  --confidence-low:    #C38367;  /* 40–65% — rough estimate */
+  --confidence-none:   #73776F;  /* < 40% — do not show recommendation */
+
+  /* ─── Borders ─── */
+  --border:        #E6E2D9;   /* Default divider and card border */
+  --border-strong: #C8C4BB;  /* Stronger borders, input outlines */
+  --border-focus:  #425B48;   /* Focus ring (2px, 40% opacity) */
+
+  /* ─── Shadows ─── */
+  --shadow-xs: 0 1px 2px rgba(36,40,33,0.04);
+  --shadow-sm: 0 1px 4px rgba(36,40,33,0.06);
+  --shadow-md: 0 4px 12px rgba(36,40,33,0.08);
+  --shadow-lg: 0 8px 24px rgba(36,40,33,0.10);
+
+  /* ─── Typography ─── */
+  --font-sans:    'DM Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'DM Serif Display', Georgia, serif;
+
+  /* Type scale */
+  --text-2xs: 0.625rem;  /* 10px — micro labels */
+  --text-xs:  0.75rem;   /* 12px — caps labels, tags */
+  --text-sm:  0.875rem;  /* 14px — secondary body, captions */
+  --text-base: 1rem;     /* 16px — body text */
+  --text-lg:  1.125rem;  /* 18px — large body */
+  --text-xl:  1.25rem;   /* 20px — card titles, section intro */
+  --text-2xl: 1.5rem;    /* 24px — page sub-headings */
+  --text-3xl: 1.875rem;  /* 30px — page headings */
+  --text-4xl: 2.25rem;   /* 36px — hero headings */
+  --text-5xl: 3rem;      /* 48px — DM Serif Display only */
+  --text-6xl: 3.75rem;   /* 60px — homepage hero, DM Serif Display */
+
+  /* Line heights */
+  --leading-tight:   1.25;
+  --leading-snug:    1.375;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose:   1.75;
+
+  /* Letter spacing */
+  --tracking-tight:  -0.02em;
+  --tracking-normal:  0em;
+  --tracking-wide:    0.04em;  /* Uppercase labels only */
+  --tracking-wider:   0.08em;
+
+  /* ─── Motion and transitions ─── */
+  --ease-out:    cubic-bezier(0.0, 0.0, 0.2, 1.0);
+  --ease-in:     cubic-bezier(0.4, 0.0, 1.0, 1.0);
+  --ease-in-out: cubic-bezier(0.4, 0.0, 0.2, 1.0);
+
+  --duration-instant: 100ms;  /* Immediate feedback */
+  --duration-fast:    150ms;  /* Hover, focus ring */
+  --duration-normal:  200ms;  /* Most transitions */
+  --duration-slow:    300ms;  /* Page transitions, panel open/close */
+  --duration-slower:  400ms;  /* Loading states entering */
+}
+
+/* ─── Editorial Component Utility Classes ─── */
+
+.card-editorial {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background-color: var(--bg-surface);
+  box-shadow: var(--shadow-sm);
+  padding: 20px;
+  transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
+}
+.card-editorial:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary {
+  min-height: 44px;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 15px;
+  padding: 10px 20px;
+  background-color: var(--accent);
+  color: var(--text-on-accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+}
+
+.btn-secondary {
+  min-height: 44px;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 15px;
+  padding: 10px 20px;
+  background-color: var(--bg-surface);
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.input-editorial {
+  height: 44px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  color: var(--text-primary);
+  background-color: var(--bg-surface);
+  padding: 0 14px;
+  outline: none;
+  transition: border-color var(--duration-fast) var(--ease-out);
+}
+.input-editorial:focus {
+  border-color: var(--border-focus);
+  outline: 3px solid rgba(66, 91, 72, 0.15);
+}
+
+.confidence-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.confidence-dot.high {
+  background-color: var(--confidence-high);
+}
+.confidence-dot.medium {
+  background-color: var(--confidence-medium);
+}
+.confidence-dot.low {
+  background-color: var(--confidence-low);
+}
+.confidence-dot.none {
+  background-color: var(--confidence-none);
+}
+
+.badge-pill {
+  border-radius: 100px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  padding: 3px 10px;
+  display: inline-flex;
+  align-items: center;
+}

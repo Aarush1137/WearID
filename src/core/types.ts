@@ -19,13 +19,13 @@ export const AnatomicalProfileSchema = z.object({
   neckMm: z.number().int().positive().optional(),
   sleeveLengthMm: z.number().int().positive().optional(),
   torsoLengthMm: z.number().int().positive().optional(),
-  measurementMethod: z.record(z.string()).default({}),
+  measurementMethod: z.record(z.string()).optional().default({}),
   notes: z.string().optional(),
-  isCurrent: z.boolean().default(true),
+  isCurrent: z.boolean().optional().default(true),
   recordedAt: z.string().datetime().optional(),
 });
 
-export type AnatomicalProfile = z.infer<typeof AnatomicalProfileSchema>;
+export type AnatomicalProfile = z.input<typeof AnatomicalProfileSchema>;
 
 /**
  * Layer 2 — Brand Body Fit Chart
@@ -39,8 +39,8 @@ export const BrandSizeChartSchema = z.object({
   gender: z.enum(["male", "female", "unisex"]),
   fitType: z.enum(["slim", "regular", "relaxed", "oversized"]).optional(),
   sizeLabel: z.string(),
-  sizeSystem: z.enum(["IN", "UK", "EU", "US", "numeric"]).default("IN"),
-  sortOrder: z.number().int().default(0),
+  sizeSystem: z.enum(["IN", "UK", "EU", "US", "numeric"]).optional().default("IN"),
+  sortOrder: z.number().int().optional().default(0),
   chestMinMm: z.number().int().positive().optional(),
   chestMaxMm: z.number().int().positive().optional(),
   waistMinMm: z.number().int().positive().optional(),
@@ -50,12 +50,12 @@ export const BrandSizeChartSchema = z.object({
   shoulderMinMm: z.number().int().positive().optional(),
   shoulderMaxMm: z.number().int().positive().optional(),
   sourceUrl: z.string().url().optional(),
-  sourceType: z.string().default("official_chart"),
-  confidence: z.number().min(0).max(1).default(0.85),
-  communityCorrectionFactor: z.number().default(0),
+  sourceType: z.string().optional().default("official_chart"),
+  confidence: z.number().min(0).max(1).optional().default(0.85),
+  communityCorrectionFactor: z.number().optional().default(0),
 });
 
-export type BrandSizeChart = z.infer<typeof BrandSizeChartSchema>;
+export type BrandSizeChart = z.input<typeof BrandSizeChartSchema>;
 
 /**
  * Layer 3 — Physical Garment Dimensions
@@ -65,7 +65,7 @@ export const GarmentDimensionsSchema = z.object({
   id: z.string().uuid().optional(),
   productId: z.string(),
   sizeLabel: z.string(),
-  sizeSystem: z.string().default("IN"),
+  sizeSystem: z.string().optional().default("IN"),
   // Flat half-measurements (double for circumference)
   chestFlatMm: z.number().int().positive(),
   shoulderMm: z.number().int().positive().optional(),
@@ -74,13 +74,13 @@ export const GarmentDimensionsSchema = z.object({
   waistFlatMm: z.number().int().positive().optional(),
   hipFlatMm: z.number().int().positive().optional(),
   inseamMm: z.number().int().positive().optional(),
-  measurementMethod: z.enum(["laid_flat", "hanging", "on_form"]).default("laid_flat"),
-  measuredBy: z.enum(["brand", "admin", "contributor"]).default("brand"),
+  measurementMethod: z.enum(["laid_flat", "hanging", "on_form"]).optional().default("laid_flat"),
+  measuredBy: z.enum(["brand", "admin", "contributor"]).optional().default("brand"),
   sourceUrl: z.string().optional(),
-  confidence: z.number().min(0).max(1).default(0.9),
+  confidence: z.number().min(0).max(1).optional().default(0.9),
 });
 
-export type GarmentDimensions = z.infer<typeof GarmentDimensionsSchema>;
+export type GarmentDimensions = z.input<typeof GarmentDimensionsSchema>;
 
 /**
  * Layer 4 — Personal Fit Preference

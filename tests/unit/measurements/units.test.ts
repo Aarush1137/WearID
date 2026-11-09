@@ -20,7 +20,9 @@ describe("Canonical Unit Conversions", () => {
     expect(mmToCm(1024)).toBe(102.4);
   });
 
-  it("converts imperial inches to canonical integer mm accurately", () => {
+  it("converts imperial inches to canonical integer mm accurately (TC-U-001)", () => {
+    // 38.5 inches * 25.4 = 977.9 -> 978 mm (TC-U-001 required boundary)
+    expect(inchesToMm(38.5)).toBe(978);
     // 38.0 inches * 25.4 = 965.2 -> 965 mm
     expect(inchesToMm(38.0)).toBe(965);
     // 40.0 inches * 25.4 = 1016 mm
@@ -41,6 +43,8 @@ describe("Canonical Unit Conversions", () => {
     expect(() => inchesToMm(-5)).toThrow(RangeError);
     expect(() => mmToCm(-100)).toThrow(RangeError);
     expect(() => mmToInches(-100)).toThrow(RangeError);
+    expect(() => kgToGrams(-10)).toThrow(RangeError);
+    expect(() => lbsToGrams(-10)).toThrow(RangeError);
   });
 
   it("maintains round-trip stability without floating-point drift", () => {
