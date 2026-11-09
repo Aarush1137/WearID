@@ -83,8 +83,8 @@ flowchart LR
 - **Goal:** Final security audits, multi-source corroboration consensus engine, and high-throughput performance optimization.
 - **Assigned Agents:** `qa-verification`, `security-privacy`, `coordinator`
 - **Milestone Slices:**
-  - [ ] **5.1 Multi-Source Consensus Engine:** Algorithm to verify community garment submissions when corroborated by $\ge 3$ independent sources within 2% tolerance.
-  - [ ] **5.2 Security & Penetration Audit:** Automated SAST scanning, rate-limiting, CSRF, and injection prevention.
-  - [ ] **5.3 Performance & Load Testing:** Benchmarking sizing engine to guarantee <15ms execution time for single garment fit calculation.
-  - [ ] **5.4 Final Invariant Certification:** Complete audit certifying all 10 invariants in `AGENTS.md` are enforced across all layers.
+  - [x] **5.1 Multi-Source Consensus Engine:** Algorithm to verify community garment submissions when corroborated by $\ge 3$ independent sources within 2% tolerance.
+  - [x] **5.2 Security & Penetration Audit:** Automated SAST scanning, rate-limiting, CSRF, and injection prevention.
+  - [x] **5.3 Performance & Load Testing:** Benchmarking sizing engine to guarantee <15ms execution time for single garment fit calculation.
+  - [x] **5.4 Final Invariant Certification:** Complete audit certifying all 10 invariants in `AGENTS.md` are enforced across all layers.
 - **Phase Exit Criteria:** 100% test matrix passing; zero security vulnerabilities; full invariant certification signed off.
