@@ -4,14 +4,16 @@ import { ArrowRight } from "lucide-react";
 
 export default function HomePage() {
   const pilotBrands = [
-    { name: "Uniqlo India", status: "Data pending" },
-    { name: "H&M India", status: "Data pending" },
-    { name: "Zara India", status: "Data pending" },
-    { name: "Levi's India", status: "Data pending" },
-    { name: "Van Heusen", status: "Data pending" },
-    { name: "Westside", status: "Data pending" },
-    { name: "Max Fashion", status: "Data pending" },
-    { name: "Snitch", status: "Data pending" },
+    { name: "Westside", status: "Layer 2 Graded" },
+    { name: "FabIndia", status: "Layer 2 Graded" },
+    { name: "Raymond", status: "Layer 2 & 3 Verified" },
+    { name: "Snitch", status: "Layer 3 Flat Specs" },
+    { name: "Roadster", status: "Contributor Verified" },
+    { name: "H&M India", status: "Layer 2 Graded" },
+    { name: "Marks & Spencer", status: "Layer 2 Graded" },
+    { name: "Zara India", status: "Layer 2 Graded" },
+    { name: "Uniqlo India", status: "Layer 3 Benchmark" },
+    { name: "Levi's India", status: "Layer 2 & 3 Verified" },
   ];
 
   return (
@@ -24,19 +26,25 @@ export default function HomePage() {
               W
             </span>
             <span className="font-semibold text-xl tracking-tight text-text-primary">
-              Wear<span className="text-accent">Id</span>
+              Wear<span className="text-accent">ID</span>
             </span>
           </Link>
           <nav className="flex items-center gap-6">
             <Link
-              href="/methodology"
+              href="/app/explore"
               className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors hidden sm:inline-block"
             >
-              Methodology
+              Catalog
+            </Link>
+            <Link
+              href="/app/recommendations"
+              className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors hidden sm:inline-block"
+            >
+              Recommendations
             </Link>
             <Link
               href="/onboarding"
-              className="inline-flex items-center justify-center min-h-[40px] px-4 rounded-btn bg-accent text-white font-medium text-sm hover:bg-accent-hover transition-colors"
+              className="inline-flex items-center justify-center min-h-[44px] px-5 rounded-btn bg-accent text-white font-medium text-sm hover:bg-accent-hover transition-colors"
             >
               Build Profile
             </Link>
@@ -172,18 +180,33 @@ export default function HomePage() {
         {/* Pilot Brands Strip */}
         <section className="py-12 border-t border-border bg-bg-surface">
           <div className="max-w-6xl mx-auto px-6">
-            <p className="text-center text-xs uppercase tracking-wider text-text-secondary font-medium mb-8">
-              Phase 1 Pilot Research Targets (Men&apos;s T-Shirts)
-            </p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-8">
+              <div>
+                <p className="text-xs uppercase tracking-wider text-text-secondary font-medium">
+                  Phase 1 Pilot Research Brands & Benchmarks
+                </p>
+                <h3 className="font-semibold text-lg text-text-primary mt-0.5">
+                  Verified Men&apos;s Apparel Specifications
+                </h3>
+              </div>
+              <Link
+                href="/app/recommendations"
+                className="text-xs font-semibold text-accent hover:text-accent-hover inline-flex items-center gap-1"
+              >
+                Test Recommendations
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
               {pilotBrands.map((b, i) => (
-                <div
+                <Link
                   key={i}
-                  className="p-3.5 rounded-btn border border-border bg-bg-base text-center flex flex-col items-center justify-center"
+                  href="/app/recommendations"
+                  className="p-3.5 rounded-card border border-border bg-bg-base hover:bg-bg-elevated/70 hover:border-accent/40 text-center flex flex-col items-center justify-center min-h-[72px] transition-all group"
                 >
-                  <span className="font-medium text-sm text-text-primary">{b.name}</span>
-                  <span className="text-2xs text-text-tertiary mt-0.5 font-medium">{b.status}</span>
-                </div>
+                  <span className="font-semibold text-sm text-text-primary group-hover:text-accent transition-colors">{b.name}</span>
+                  <span className="text-[11px] text-text-tertiary mt-1 font-medium">{b.status}</span>
+                </Link>
               ))}
             </div>
           </div>

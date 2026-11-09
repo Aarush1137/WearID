@@ -52,7 +52,7 @@ export function TopNavigation() {
               Passport
             </Link>
             <Link
-              href="/app/recommend"
+              href="/app/recommendations"
               className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
                 pathname.startsWith("/app/recommend")
                   ? "text-accent bg-accent-subtle/50 font-semibold"
@@ -90,6 +90,16 @@ export function TopNavigation() {
               }`}
             >
               Privacy & Tokens
+            </Link>
+            <Link
+              href="/sandbox/retailer"
+              className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
+                pathname === "/sandbox/retailer"
+                  ? "text-accent bg-accent-subtle/50 font-semibold"
+                  : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+              }`}
+            >
+              Connect Sandbox
             </Link>
           </nav>
         </div>

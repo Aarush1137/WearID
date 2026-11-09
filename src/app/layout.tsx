@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, DM_Serif_Display } from "next/font/google";
 import "./globals.css";
+import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
+import { OfflineBanner } from "@/components/pwa/OfflineBanner";
+import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -17,17 +20,17 @@ const dmSerifDisplay = DM_Serif_Display({
 });
 
 export const metadata: Metadata = {
-  title: "WearId — Your Clothing Identity, Everywhere",
-  description: "Universal clothing size profile. One profile. Every brand. A better fit.",
+  title: "WearID — Universal Clothing Size Profile",
+  description: "Universal clothing identity, deterministic body-to-garment fitting, and sovereign measurement portability.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "WearId",
+    title: "WearID",
   },
   icons: {
     icon: "/icons/icon-192.png",
-    apple: "/icons/icon-192.png",
+    apple: "/icons/apple-touch-icon.png",
   },
 };
 
@@ -46,8 +49,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${dmSans.variable} ${dmSerifDisplay.variable}`}>
-      <body className="antialiased min-h-screen bg-bg-base text-text-primary">
+      <body className="antialiased min-h-screen bg-bg-base text-text-primary flex flex-col">
+        <ServiceWorkerRegister />
+        <OfflineBanner />
         {children}
+        <InstallPrompt />
       </body>
     </html>
   );

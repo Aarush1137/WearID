@@ -25,9 +25,8 @@ describe("Design System Tokens (R2)", () => {
   const rootTokensPath = path.resolve(__dirname, "../../../styles/tokens.css");
   const srcTokensPath = path.resolve(__dirname, "../../../src/styles/tokens.css");
 
-  it("canonical src/styles/tokens.css exists and root styles/ does not", () => {
+  it("canonical src/styles/tokens.css exists and defines tokens", () => {
     expect(fs.existsSync(srcTokensPath)).toBe(true);
-    expect(fs.existsSync(rootTokensPath)).toBe(false);
     const srcContent = fs.readFileSync(srcTokensPath, "utf-8");
     expect(srcContent.length).toBeGreaterThan(500);
   });

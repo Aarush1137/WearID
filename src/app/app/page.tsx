@@ -36,7 +36,7 @@ export default function AppPage() {
             {PILOT_BRANDS.map((brand) => (
               <Link
                 key={brand.id}
-                href={`/app/recommend`}
+                href="/app/recommendations"
                 className="p-3.5 rounded-card bg-bg-elevated/40 border border-border hover:border-accent/40 hover:bg-bg-elevated/70 transition-all flex flex-col justify-between min-h-[96px] group"
               >
                 <div>

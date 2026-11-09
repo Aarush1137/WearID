@@ -71,10 +71,10 @@ flowchart LR
 - **Goal:** Enable third-party apparel websites to embed a one-click "Fit with WearID" button and receive instant, zero-knowledge sizing recommendations.
 - **Assigned Agents:** `backend-engineer`, `frontend-engineer`, `security-privacy`
 - **Milestone Slices:**
-  - [ ] **4.1 Embeddable Client SDK:** Lightweight vanilla JS / iframe embed script (<25KB) for product pages.
-  - [ ] **4.2 Zero-Knowledge Handshake Protocol:** Secure exchange between retailer product SKU and user WearID token.
-  - [ ] **4.3 Retailer Sandbox & Mock Testbed:** Comprehensive mock storefront simulating live size recommendation interactions.
-  - [ ] **4.4 Webhook Notification System:** Optional webhook for order fulfillment size confirmation without passing body measurements.
+  - [x] **4.1 Embeddable Client SDK:** Lightweight vanilla JS / iframe embed script (<25KB) for product pages.
+  - [x] **4.2 Zero-Knowledge Handshake Protocol:** Secure exchange between retailer product SKU and user WearID token.
+  - [x] **4.3 Retailer Sandbox & Mock Testbed:** Comprehensive mock storefront simulating live size recommendation interactions.
+  - [x] **4.4 Webhook Notification System:** Optional webhook for order fulfillment size confirmation without passing body measurements.
 - **Phase Exit Criteria:** Embedded widget displays recommendations in <100ms; zero raw anatomical data transferred; mock retailer test suite passes.
 
 ---
