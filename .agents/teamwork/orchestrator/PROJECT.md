@@ -44,10 +44,10 @@
 |---|------|-------|-------------|--------|
 | M0 | E2E Testing Track | Design E2E test infra, runner, and test cases (Tiers 1-4) deriving from requirements; publish TEST_READY.md | none | DONE |
 | M1 | Phase 0 Research & Architecture Docs | Produce `docs/competitor-analysis.md`, `docs/indian-sizing-research.md`, `docs/product-opportunities.md`, `docs/brand-data-audit.md`, DDL & spec docs | none | DONE |
-| M2 | Design System Tokens & Primitives | Implement token classes in `styles/tokens.css` and UI primitives in `src/components/ui/` | none | PLANNED |
-| M3 | Deterministic Sizing Recommendation Engine | Implement `src/core/` (types, units, ease, calibration, borderline, explanation, engine) + unit tests | none | PLANNED |
-| M4 | Phase 1 PWA Proof of Concept & Local Dev | Implement PWA manifest, service worker, icons, offline fallback, mock Supabase store, and App Router pages | M2, M3 | PLANNED |
-| M5 | E2E Test Pass & Adversarial Hardening | Pass 100% of E2E tests (Tiers 1-4) followed by Phase 2 adversarial coverage hardening (Tier 5) | M0, M1, M2, M3, M4 | PLANNED |
+| M2 | Design System Tokens & Primitives | Implement token classes in `styles/tokens.css` and UI primitives in `src/components/ui/` | none | DONE |
+| M3 | Deterministic Sizing Recommendation Engine | Implement `src/core/` (types, units, ease, calibration, borderline, explanation, engine) + unit tests | none | DONE |
+| M4 | Phase 1 PWA Proof of Concept & Local Dev | Implement PWA manifest, service worker, icons, offline fallback, mock Supabase store, and App Router pages | M2, M3 | DONE |
+| M5 | E2E Test Pass & Adversarial Hardening | Pass 100% of E2E tests (Tiers 1-4) followed by Phase 2 adversarial coverage hardening (Tier 5) | M0, M1, M2, M3, M4 | DONE |
 
 ## Interface Contracts
 ### Layer 1 AnatomicalProfile ↔ Layer 3 GarmentDimensions (Bridge via Ease)
