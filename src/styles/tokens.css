@@ -29,14 +29,14 @@
   --terracotta-subtle: #F5EAE3; /* Terracotta tinted background */
 
   /* ─── Semantic ─── */
-  --success:          #2D6A4F;
-  --success-subtle:   #E8F3ED;
-  --warning:          #B5621A;
-  --warning-subtle:   #FAF0E6;
-  --destructive:      #9B2335;
+  --success:            #2D6A4F;
+  --success-subtle:     #E8F3ED;
+  --warning:            #B5621A;
+  --warning-subtle:     #FAF0E6;
+  --destructive:        #9B2335;
   --destructive-subtle: #FAEAEC;
-  --info:             #2C567A;
-  --info-subtle:      #E8F1F8;
+  --info:               #2C567A;
+  --info-subtle:        #E8F1F8;
 
   /* ─── Confidence indicators ─── */
   --confidence-high:   #2D6A4F;  /* > 85% */
@@ -46,8 +46,8 @@
 
   /* ─── Borders ─── */
   --border:        #E6E2D9;   /* Default divider and card border */
-  --border-strong: #C8C4BB;  /* Stronger borders, input outlines */
-  --border-focus:  #425B48;   /* Focus ring (2px, 40% opacity) */
+  --border-strong: #C8C4BB;   /* Stronger borders, input outlines */
+  --border-focus:  #425B48;   /* Focus ring */
 
   /* ─── Shadows ─── */
   --shadow-xs: 0 1px 2px rgba(36,40,33,0.04);
@@ -97,8 +97,11 @@
   --duration-slower:  400ms;  /* Loading states entering */
 }
 
-/* ─── Editorial Component Utility Classes ─── */
+/* ==============================================================================
+   Editorial Component Utility Classes
+   ============================================================================== */
 
+/* ─── Cards ─── */
 .card-editorial {
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -107,11 +110,19 @@
   padding: 20px;
   transition: transform var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
 }
+
+@media (max-width: 640px) {
+  .card-editorial {
+    padding: 16px;
+  }
+}
+
 .card-editorial:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
+/* ─── Buttons ─── */
 .btn-primary {
   min-height: 44px;
   border-radius: 8px;
@@ -121,13 +132,22 @@
   padding: 10px 20px;
   background-color: var(--accent);
   color: var(--text-on-accent);
+  border: 1.5px solid transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background-color var(--duration-fast) var(--ease-out);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out), transform var(--duration-instant) var(--ease-out);
 }
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background-color: var(--accent-hover);
+}
+.btn-primary:active:not(:disabled) {
+  background-color: var(--accent-active);
+}
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .btn-secondary {
@@ -143,45 +163,117 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background-color var(--duration-fast) var(--ease-out);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out);
+}
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--bg-accent-subtle);
+}
+.btn-secondary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
+.btn-ghost {
+  min-height: 44px;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 15px;
+  padding: 10px 20px;
+  background-color: transparent;
+  border: 1.5px solid transparent;
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.btn-ghost:hover:not(:disabled) {
+  background-color: var(--bg-elevated);
+}
+.btn-ghost:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-destructive {
+  min-height: 44px;
+  border-radius: 8px;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 15px;
+  padding: 10px 20px;
+  background-color: var(--destructive);
+  color: #FFFFFF;
+  border: 1.5px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+.btn-destructive:hover:not(:disabled) {
+  background-color: #821D2C;
+}
+.btn-destructive:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ─── Inputs & Selects ─── */
 .input-editorial {
   height: 44px;
   border: 1.5px solid var(--border-strong);
   border-radius: 8px;
   font-family: var(--font-sans);
+  font-weight: 400;
   font-size: 15px;
   color: var(--text-primary);
   background-color: var(--bg-surface);
   padding: 0 14px;
   outline: none;
-  transition: border-color var(--duration-fast) var(--ease-out);
+  transition: border-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out);
 }
 .input-editorial:focus {
   border-color: var(--border-focus);
   outline: 3px solid rgba(66, 91, 72, 0.15);
 }
+.input-editorial.error,
+.input-editorial[aria-invalid="true"] {
+  border-color: var(--destructive);
+}
+.input-editorial::placeholder {
+  color: var(--text-tertiary);
+}
 
+/* ─── Confidence Indicators ─── */
 .confidence-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   display: inline-block;
+  flex-shrink: 0;
 }
+.confidence-dot-high,
 .confidence-dot.high {
   background-color: var(--confidence-high);
 }
+.confidence-dot-medium,
 .confidence-dot.medium {
   background-color: var(--confidence-medium);
 }
+.confidence-dot-low,
 .confidence-dot.low {
   background-color: var(--confidence-low);
 }
+.confidence-dot-none,
 .confidence-dot.none {
   background-color: var(--confidence-none);
 }
 
+/* ─── Badges & Tags ─── */
 .badge-pill {
   border-radius: 100px;
   font-family: var(--font-sans);
@@ -192,4 +284,52 @@
   padding: 3px 10px;
   display: inline-flex;
   align-items: center;
+  line-height: var(--leading-normal);
+  background-color: var(--bg-elevated);
+  color: var(--text-secondary);
+}
+.badge-pill-success,
+.badge-pill.success {
+  background-color: var(--success-subtle);
+  color: var(--success);
+}
+.badge-pill-warning,
+.badge-pill.warning {
+  background-color: var(--warning-subtle);
+  color: var(--warning);
+}
+.badge-pill-info,
+.badge-pill.info {
+  background-color: var(--info-subtle);
+  color: var(--info);
+}
+.badge-pill-neutral,
+.badge-pill.neutral {
+  background-color: var(--bg-elevated);
+  color: var(--text-secondary);
+}
+.badge-pill-terracotta,
+.badge-pill.terracotta {
+  background-color: var(--terracotta-subtle);
+  color: var(--terracotta);
+}
+
+/* ─── Mobile Safe Area Utilities ─── */
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+.pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+.safe-top {
+  top: env(safe-area-inset-top, 0px);
+}
+.safe-bottom {
+  bottom: env(safe-area-inset-bottom, 0px);
 }

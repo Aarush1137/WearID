@@ -1,4 +1,4 @@
-# BRIEFING — 2026-11-09T21:27:00Z
+# BRIEFING — 2026-11-09T21:31:30Z
 
 ## Mission
 Execute Phase 0 research, design system tokens, database architecture, deterministic sizing engine, and Phase 1 PWA proof of concept as specified in MASTER_PROMPT.md for the FIT Universal Clothing Size Profile.
@@ -18,9 +18,9 @@ Execute Phase 0 research, design system tokens, database architecture, determini
    - Synthesized PROJECT.md and TEST_INFRA.md.
    - Decomposed into Milestones:
      * Milestone 0: E2E Testing Track -> DONE (TEST_READY.md published, 332 tests passing)
-     * Milestone 1: Phase 0 Research & Architecture Documentation -> IN_REVIEW (Iteration 2)
-     * Milestone 2: Editorial Fashion-Tech Design System Tokens & Components (`styles/tokens.css`, component styles)
-     * Milestone 3: Deterministic Sizing Recommendation Engine & Unit Tests (Separation of Layers 1-4, ease, calibration, borderline fits, ExplanationTree)
+     * Milestone 1: Phase 0 Research & Architecture Documentation -> DONE (Full DDL canonical units mm/g, provenance, RLS, pseudocode, 346 tests passing)
+     * Milestone 2: Editorial Fashion-Tech Design System Tokens & Components (`styles/tokens.css`, component styles) -> IN_PROGRESS
+     * Milestone 3: Deterministic Sizing Recommendation Engine & Unit Tests (Separation of Layers 1-4, ease, calibration, borderline fits, ExplanationTree) -> IN_PROGRESS
      * Milestone 4: Phase 1 PWA Proof of Concept & Local Mock Services (Next.js App Router PWA, manifest, SW, Supabase RLS schema, UI, offline fallback)
      * Milestone 5: E2E Test Pass (Tiers 1-4) & Adversarial Hardening (Tier 5)
 2. **Dispatch & Execute**:
@@ -32,13 +32,13 @@ Execute Phase 0 research, design system tokens, database architecture, determini
 - **Work items**:
   1. Survey & Initial Reconnaissance [done]
   2. Milestone 0: E2E Testing Track [done]
-  3. Milestone 1: Phase 0 Research & Architecture Docs [in-review]
-  4. Milestone 2: Design System Tokens & Styling [pending]
-  5. Milestone 3: Deterministic Sizing Engine [pending]
+  3. Milestone 1: Phase 0 Research & Architecture Docs [done]
+  4. Milestone 2: Design System Tokens & Styling [in-progress]
+  5. Milestone 3: Deterministic Sizing Engine [in-progress]
   6. Milestone 4: Phase 1 PWA PoC & Local Dev [pending]
   7. Milestone 5: E2E Verification & Hardening [pending]
-- **Current phase**: Milestone 1 Iteration 2 Gate Verification
-- **Current focus**: Verification of DDL canonical units mm/g, provenance, RLS, and pseudocode guardrails
+- **Current phase**: Milestone 2 & Milestone 3 Implementation
+- **Current focus**: Design system tokens & primitives (M2) and core deterministic sizing engine (M3)
 
 ## 🔒 Key Constraints
 - NEVER write, modify, or create source code files directly.
@@ -55,10 +55,10 @@ Execute Phase 0 research, design system tokens, database architecture, determini
 - Updated: not yet
 
 ## Key Decisions Made
-- Milestone 0 completed: test_writer_m0_e2e produced 332 tests across Tiers 1-4 and published TEST_READY.md.
-- Milestone 1 Iteration 1 Gate requested changes.
-- worker_m1_remediate_2 completed all fixes (canonical integer mm/g, provenance, RLS, pseudocode, brand matrix).
-- Spawned reviewer_m1_3, challenger_m1_3, and auditor_m1_2 for Iteration 2 gate evaluation.
+- Milestone 0 completed: TEST_READY.md published (332 tests passing).
+- Milestone 1 completed: Gate PASSED (all 9 docs, DDL canonical units mm/g, provenance, RLS, pseudocode, 346 tests passing).
+- Spawned worker_m2_tokens (M2) and worker_m3_engine (M3) in parallel.
+- Cumulative spawn count reached 16 / 16 threshold. Self-succession will trigger upon completion of active workers.
 
 ## Team Roster
 | Agent | Type | Work Item | Status | Conv ID |
@@ -74,20 +74,22 @@ Execute Phase 0 research, design system tokens, database architecture, determini
 | challenger_m1_2 | teamwork_challenger | Adversarial Probe M1 Invariants | completed | 8405b5c6-9fe0-4e7a-91dd-7b18e41d1d09 |
 | auditor_m1 | teamwork_auditor | Forensic Integrity Audit M1 | completed | 7a197ccf-b018-4782-a604-2447163e42dc |
 | worker_m1_remediate_2 | teamwork_worker | M1 Docs Remediation (Units/RLS) | completed | f9da71c1-83c8-436d-8856-dfccc5f75df0 |
-| reviewer_m1_3 | teamwork_reviewer | Re-Review M1 Remediated Docs | in-progress | b6a234c9-3181-4abe-b2eb-4d1415bee2dc |
-| challenger_m1_3 | teamwork_challenger | Re-Challenge M1 Remediations | in-progress | f351f715-7b16-4625-a0d2-3ca4c32c70c4 |
-| auditor_m1_2 | teamwork_auditor | Forensic Re-Audit M1 Remediations | in-progress | 4316e193-c16f-4de1-b710-e2b4b9a9d4b8 |
+| reviewer_m1_3 | teamwork_reviewer | Re-Review M1 Remediated Docs | completed | b6a234c9-3181-4abe-b2eb-4d1415bee2dc |
+| challenger_m1_3 | teamwork_challenger | Re-Challenge M1 Remediations | completed | f351f715-7b16-4625-a0d2-3ca4c32c70c4 |
+| auditor_m1_2 | teamwork_auditor | Forensic Re-Audit M1 Remediations | completed | 4316e193-c16f-4de1-b710-e2b4b9a9d4b8 |
+| worker_m2_tokens | teamwork_worker | Design System Tokens & UI | in-progress | 7be390a0-4276-4c31-82d4-b2a360023c35 |
+| worker_m3_engine | teamwork_worker | Deterministic Sizing Engine | in-progress | 6a1d35fe-c4bb-40ee-942d-a173bc4f396d |
 
 ## Succession Status
-- Succession required: no
-- Spawn count: 14 / 16
-- Pending subagents: b6a234c9-3181-4abe-b2eb-4d1415bee2dc, f351f715-7b16-4625-a0d2-3ca4c32c70c4, 4316e193-c16f-4de1-b710-e2b4b9a9d4b8
+- Succession required: yes (upon active subagent completion)
+- Spawn count: 16 / 16
+- Pending subagents: 7be390a0-4276-4c31-82d4-b2a360023c35, 6a1d35fe-c4bb-40ee-942d-a173bc4f396d
 - Predecessor: none
 - Successor: not yet spawned
 
 ## Active Timers
-- Heartbeat cron: 6cddc279-aaf6-4945-a9c0-cf8f046d0f14/task-67
-- Safety timer: 6cddc279-aaf6-4945-a9c0-cf8f046d0f14/task-210
+- Heartbeat cron: 6cddc279-aaf6-4945-a9c0-cf8f046d0f14/task-244
+- Safety timer: 6cddc279-aaf6-4945-a9c0-cf8f046d0f14/task-246
 - On succession: kill all timers before spawning successor
 - On context truncation: handle timers as step 4 of the State Recovery section says
 
@@ -101,4 +103,3 @@ Execute Phase 0 research, design system tokens, database architecture, determini
 - e:\Projects\WearID\.agents\teamwork\orchestrator\TEST_INFRA.md — E2E test infrastructure specification
 - e:\Projects\WearID\.agents\teamwork\orchestrator\GATE_STATUS.md — Gate status per milestone iteration
 - e:\Projects\WearID\TEST_READY.md — E2E test suite readiness declaration
-- e:\Projects\WearID\.agents\teamwork\worker_m1_remediate_2\handoff.md — Milestone 1 remediation handoff report
