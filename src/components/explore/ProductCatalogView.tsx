@@ -30,13 +30,16 @@ export function ProductCatalogView() {
           }
         } else {
           // Broad main category matching
-          if (categorySelection.mainCategory === "tops" && !p.category.includes("shirt") && !p.category.includes("top")) {
+          if (categorySelection.mainCategory === "tops" && !p.category.includes("shirt") && !p.category.includes("top") && !p.category.includes("polo") && !p.category.includes("kurta")) {
             return false;
           }
-          if (categorySelection.mainCategory === "bottoms" && !p.category.includes("jeans") && !p.category.includes("trouser") && !p.category.includes("jogger")) {
+          if (categorySelection.mainCategory === "bottoms" && !p.category.includes("jeans") && !p.category.includes("trouser") && !p.category.includes("chino") && !p.category.includes("jogger") && !p.category.includes("short")) {
             return false;
           }
-          if (categorySelection.mainCategory === "intimates" && !p.category.includes("bra") && !p.category.includes("under")) {
+          if (categorySelection.mainCategory === "intimates" && !p.category.includes("bra") && !p.category.includes("under") && !p.category.includes("brief")) {
+            return false;
+          }
+          if (categorySelection.mainCategory === "outerwear" && !p.category.includes("jacket") && !p.category.includes("blazer") && !p.category.includes("hoodie")) {
             return false;
           }
         }

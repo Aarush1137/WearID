@@ -82,6 +82,16 @@ export function TopNavigation() {
               Brands
             </Link>
             <Link
+              href="/app/compare"
+              className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
+                pathname === "/app/compare"
+                  ? "text-accent bg-accent-subtle/50 font-semibold"
+                  : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+              }`}
+            >
+              Compare
+            </Link>
+            <Link
               href="/app/tailor"
               className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
                 pathname === "/app/tailor"
@@ -90,6 +100,16 @@ export function TopNavigation() {
               }`}
             >
               Tailor Card
+            </Link>
+            <Link
+              href="/app/profile"
+              className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
+                pathname === "/app/profile"
+                  ? "text-accent bg-accent-subtle/50 font-semibold"
+                  : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+              }`}
+            >
+              Profile
             </Link>
             <Link
               href="/app/privacy-settings"
@@ -133,14 +153,13 @@ export function TopNavigation() {
 
           {/* Authentication Button or Active Profile Menu */}
           {!isAuthenticated ? (
-            <button
-              type="button"
-              onClick={() => setIsAuthModalOpen(true)}
+            <Link
+              href="/login"
               className="min-h-[44px] px-3.5 rounded-btn bg-accent text-white hover:bg-accent-hover transition-colors inline-flex items-center gap-1.5 text-xs font-semibold shadow-xs"
             >
               <LogIn className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Sign In</span>
-            </button>
+            </Link>
           ) : (
             <div className="relative">
               <button
@@ -211,6 +230,15 @@ export function TopNavigation() {
                     ))}
 
                     <div className="border-t border-border mt-1 pt-1 space-y-0.5">
+                      <Link
+                        href="/app/profile"
+                        onClick={() => setIsProfileMenuOpen(false)}
+                        className="w-full text-left px-3.5 py-2.5 min-h-[44px] flex items-center gap-2 text-xs font-semibold text-text-primary hover:bg-bg-elevated transition-colors"
+                      >
+                        <User className="w-4 h-4 text-accent" />
+                        Account & Profiles
+                      </Link>
+
                       <Link
                         href="/onboarding?mode=add_member"
                         onClick={() => setIsProfileMenuOpen(false)}

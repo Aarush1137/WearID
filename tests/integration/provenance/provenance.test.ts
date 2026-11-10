@@ -289,4 +289,46 @@ describe("Matrix E: Data Provenance & Contributor Staging Suite", () => {
       expect(result.reason).toContain("variance exceeds 2% tolerance");
     });
   });
+
+  // =========================================================================
+  // TC-P-007: Verified Multi-Category Catalog Provenance Validation
+  // =========================================================================
+  describe("TC-P-007: Verified Multi-Category Catalog Provenance Adherence", () => {
+    it("ensures all brands in PILOT_BRANDS possess valid official provenance metadata", async () => {
+      const { PILOT_BRANDS } = await import("@/core/data/pilotBrands");
+      expect(PILOT_BRANDS.length).toBeGreaterThanOrEqual(10);
+
+      for (const brand of PILOT_BRANDS) {
+        expect(brand.id).toBeDefined();
+        expect(brand.name).toBeDefined();
+        expect(brand.provenance.sourceType).toMatch(/^(brand_official|curated_dataset|contributor_verified)$/);
+        expect(brand.provenance.sourceUrl).toMatch(/^https?:\/\//);
+        expect(brand.provenance.retrievedAt).toBeDefined();
+        expect(brand.provenance.verificationHash).toMatch(/^sha256-/);
+      }
+    });
+
+    it("ensures PILOT_PRODUCTS spans intimates, bottoms, outerwear, and tops with full specs", async () => {
+      const { PILOT_PRODUCTS } = await import("@/core/data/pilotBrands");
+      expect(PILOT_PRODUCTS.length).toBeGreaterThanOrEqual(16);
+
+      const categories = new Set(PILOT_PRODUCTS.map((p) => p.category));
+      expect(categories.has("bra")).toBe(true);
+      expect(categories.has("sports_bra")).toBe(true);
+      expect(categories.has("jeans")).toBe(true);
+      expect(categories.has("trousers_chinos")).toBe(true);
+      expect(categories.has("jacket")).toBe(true);
+      expect(categories.has("shirt_casual")).toBe(true);
+
+      for (const prod of PILOT_PRODUCTS) {
+        expect(prod.priceInr).toBeGreaterThan(0);
+        expect(prod.provenance.sourceUrl).toMatch(/^https?:\/\//);
+        expect(prod.fabric.materialComposition).toBeDefined();
+        // Either Layer 3 or Layer 2 specs must be present
+        const hasLayer3 = prod.layer3Specs && prod.layer3Specs.length > 0;
+        const hasLayer2 = prod.layer2Charts && prod.layer2Charts.length > 0;
+        expect(hasLayer3 || hasLayer2).toBe(true);
+      }
+    });
+  });
 });

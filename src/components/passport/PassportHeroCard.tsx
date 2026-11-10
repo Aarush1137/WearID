@@ -40,7 +40,7 @@ export function PassportHeroCard() {
         <div>
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-badge bg-accent-subtle/70 text-accent text-xs font-semibold tracking-wider uppercase mb-2">
             <ShieldCheck className="w-3.5 h-3.5" />
-            Sovereign Measurement Passport · WearID
+            Size Passport · WearID
           </div>
           <h1 className="font-display text-2xl sm:text-3xl text-text-primary">
             {profile.name}
@@ -74,7 +74,7 @@ export function PassportHeroCard() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
           <div className="flex items-center gap-2">
             <span className="text-xs uppercase font-semibold tracking-wider text-text-secondary">
-              Anatomical Biometrics
+              My Body Measurements
             </span>
             <div className="flex items-center gap-1 bg-bg-elevated p-0.5 rounded-btn text-xs">
               <button
@@ -109,7 +109,7 @@ export function PassportHeroCard() {
             className="text-xs font-medium text-accent hover:text-accent-hover inline-flex items-center gap-1"
           >
             <Ruler className="w-3.5 h-3.5" />
-            Calibrate Tape Measures
+            Update Measurements
           </Link>
         </div>
 
@@ -157,7 +157,7 @@ export function PassportHeroCard() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs uppercase font-semibold tracking-wider text-text-primary">
-                    Intimate & Bra Morphology Size
+                    Bra & Intimate Fit
                   </span>
                   <span className="text-[10px] font-semibold px-2 py-0.5 rounded-badge bg-terracotta-subtle text-terracotta border border-terracotta/20 uppercase tracking-wider">
                     ISO / NIFT
@@ -175,7 +175,7 @@ export function PassportHeroCard() {
               </span>
               {(braSizing.sisterSizes.tighterBand || braSizing.sisterSizes.looserBand) && (
                 <div className="text-[11px] text-text-secondary">
-                  <span className="font-medium text-text-tertiary block">Sister sizes</span>
+                  <span className="font-medium text-text-tertiary block">Equivalent Fits</span>
                   <span className="font-mono text-text-primary">
                     {[braSizing.sisterSizes.tighterBand, braSizing.sisterSizes.looserBand].filter(Boolean).join(", ")}
                   </span>
@@ -192,10 +192,10 @@ export function PassportHeroCard() {
           <div className="flex items-center justify-between mb-3">
             <span className="text-xs uppercase font-semibold tracking-wider text-text-secondary flex items-center gap-1.5">
               <Shirt className="w-3.5 h-3.5 text-accent" />
-              Calibrated Benchmark Garments
+              My Best-Fitting Clothes
             </span>
             <span className="text-xs text-text-secondary">
-              Anchor fits used for ease tuning
+              Reference sizes used to fine-tune your recommendations
             </span>
           </div>
 

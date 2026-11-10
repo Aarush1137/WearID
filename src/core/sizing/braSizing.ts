@@ -82,7 +82,7 @@ export function calculateBraSize(underbustMm: number, bustApexMm: number): BraSi
     looserBand: `${bandSize + 2}${looserCup}`,
   };
 
-  const explanation = `Underbust of ${Math.round(underbustMm / 10)}cm aligns with Band ${bandSize}. Bust apex differential of +${roundedDiff}" corresponds to Cup ${cupLetter}. Sister sizes offer alternative band firmness while preserving cup volume.`;
+  const explanation = `Underbust of ${Math.round(underbustMm / 10)}cm aligns with Band ${bandSize}. Bust apex differential of +${roundedDiff}" corresponds to Cup ${cupLetter}. Cross-band equivalent fits offer alternative band firmness while preserving the exact same cup volume.`;
 
   return {
     bandSize,

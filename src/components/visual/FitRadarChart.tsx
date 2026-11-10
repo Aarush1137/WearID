@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { DimensionExplanation, FitType } from "@/core/types";
-import { Target, Activity } from "lucide-react";
+import { Target, Activity, CheckCircle2, Info } from "lucide-react";
 
 interface FitRadarChartProps {
   dimensionBreakdown: DimensionExplanation[];
@@ -10,6 +10,8 @@ interface FitRadarChartProps {
 }
 
 export function FitRadarChart({ dimensionBreakdown, fitIntent }: FitRadarChartProps) {
+  const [activeAxisKey, setActiveAxisKey] = useState<string | null>(null);
+
   // 5 standard axes: Chest, Waist, Shoulders, Length, Sleeve
   const axes = [
     { label: "Chest Ease", key: "chest" },
@@ -46,9 +48,7 @@ export function FitRadarChart({ dimensionBreakdown, fitIntent }: FitRadarChartPr
     let factor = 0.75;
     if (dim) {
       const delta = dim.easeDeltaMm;
-      // Target range midpoint
       const targetMid = (dim.easeTargetMm.min + dim.easeTargetMm.max) / 2;
-      // Map delta to factor: exactly at midpoint -> 0.75, higher -> up to 1.15, lower -> down to 0.3
       const ratio = targetMid > 0 ? delta / targetMid : 1;
       factor = Math.max(0.3, Math.min(1.15, 0.75 * ratio));
     }
@@ -58,6 +58,10 @@ export function FitRadarChart({ dimensionBreakdown, fitIntent }: FitRadarChartPr
 
   // Concentric radar web rings (25%, 50%, 75%, 100%)
   const webRings = [0.25, 0.5, 0.75, 1.0];
+
+  const activeDim = activeAxisKey
+    ? dimensionBreakdown.find((d) => d.dimension === activeAxisKey)
+    : null;
 
   return (
     <div className="rounded-card border border-border bg-bg-surface p-5 sm:p-6 shadow-xs">
@@ -74,7 +78,7 @@ export function FitRadarChart({ dimensionBreakdown, fitIntent }: FitRadarChartPr
             Target Fit Zone ({fitIntent})
           </span>
           <span className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-accent inline-block" />
+            <span className="w-2.5 h-2.5 rounded-full bg-accent inline-block shadow-xs" />
             Recommended Garment Spec
           </span>
         </div>
@@ -82,7 +86,21 @@ export function FitRadarChart({ dimensionBreakdown, fitIntent }: FitRadarChartPr
 
       <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
         <div className="relative w-56 h-56 sm:w-64 sm:h-64 select-none">
-          <svg viewBox="0 0 200 200" className="w-full h-full" role="img" aria-label="5-Axis Fit Radar Polygon Chart">
+          <svg viewBox="0 0 200 200" className="w-full h-full drop-shadow-xs" role="img" aria-label="5-Axis Fit Radar Polygon Chart">
+            <defs>
+              <linearGradient id="targetZoneGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#10B981" stopOpacity="0.25" />
+                <stop offset="100%" stopColor="#059669" stopOpacity="0.10" />
+              </linearGradient>
+              <linearGradient id="garmentSpecGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.35" />
+                <stop offset="100%" stopColor="var(--terracotta)" stopOpacity="0.18" />
+              </linearGradient>
+              <filter id="radarGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="1" stdDeviation="1.5" floodColor="var(--accent)" floodOpacity="0.3" />
+              </filter>
+            </defs>
+
             {/* Concentric Web Rings */}
             {webRings.map((scale, ringIdx) => {
               const points = axes.map((_, i) => {
@@ -102,8 +120,9 @@ export function FitRadarChart({ dimensionBreakdown, fitIntent }: FitRadarChartPr
             })}
 
             {/* Radial Spoke Lines */}
-            {axes.map((_, i) => {
+            {axes.map((axis, i) => {
               const c = getCoordinates(i, 1.05);
+              const isHighlight = activeAxisKey === axis.key;
               return (
                 <line
                   key={i}
@@ -111,8 +130,9 @@ export function FitRadarChart({ dimensionBreakdown, fitIntent }: FitRadarChartPr
                   y1={center}
                   x2={c.x}
                   y2={c.y}
-                  stroke="var(--border)"
-                  strokeWidth="1"
+                  stroke={isHighlight ? "var(--terracotta)" : "var(--border)"}
+                  strokeWidth={isHighlight ? "1.5" : "1"}
+                  className="transition-colors"
                 />
               );
             })}
@@ -120,19 +140,18 @@ export function FitRadarChart({ dimensionBreakdown, fitIntent }: FitRadarChartPr
             {/* Target Fit Zone Polygon (Green Area) */}
             <polygon
               points={targetPoints}
-              fill="#10B981"
-              fillOpacity="0.18"
+              fill="url(#targetZoneGrad)"
               stroke="#059669"
               strokeWidth="1.5"
             />
 
-            {/* Garment Actual Spec Polygon (Accent Stroke) */}
+            {/* Garment Actual Spec Polygon (Accent Stroke with glow) */}
             <polygon
               points={garmentPoints}
-              fill="var(--accent)"
-              fillOpacity="0.28"
+              fill="url(#garmentSpecGrad)"
               stroke="var(--accent)"
               strokeWidth="2.2"
+              filter="url(#radarGlow)"
             />
 
             {/* Vertices Nodes */}
@@ -145,29 +164,45 @@ export function FitRadarChart({ dimensionBreakdown, fitIntent }: FitRadarChartPr
                 factor = Math.max(0.3, Math.min(1.15, 0.75 * ratio));
               }
               const c = getCoordinates(i, factor);
+              const isSelected = activeAxisKey === axis.key;
               return (
-                <circle
+                <g
                   key={i}
-                  cx={c.x}
-                  cy={c.y}
-                  r="3.5"
-                  fill="var(--accent)"
-                  stroke="var(--bg-surface)"
-                  strokeWidth="1.5"
-                />
+                  className="cursor-pointer"
+                  onClick={() => setActiveAxisKey(isSelected ? null : axis.key)}
+                  onMouseEnter={() => setActiveAxisKey(axis.key)}
+                  onMouseLeave={() => setActiveAxisKey(null)}
+                >
+                  {isSelected && (
+                    <circle cx={c.x} cy={c.y} r="7" fill="var(--terracotta)" opacity="0.3" className="animate-pulse-subtle" />
+                  )}
+                  <circle
+                    cx={c.x}
+                    cy={c.y}
+                    r={isSelected ? "4.5" : "3.5"}
+                    fill={isSelected ? "var(--terracotta)" : "var(--accent)"}
+                    stroke="var(--bg-surface)"
+                    strokeWidth="1.5"
+                    className="transition-all"
+                  />
+                </g>
               );
             })}
 
             {/* Axis Labels */}
             {axes.map((axis, i) => {
               const c = getCoordinates(i, 1.25);
+              const isSelected = activeAxisKey === axis.key;
               return (
                 <text
                   key={i}
                   x={c.x}
                   y={c.y + 3}
                   textAnchor="middle"
-                  className="text-[9px] font-sans font-medium fill-text-primary uppercase tracking-wider"
+                  onClick={() => setActiveAxisKey(isSelected ? null : axis.key)}
+                  className={`text-[9px] font-sans font-medium uppercase tracking-wider cursor-pointer transition-colors ${
+                    isSelected ? "fill-terracotta font-bold" : "fill-text-primary"
+                  }`}
                 >
                   {axis.label}
                 </text>
@@ -176,14 +211,40 @@ export function FitRadarChart({ dimensionBreakdown, fitIntent }: FitRadarChartPr
           </svg>
         </div>
 
-        {/* Informative Guidance */}
-        <div className="max-w-xs space-y-2 text-xs text-text-secondary leading-relaxed">
-          <p>
-            The green polygon marks your intended <strong className="text-text-primary capitalize">{fitIntent}</strong> silhouette tolerance.
-          </p>
-          <p>
-            The dark polygon shows how the garment cut distributes ease. Balanced coverage inside the target polygon confirms harmonious drape across shoulders, chest, and torso.
-          </p>
+        {/* Informative Guidance & Active Node Inspector */}
+        <div className="max-w-xs space-y-2.5 text-xs text-text-secondary leading-relaxed">
+          {activeDim ? (
+            <div className="p-3 rounded-card bg-bg-elevated/60 border border-terracotta/30">
+              <span className="font-semibold text-xs text-text-primary capitalize block">
+                {activeDim.dimension} Dimension Insight
+              </span>
+              <div className="mt-1 flex items-center justify-between text-[11px]">
+                <span className="text-text-secondary">Ease Delta:</span>
+                <span className="font-mono font-semibold text-accent">+{activeDim.easeDeltaMm} mm</span>
+              </div>
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="text-text-secondary">Target Range:</span>
+                <span className="font-mono text-text-tertiary">
+                  {activeDim.easeTargetMm.min}–{activeDim.easeTargetMm.max} mm
+                </span>
+              </div>
+              <span className="text-[10px] text-text-secondary mt-1.5 block leading-normal border-t border-border pt-1">
+                {activeDim.rationale}
+              </span>
+            </div>
+          ) : (
+            <>
+              <p>
+                The green polygon marks your intended <strong className="text-text-primary capitalize">{fitIntent}</strong> silhouette tolerance.
+              </p>
+              <p>
+                The dark contoured polygon tracks where finished fabric floats or grips. Balanced coverage inside the target zone confirms harmonious drape across shoulders, chest, and torso.
+              </p>
+              <span className="text-[10px] text-text-tertiary block mt-1">
+                Tip: Tap or hover any radar vertex to inspect exact millimeter ease.
+              </span>
+            </>
+          )}
         </div>
       </div>
     </div>

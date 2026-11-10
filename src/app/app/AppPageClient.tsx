@@ -48,10 +48,10 @@ export function AppPageClient() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div>
               <h2 className="font-semibold text-lg text-text-primary">
-                Verified Brand Directory
+                Explore Brands
               </h2>
               <p className="text-xs text-text-secondary mt-0.5">
-                Top Indian and international apparel brands with verified Layer 2 and Layer 3 size specifications.
+                Top apparel brands with verified size specifications calibrated to your measurements.
               </p>
             </div>
             <Link
@@ -97,11 +97,11 @@ export function AppPageClient() {
             </div>
             <div>
               <h3 className="font-semibold text-sm text-text-primary">
-                Sovereign Measurement Portability
+                Private & Secure By Design
               </h3>
               <p className="text-xs text-text-secondary mt-0.5 max-w-xl leading-relaxed">
-                WearID never shares your raw anatomical measurements with retailers or third-party platforms.
-                All recommendations are computed using deterministic zero-knowledge ease modeling.
+                WearID never shares your raw body measurements with online stores or third parties.
+                Fitting is calculated privately and securely on your device.
               </p>
             </div>
           </div>
