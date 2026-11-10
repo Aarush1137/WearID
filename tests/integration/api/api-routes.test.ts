@@ -4,6 +4,7 @@ import { GET as getProducts } from "@/app/api/v1/products/route";
 import { POST as matchSizing } from "@/app/api/v1/sizing/match/route";
 import { POST as sendOtpRoute } from "@/app/api/auth/otp/send/route";
 import { POST as verifyOtpRoute } from "@/app/api/auth/otp/verify/route";
+import { POST as submitFeedback } from "@/app/api/feedback/route";
 import { clearOtpStore } from "@/lib/auth/otpProviders";
 import { mockStore } from "@/lib/mocks/mock-store";
 
@@ -197,6 +198,44 @@ describe("API Routes Integration Tests", () => {
 
       const res = await sendOtpRoute(badReq);
       expect(res.status).toBe(400);
+    });
+  });
+
+  describe("POST /api/feedback", () => {
+    it("submits valid beta feedback and returns a generated ticket ID", async () => {
+      const req = new Request("http://localhost:3000/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          category: "sizing_accuracy",
+          rating: 5,
+          message: "Uniqlo Oxford size recommendation was spot-on in chest ease.",
+          emailOrPhone: "+919876543210",
+          brandName: "Uniqlo",
+        }),
+      });
+
+      const res = await submitFeedback(req);
+      expect(res.status).toBe(201);
+      const json = await res.json();
+      expect(json.success).toBe(true);
+      expect(json.ticketId).toBeDefined();
+      expect(json.ticketId).toMatch(/^FB-/);
+    });
+
+    it("rejects feedback submissions with less than 5 characters", async () => {
+      const req = new Request("http://localhost:3000/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: "bad",
+        }),
+      });
+
+      const res = await submitFeedback(req);
+      expect(res.status).toBe(400);
+      const json = await res.json();
+      expect(json.error).toBe("INVALID_FEEDBACK");
     });
   });
 });
