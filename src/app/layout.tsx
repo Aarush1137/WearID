@@ -104,7 +104,7 @@ export const metadata: Metadata = {
     creator: "@wearid",
   },
   verification: {
-    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "google_verification_placeholder_wearid",
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "dadc51ac5341a26f",
   },
   alternates: {
     canonical: siteUrl,
