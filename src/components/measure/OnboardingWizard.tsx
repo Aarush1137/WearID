@@ -30,7 +30,7 @@ export function OnboardingWizard() {
     displayUnit,
   } = useProfileStore();
 
-  const { user } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
   const activeProfile = getActiveProfile();
 
   // Step 0 state (Who are we fitting?)
@@ -191,6 +191,11 @@ export function OnboardingWizard() {
       if (measurementsToSave) {
         updateMeasurements(activeProfile.id, measurementsToSave);
       }
+    }
+
+    if (!isAuthenticated) {
+      router.push("/login?returnUrl=/app");
+      return;
     }
 
     router.push("/app");

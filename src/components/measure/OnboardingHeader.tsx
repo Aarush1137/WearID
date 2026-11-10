@@ -10,7 +10,7 @@ import { ArrowRight, Sparkles } from "lucide-react";
 export function OnboardingHeader() {
   const router = useRouter();
   const { getActiveProfile, updateProfile } = useProfileStore();
-  const { user } = useAuthStore();
+  const { user, isAuthenticated } = useAuthStore();
 
   const handleSkipToPassport = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -22,6 +22,11 @@ export function OnboardingHeader() {
         name: user?.fullName || "My Size Passport",
         gender: "male",
       });
+    }
+
+    if (!isAuthenticated) {
+      router.push("/login?returnUrl=/app");
+      return;
     }
 
     router.push("/app");
