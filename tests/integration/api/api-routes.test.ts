@@ -2,6 +2,9 @@ import { describe, it, expect, beforeEach } from "vitest";
 import { GET as getBrands } from "@/app/api/v1/brands/route";
 import { GET as getProducts } from "@/app/api/v1/products/route";
 import { POST as matchSizing } from "@/app/api/v1/sizing/match/route";
+import { POST as sendOtpRoute } from "@/app/api/auth/otp/send/route";
+import { POST as verifyOtpRoute } from "@/app/api/auth/otp/verify/route";
+import { clearOtpStore } from "@/lib/auth/otpProviders";
 import { mockStore } from "@/lib/mocks/mock-store";
 
 describe("API Routes Integration Tests", () => {
@@ -145,6 +148,55 @@ describe("API Routes Integration Tests", () => {
       expect(err.type).toBe("https://wearid.in/errors/insufficient-data");
       expect(err.status).toBe(400);
       expect(err.detail).toContain("Chest measurement");
+    });
+  });
+
+  describe("POST /api/auth/otp/send and /verify", () => {
+    beforeEach(() => {
+      clearOtpStore();
+    });
+
+    it("sends and verifies an OTP through the REST API endpoints", async () => {
+      const sendReq = new Request("http://localhost:3000/api/auth/otp/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          target: "+919876543210",
+          provider: "mock",
+        }),
+      });
+
+      const sendRes = await sendOtpRoute(sendReq);
+      expect(sendRes.status).toBe(200);
+      const sendJson = await sendRes.json();
+      expect(sendJson.success).toBe(true);
+      expect(sendJson.devOtpCode).toBeDefined();
+
+      const verifyReq = new Request("http://localhost:3000/api/auth/otp/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          target: "+919876543210",
+          code: sendJson.devOtpCode,
+        }),
+      });
+
+      const verifyRes = await verifyOtpRoute(verifyReq);
+      expect(verifyRes.status).toBe(200);
+      const verifyJson = await verifyRes.json();
+      expect(verifyJson.valid).toBe(true);
+      expect(verifyJson.verifiedAt).toBeDefined();
+    });
+
+    it("returns 400 when target is missing or invalid", async () => {
+      const badReq = new Request("http://localhost:3000/api/auth/otp/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ target: "" }),
+      });
+
+      const res = await sendOtpRoute(badReq);
+      expect(res.status).toBe(400);
     });
   });
 });
