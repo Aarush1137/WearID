@@ -75,7 +75,7 @@ function LoginContent() {
     }
 
     const fullPhone = clean.startsWith("91") && clean.length === 12 ? `+${clean}` : `+91${clean.slice(-10)}`;
-    const res = await signInWithPhoneOtp(fullPhone);
+    const res = await signInWithPhoneOtp(fullPhone, "firebase-recaptcha-login");
     if (res.error) {
       setLocalError(res.error || "Unable to send verification code. Please verify your mobile number or use email sign-in.");
     } else {
@@ -263,9 +263,12 @@ function LoginContent() {
                         autoFocus
                       />
                     </div>
-                    <span className="text-[10px] text-text-tertiary block mt-1">
-                      We send a 6-digit confirmation code. Standard carrier SMS rates apply.
+                    <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 mt-1">
+                      <ShieldCheck className="w-3 h-3 inline" />
+                      10,000 free monthly SMS powered by Google Firebase Phone Auth.
                     </span>
+                    {/* Invisible reCAPTCHA container for Firebase Phone Auth */}
+                    <div id="firebase-recaptcha-login" className="mt-1"></div>
                   </div>
 
                   <button

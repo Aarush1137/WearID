@@ -3,6 +3,11 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { supabase } from "@/lib/supabase/client";
+import {
+  isFirebaseConfigured,
+  sendFirebasePhoneOtp,
+  verifyFirebasePhoneOtp,
+} from "@/lib/auth/firebaseClient";
 
 export interface AuthUser {
   id: string;
@@ -30,7 +35,7 @@ interface AuthState {
   touchSession: () => void;
   checkSessionExpiry: () => boolean;
   signInWithGoogle: () => Promise<{ error?: string }>;
-  signInWithPhoneOtp: (phone: string) => Promise<{ error?: string }>;
+  signInWithPhoneOtp: (phone: string, containerId?: string) => Promise<{ error?: string }>;
   verifyPhoneOtp: (phone: string, token: string) => Promise<{ error?: string }>;
   signInWithEmailOtp: (email: string) => Promise<{ error?: string }>;
   verifyEmailOtp: (email: string, token: string) => Promise<{ error?: string }>;
@@ -216,12 +221,24 @@ export const useAuthStore = create<AuthState>()(
         }
       },
 
-      signInWithPhoneOtp: async (phone: string) => {
+      signInWithPhoneOtp: async (phone: string, containerId?: string) => {
         try {
           set({ isLoading: true, authError: null });
           // Format phone number with country code if missing
           const formattedPhone = phone.startsWith("+") ? phone : `+91${phone.replace(/\D/g, "")}`;
 
+          // Primary: If Google Firebase Phone Auth is configured, use it (10,000 free SMS/mo)
+          if (isFirebaseConfigured()) {
+            const fbRes = await sendFirebasePhoneOtp(formattedPhone, containerId);
+            if (!fbRes.success) {
+              set({ isLoading: false, authError: fbRes.error });
+              return { error: fbRes.error };
+            }
+            set({ isLoading: false });
+            return {};
+          }
+
+          // Fallback: Supabase native SMS provider / Mock
           const { error } = await supabase.auth.signInWithOtp({
             phone: formattedPhone,
           });
@@ -245,6 +262,32 @@ export const useAuthStore = create<AuthState>()(
           set({ isLoading: true, authError: null });
           const formattedPhone = phone.startsWith("+") ? phone : `+91${phone.replace(/\D/g, "")}`;
 
+          // Primary: If Google Firebase Phone Auth is configured, confirm OTP
+          if (isFirebaseConfigured()) {
+            const fbRes = await verifyFirebasePhoneOtp(token);
+            if (!fbRes.success) {
+              set({ isLoading: false, authError: fbRes.error });
+              return { error: fbRes.error };
+            }
+
+            const u = fbRes.user;
+            const now = Date.now();
+            set({
+              user: {
+                id: u?.uid || `fb_${Date.now()}`,
+                phone: u?.phoneNumber || formattedPhone,
+                fullName: u?.displayName || formattedPhone,
+              },
+              isAuthenticated: true,
+              lastActiveAt: now,
+              sessionExpiresAt: now + DEFAULT_SESSION_DURATION_MS,
+              sessionTimeoutReason: null,
+              isLoading: false,
+            });
+            return {};
+          }
+
+          // Fallback: Supabase verification
           const { data, error } = await supabase.auth.verifyOtp({
             phone: formattedPhone,
             token: token.trim(),

@@ -42,7 +42,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
   const handlePhoneSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     clearError();
-    const res = await signInWithPhoneOtp(phone);
+    const res = await signInWithPhoneOtp(phone, "firebase-recaptcha-modal");
     if (!res.error) {
       setPhoneOtpSent(true);
     }
@@ -224,9 +224,12 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                       autoFocus
                     />
                   </div>
-                  <span className="text-[11px] text-text-secondary block mt-1">
-                    We will send a 6-digit one-time verification code via SMS.
+                  <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 mt-1">
+                    <ShieldCheck className="w-3 h-3 inline" />
+                    10,000 free monthly SMS powered by Google Firebase Phone Auth.
                   </span>
+                  {/* Invisible reCAPTCHA container for Firebase Phone Auth */}
+                  <div id="firebase-recaptcha-modal" className="mt-1"></div>
                 </div>
 
                 <button
