@@ -1,9 +1,23 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import Link from "next/link";
 import { PILOT_BRANDS, PILOT_PRODUCTS, PilotBrand } from "@/core/data/pilotBrands";
-import { ShieldCheck, ArrowRight, Layers, ExternalLink, Check, Search, X, Sparkles, UserCheck, Scale } from "lucide-react";
+import {
+  ShieldCheck,
+  ArrowRight,
+  Layers,
+  ExternalLink,
+  Check,
+  Search,
+  X,
+  Sparkles,
+  UserCheck,
+  Scale,
+  ChevronLeft,
+  ChevronRight,
+  Store,
+} from "lucide-react";
 import { CategoryHierarchyNavigator, CategorySelection } from "@/components/catalog/CategoryHierarchyNavigator";
 import { useProfileStore } from "@/core/state/profileStore";
 
@@ -22,6 +36,50 @@ export function ProductCatalogView() {
     label: "All Items",
   });
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const brandScrollRef = useRef<HTMLDivElement>(null);
+
+  // Pre-calculate count of garments available per brand
+  const brandProductCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    PILOT_PRODUCTS.forEach((p) => {
+      counts[p.brandId] = (counts[p.brandId] || 0) + 1;
+    });
+    return counts;
+  }, []);
+
+  // Sorted brands: Brands with products listed first
+  const sortedBrands = useMemo(() => {
+    return [...PILOT_BRANDS].sort((a, b) => {
+      const countA = brandProductCounts[a.id] || 0;
+      const countB = brandProductCounts[b.id] || 0;
+      if (countB !== countA) return countB - countA;
+      return a.name.localeCompare(b.name);
+    });
+  }, [brandProductCounts]);
+
+  const activeBrand = useMemo(() => {
+    if (selectedBrandFilter === "all") return null;
+    return PILOT_BRANDS.find((b) => b.id === selectedBrandFilter) || null;
+  }, [selectedBrandFilter]);
+
+  const handleSelectBrand = (brandId: string) => {
+    setSelectedBrandFilter(brandId);
+    setTimeout(() => {
+      const el = document.getElementById("catalog-section");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 60);
+  };
+
+  const scrollBrands = (direction: "left" | "right") => {
+    if (brandScrollRef.current) {
+      brandScrollRef.current.scrollBy({
+        left: direction === "left" ? -260 : 260,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const filteredProducts = useMemo(() => {
     return PILOT_PRODUCTS.filter((p) => {
@@ -139,84 +197,200 @@ export function ProductCatalogView() {
           Real brand sizing data ingested under strict provenance protocols. Layer 3 flat finished measurements preferred over Layer 2 body ranges.
         </p>
 
-        {/* Brand Filter Pills */}
-        <div className="flex items-center gap-2 mt-6 overflow-x-auto pb-2">
+        {/* Brand Filter Carousel with Navigation & Item Counts */}
+        <div className="relative mt-6 group">
+          {/* Scroll Left Button */}
           <button
             type="button"
-            onClick={() => setSelectedBrandFilter("all")}
-            className={`min-h-[44px] px-3.5 rounded-btn text-xs font-medium shrink-0 transition-colors ${
-              selectedBrandFilter === "all"
-                ? "bg-accent text-white font-semibold shadow-xs"
-                : "bg-bg-surface border border-border text-text-secondary hover:text-text-primary"
-            }`}
+            onClick={() => scrollBrands("left")}
+            aria-label="Scroll brands left"
+            className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-bg-surface border border-border shadow-md flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition-all opacity-80 group-hover:opacity-100"
           >
-            All Brands ({PILOT_PRODUCTS.length})
+            <ChevronLeft className="w-4 h-4" />
           </button>
-          {PILOT_BRANDS.map((b) => (
+
+          <div
+            ref={brandScrollRef}
+            className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth px-1 py-1"
+          >
             <button
-              key={b.id}
               type="button"
-              onClick={() => setSelectedBrandFilter(b.id)}
-              className={`min-h-[44px] px-3.5 rounded-btn text-xs font-medium shrink-0 transition-colors ${
-                selectedBrandFilter === b.id
-                  ? "bg-accent text-white font-semibold shadow-xs"
-                  : "bg-bg-surface border border-border text-text-secondary hover:text-text-primary"
+              onClick={() => handleSelectBrand("all")}
+              className={`min-h-[42px] px-3.5 rounded-btn text-xs font-medium shrink-0 transition-all flex items-center gap-1.5 ${
+                selectedBrandFilter === "all"
+                  ? "bg-accent text-white font-semibold shadow-xs ring-2 ring-accent/30"
+                  : "bg-bg-surface border border-border text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
               }`}
             >
-              {b.name}
+              <span>All Brands</span>
+              <span
+                className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono font-semibold ${
+                  selectedBrandFilter === "all"
+                    ? "bg-white/20 text-white"
+                    : "bg-bg-elevated text-text-tertiary"
+                }`}
+              >
+                {PILOT_PRODUCTS.length}
+              </span>
             </button>
-          ))}
+
+            {sortedBrands.map((b) => {
+              const count = brandProductCounts[b.id] || 0;
+              const isSelected = selectedBrandFilter === b.id;
+              return (
+                <button
+                  key={b.id}
+                  type="button"
+                  onClick={() => handleSelectBrand(b.id)}
+                  className={`min-h-[42px] px-3.5 rounded-btn text-xs font-medium shrink-0 transition-all flex items-center gap-1.5 ${
+                    isSelected
+                      ? "bg-accent text-white font-semibold shadow-xs ring-2 ring-accent/30"
+                      : "bg-bg-surface border border-border text-text-secondary hover:text-text-primary hover:border-accent/40 hover:bg-bg-elevated"
+                  }`}
+                >
+                  <span>{b.name}</span>
+                  {count > 0 && (
+                    <span
+                      className={`text-[10px] px-1.5 py-0.5 rounded-full font-mono font-semibold ${
+                        isSelected
+                          ? "bg-white/20 text-white"
+                          : "bg-bg-elevated text-text-tertiary"
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Scroll Right Button */}
+          <button
+            type="button"
+            onClick={() => scrollBrands("right")}
+            aria-label="Scroll brands right"
+            className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-7 h-7 rounded-full bg-bg-surface border border-border shadow-md flex items-center justify-center text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition-all opacity-80 group-hover:opacity-100"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
       </div>
 
-      {/* Verified Brands Grid */}
-      <div className="mb-12">
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary mb-3">
-          Verified Partner Brand Directory (AGENTS.md Compliance)
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {PILOT_BRANDS.map((brand: PilotBrand) => (
-            <div
-              key={brand.id}
-              className="p-4 rounded-card border border-border bg-bg-surface flex flex-col justify-between shadow-xs hover:border-accent/40 transition-colors"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-semibold text-sm text-text-primary">
-                    {brand.name}
-                  </span>
-                  <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-badge uppercase">
-                    Verified
-                  </span>
-                </div>
-                <span className="text-[11px] text-text-secondary block">
-                  {brand.parentGroup} · {brand.domain}
+      {/* Dynamic Brand Spotlight OR Full Partner Directory */}
+      {activeBrand ? (
+        <div className="p-5 rounded-card border-2 border-accent bg-accent/5 mb-10 shadow-sm animate-in fade-in duration-200">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1.5 flex-wrap">
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-badge bg-accent text-white uppercase tracking-wider">
+                  Active Brand Filter
                 </span>
-                <p className="text-xs text-text-secondary mt-2 leading-relaxed">
-                  {brand.description}
-                </p>
+                <span className="text-[10px] font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-badge uppercase">
+                  ✓ Verified Provenance
+                </span>
+                <span className="text-[10px] text-text-tertiary">
+                  {activeBrand.layerSupport[0]}
+                </span>
               </div>
-
-              <div className="mt-4 pt-3 border-t border-border flex items-center justify-between text-[11px]">
-                <span className="text-accent font-medium">
-                  {brand.layerSupport[0]}
-                </span>
+              <h2 className="text-xl sm:text-2xl font-bold text-text-primary">
+                {activeBrand.name}
+              </h2>
+              <p className="text-xs text-text-secondary mt-1.5 max-w-2xl leading-relaxed">
+                {activeBrand.description}
+              </p>
+              <div className="flex items-center gap-3 mt-2.5 text-xs text-text-tertiary flex-wrap">
+                <span>Group: {activeBrand.parentGroup}</span>
+                <span>•</span>
                 <a
-                  href={brand.officialStoreUrl}
+                  href={activeBrand.officialStoreUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-text-secondary hover:text-text-primary inline-flex items-center gap-1"
+                  className="text-accent hover:underline inline-flex items-center gap-1 font-medium"
                 >
-                  <ExternalLink className="w-3 h-3" />
+                  Visit Official Store <ExternalLink className="w-3 h-3" />
                 </a>
               </div>
             </div>
-          ))}
+
+            <div className="flex flex-col sm:items-end gap-2 shrink-0">
+              <span className="text-xs font-semibold text-text-primary">
+                Showing {filteredProducts.length} {filteredProducts.length === 1 ? "item" : "items"}
+              </span>
+              <button
+                type="button"
+                onClick={() => setSelectedBrandFilter("all")}
+                className="btn-secondary min-h-[38px] px-3.5 text-xs font-semibold inline-flex items-center gap-1.5 hover:bg-bg-elevated"
+              >
+                <X className="w-3.5 h-3.5 text-text-tertiary" />
+                Clear Filter (View All Brands)
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary flex items-center gap-1.5">
+              <Store className="w-3.5 h-3.5 text-accent" />
+              Verified Partner Brand Directory ({PILOT_BRANDS.length} Brands)
+            </h2>
+            <span className="text-[11px] text-text-tertiary hidden sm:inline">
+              Click any card below to filter collection
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {sortedBrands.map((brand: PilotBrand) => {
+              const count = brandProductCounts[brand.id] || 0;
+              return (
+                <div
+                  key={brand.id}
+                  onClick={() => handleSelectBrand(brand.id)}
+                  className="p-4 rounded-card border border-border bg-bg-surface flex flex-col justify-between shadow-xs hover:border-accent hover:bg-accent/5 transition-all cursor-pointer group"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="font-semibold text-sm text-text-primary group-hover:text-accent transition-colors">
+                        {brand.name}
+                      </span>
+                      <span className="text-[10px] font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-badge uppercase">
+                        Verified
+                      </span>
+                    </div>
+                    <span className="text-[11px] text-text-secondary block">
+                      {brand.parentGroup} · {brand.domain}
+                    </span>
+                    <p className="text-xs text-text-secondary mt-2 line-clamp-2 leading-relaxed">
+                      {brand.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-border flex items-center justify-between text-[11px]">
+                    <span className="text-accent font-semibold inline-flex items-center gap-1 group-hover:underline">
+                      {count > 0 ? `View ${count} items` : "Size chart"}
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                    <a
+                      href={brand.officialStoreUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-text-secondary hover:text-text-primary inline-flex items-center gap-1"
+                      title="Visit official store"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Verified Garment Products Catalog Grid */}
-      <div>
+      <div id="catalog-section" className="scroll-mt-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
           <h2 className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
             Curated Garment Collection ({filteredProducts.length} items)
