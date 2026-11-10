@@ -25,7 +25,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
     clearError,
   } = useAuthStore();
 
-  const [activeTab, setActiveTab] = useState<AuthTab>("phone");
+  const [activeTab, setActiveTab] = useState<AuthTab>("email");
 
   // Phone flow state
   const [phone, setPhone] = useState("");
@@ -119,24 +119,6 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
           <button
             type="button"
             role="tab"
-            aria-selected={activeTab === "phone"}
-            onClick={() => {
-              setActiveTab("phone");
-              clearError();
-            }}
-            className={`flex-1 py-2 text-xs font-medium rounded-btn transition-colors min-h-[40px] flex items-center justify-center gap-1.5 ${
-              activeTab === "phone"
-                ? "bg-bg-surface text-text-primary shadow-xs font-semibold"
-                : "text-text-secondary hover:text-text-primary"
-            }`}
-          >
-            <Phone className="w-3.5 h-3.5" />
-            Mobile OTP
-          </button>
-
-          <button
-            type="button"
-            role="tab"
             aria-selected={activeTab === "google"}
             onClick={() => {
               setActiveTab("google");
@@ -187,6 +169,24 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
             <Mail className="w-3.5 h-3.5" />
             Email Link
           </button>
+
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "phone"}
+            onClick={() => {
+              setActiveTab("phone");
+              clearError();
+            }}
+            className={`flex-1 py-2 text-xs font-medium rounded-btn transition-colors min-h-[40px] flex items-center justify-center gap-1.5 ${
+              activeTab === "phone"
+                ? "bg-bg-surface text-text-primary shadow-xs font-semibold"
+                : "text-text-secondary hover:text-text-primary"
+            }`}
+          >
+            <Phone className="w-3.5 h-3.5" />
+            Phone SMS
+          </button>
         </div>
 
         {/* Error Alert */}
@@ -224,10 +224,6 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                       autoFocus
                     />
                   </div>
-                  <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 mt-1">
-                    <ShieldCheck className="w-3 h-3 inline" />
-                    10,000 free monthly SMS powered by Google Firebase Phone Auth.
-                  </span>
                   {/* Invisible reCAPTCHA container for Firebase Phone Auth */}
                   <div id="firebase-recaptcha-modal" className="mt-1"></div>
                 </div>
@@ -241,49 +237,11 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                     <Loader2 className="w-4 h-4 animate-spin mx-auto" />
                   ) : (
                     <>
-                      Send Verification Code
+                      Send SMS Code
                       <ArrowRight className="w-4 h-4 ml-1.5" />
                     </>
                   )}
                 </button>
-
-                {/* Pre-configured Developer Test Account Card */}
-                <div className="p-3 rounded-card bg-accent/5 border border-accent/20">
-                  <div className="flex items-center justify-between gap-2 mb-1">
-                    <span className="text-[11px] font-semibold text-text-primary">
-                      Pre-configured Test Account
-                    </span>
-                    <span className="text-[9px] uppercase tracking-wider font-mono font-bold px-1.5 py-0.5 rounded-full bg-accent/15 text-accent">
-                      Instant Access
-                    </span>
-                  </div>
-                  <p className="text-[10px] text-text-secondary leading-relaxed mb-2">
-                    Number: <span className="font-mono font-semibold text-text-primary">+91 7722890254</span> · OTP: <span className="font-mono font-bold text-accent">958921</span>
-                  </p>
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        signInWithTestAccount("+917722890254");
-                        onClose();
-                        if (onSuccess) onSuccess();
-                      }}
-                      className="btn-primary flex-1 min-h-[34px] text-xs font-semibold"
-                    >
-                      Sign In as Test Member (1-Click)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPhone("7722890254");
-                        setPhoneOtp("958921");
-                      }}
-                      className="btn-secondary px-3 min-h-[34px] text-xs font-medium"
-                    >
-                      Auto-fill
-                    </button>
-                  </div>
-                </div>
               </form>
             ) : (
               <form onSubmit={handlePhoneVerifyOtp} className="space-y-4">

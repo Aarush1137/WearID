@@ -229,17 +229,21 @@ export async function sendFirebasePhoneOtp(
 
     let errorMessage = err?.message || "Failed to dispatch SMS via Firebase.";
     if (
+      err?.code === "auth/billing-not-enabled" ||
       err?.code === "auth/operation-not-allowed" ||
-      (err?.message && (err.message.includes("region enabled") || err.message.includes("operation-not-allowed")))
+      (err?.message &&
+        (err.message.includes("billing-not-enabled") ||
+          err.message.includes("region enabled") ||
+          err.message.includes("operation-not-allowed")))
     ) {
       errorMessage =
-        "Firebase SMS Region Policy: Live SMS to this region must be enabled in your Firebase Console under Authentication > Settings > SMS Region Policy (Enable India +91). To sign in immediately, use the pre-configured Test Account (+91 7722890254, code 958921) or Sign In as Guest.";
+        "SMS verification is currently restricted by carrier policies. Please sign in instantly using Google or Email.";
     } else if (err?.code === "auth/invalid-phone-number") {
       errorMessage = "Invalid mobile number format. Please enter a valid 10-digit number.";
     } else if (err?.code === "auth/too-many-requests") {
-      errorMessage = "Too many OTP requests from this device. Please wait a few minutes.";
+      errorMessage = "Too many OTP requests from this device. Please wait a few minutes or sign in with Google/Email.";
     } else if (err?.code === "auth/quota-exceeded") {
-      errorMessage = "SMS quota exceeded for today. Please sign in via Test Account or Email.";
+      errorMessage = "SMS quota exceeded for today. Please sign in with Google or Email.";
     } else if (
       err?.code === "auth/captcha-check-failed" ||
       (err?.message && err.message.includes("already been rendered"))

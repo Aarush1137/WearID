@@ -94,11 +94,7 @@ export default function HomePage() {
           <div className="flex items-center justify-center gap-2 flex-wrap mb-6">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-badge bg-accent-subtle text-accent text-xs font-semibold tracking-wide uppercase">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Universal Clothing Identity · India-First</span>
-            </div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-badge bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-semibold tracking-wide uppercase">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>10,000 Free Monthly SMS Powered by Firebase</span>
+              <span>Universal Clothing Identity · Sovereign Fit Standard</span>
             </div>
           </div>
 
