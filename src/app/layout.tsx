@@ -49,6 +49,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${dmSans.variable} ${dmSerifDisplay.variable}`}>
+      {/* Anti-flash script: apply saved theme before first paint */}
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('wearid-theme');if(t==='dark'){document.documentElement.classList.add('dark')}else if(t==='light'){document.documentElement.classList.add('light')}}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body className="antialiased min-h-screen bg-bg-base text-text-primary flex flex-col">
         <ServiceWorkerRegister />
         <OfflineBanner />

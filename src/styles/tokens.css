@@ -98,6 +98,112 @@
 }
 
 /* ==============================================================================
+   Dark Mode Tokens
+   Strategy: .dark class on <html> (manual) + system preference fallback.
+   ============================================================================== */
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    /* Surfaces */
+    --bg-base:          #141613;
+    --bg-surface:       #1C1E1B;
+    --bg-elevated:      #252722;
+    --bg-accent-subtle: #1E2B22;
+
+    /* Text */
+    --text-primary:   #F0EDE6;
+    --text-secondary: #9A9D96;
+    --text-tertiary:  #5C5F58;
+    --text-on-accent: #FFFFFF;
+    --text-link:      #7AAF8A;
+
+    /* Accent */
+    --accent:         #5E8A6E;
+    --accent-hover:   #6E9A7E;
+    --accent-active:  #4E7A5E;
+    --accent-subtle:  #1E2B22;
+
+    /* Terracotta */
+    --terracotta:        #D4987A;
+    --terracotta-hover:  #E4A88A;
+    --terracotta-subtle: #2A1F1A;
+
+    /* Semantic */
+    --success:          #4E9A6E;
+    --success-subtle:   #162419;
+    --warning:          #C87230;
+    --warning-subtle:   #251A0E;
+    --destructive:      #C04050;
+    --destructive-subtle: #200F12;
+    --info:             #4C7AAA;
+    --info-subtle:      #0E1824;
+
+    /* Confidence */
+    --confidence-high:   #4E9A6E;
+    --confidence-medium: #C87230;
+    --confidence-low:    #D4987A;
+    --confidence-none:   #5C5F58;
+
+    /* Borders */
+    --border:        #2E312C;
+    --border-strong: #3C3F38;
+    --border-focus:  #5E8A6E;
+
+    /* Shadows */
+    --shadow-xs: 0 1px 2px rgba(0,0,0,0.20);
+    --shadow-sm: 0 1px 4px rgba(0,0,0,0.25);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.30);
+    --shadow-lg: 0 8px 24px rgba(0,0,0,0.35);
+  }
+}
+
+/* Manual dark class — overrides system preference */
+html.dark {
+  color-scheme: dark;
+  --bg-base:          #141613;
+  --bg-surface:       #1C1E1B;
+  --bg-elevated:      #252722;
+  --bg-accent-subtle: #1E2B22;
+  --text-primary:   #F0EDE6;
+  --text-secondary: #9A9D96;
+  --text-tertiary:  #5C5F58;
+  --text-on-accent: #FFFFFF;
+  --text-link:      #7AAF8A;
+  --accent:         #5E8A6E;
+  --accent-hover:   #6E9A7E;
+  --accent-active:  #4E7A5E;
+  --accent-subtle:  #1E2B22;
+  --terracotta:        #D4987A;
+  --terracotta-hover:  #E4A88A;
+  --terracotta-subtle: #2A1F1A;
+  --success:          #4E9A6E;
+  --success-subtle:   #162419;
+  --warning:          #C87230;
+  --warning-subtle:   #251A0E;
+  --destructive:      #C04050;
+  --destructive-subtle: #200F12;
+  --info:             #4C7AAA;
+  --info-subtle:      #0E1824;
+  --confidence-high:   #4E9A6E;
+  --confidence-medium: #C87230;
+  --confidence-low:    #D4987A;
+  --confidence-none:   #5C5F58;
+  --border:        #2E312C;
+  --border-strong: #3C3F38;
+  --border-focus:  #5E8A6E;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.20);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.25);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.30);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+/* Manual light class — forces light even if system is dark */
+html.light {
+  color-scheme: light;
+  /* uses :root defaults — no overrides needed */
+}
+
+/* ==============================================================================
    Editorial Component Utility Classes
    ============================================================================== */
 

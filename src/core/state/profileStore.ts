@@ -20,6 +20,7 @@ export interface UserProfile {
   name: string;
   relation: "self" | "partner" | "parent" | "child" | "other";
   gender: "male" | "female" | "unisex";
+  shoppingCategories?: ("mens" | "womens")[];
   measurements: AnatomicalProfile;
   preferences: Record<string, FitType>;
   referenceGarments: ReferenceGarmentItem[];
@@ -50,7 +51,7 @@ const DEFAULT_PROFILE_ID = "profile_self_primary";
 
 const INITIAL_DEFAULT_PROFILE: UserProfile = {
   id: DEFAULT_PROFILE_ID,
-  name: "My Identity (Self)",
+  name: "",
   relation: "self",
   gender: "male",
   measurements: {

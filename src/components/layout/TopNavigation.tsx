@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useProfileStore } from "@/core/state/profileStore";
 import { ChevronDown, Plus, User, ArrowRightLeft } from "lucide-react";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export function TopNavigation() {
   const pathname = usePathname();
@@ -104,7 +105,7 @@ export function TopNavigation() {
           </nav>
         </div>
 
-        {/* Right Controls: Unit Toggle & Profile Switcher */}
+        {/* Right Controls: Unit Toggle, Theme Toggle & Profile Switcher */}
         <div className="flex items-center gap-2.5 sm:gap-3">
           {/* Unit Toggle Switch */}
           <button
@@ -117,6 +118,9 @@ export function TopNavigation() {
             <ArrowRightLeft className="w-3.5 h-3.5 text-text-secondary" />
             <span className="font-semibold uppercase tracking-wider">{displayUnit}</span>
           </button>
+
+          {/* Theme Toggle */}
+          <ThemeToggle />
 
           {/* Profile Switcher Dropdown */}
           <div className="relative">
