@@ -149,28 +149,36 @@ export function PassportHeroCard() {
 
         {/* Intimate & Bra Size Calculation for Female Morphology */}
         {braSizing && (
-          <div className="mt-4 p-4 rounded-card bg-rose-50/50 border border-rose-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-rose-100 flex items-center justify-center shrink-0">
-                <Heart className="w-5 h-5 text-rose-600" />
+          <div className="mt-4 p-4 rounded-card bg-bg-elevated/50 border border-border flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors">
+            <div className="flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-full bg-terracotta-subtle text-terracotta flex items-center justify-center shrink-0 border border-terracotta/20">
+                <Heart className="w-4 h-4 text-terracotta" />
               </div>
               <div>
-                <span className="text-xs uppercase font-semibold tracking-wider text-rose-800 block">
-                  Intimate & Bra Morphology Size
-                </span>
-                <span className="text-sm text-text-secondary mt-0.5 block">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs uppercase font-semibold tracking-wider text-text-primary">
+                    Intimate & Bra Morphology Size
+                  </span>
+                  <span className="text-[10px] font-semibold px-2 py-0.5 rounded-badge bg-terracotta-subtle text-terracotta border border-terracotta/20 uppercase tracking-wider">
+                    ISO / NIFT
+                  </span>
+                </div>
+                <span className="text-xs text-text-secondary mt-1 block leading-relaxed">
                   Band {braSizing.bandSize}&quot; · Cup {braSizing.cupLetter} ({braSizing.explanation})
                 </span>
               </div>
             </div>
-            <div className="flex items-center gap-3">
-              <span className="font-sans font-light text-2xl text-rose-700 font-semibold px-3 py-1 bg-white rounded-badge border border-rose-200">
+
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="font-sans font-medium text-2xl text-accent px-3.5 py-1 rounded-badge bg-bg-surface border border-border shadow-xs">
                 {braSizing.fullBraSize}
               </span>
               {(braSizing.sisterSizes.tighterBand || braSizing.sisterSizes.looserBand) && (
                 <div className="text-[11px] text-text-secondary">
-                  <span className="font-medium">Sister sizes: </span>
-                  {[braSizing.sisterSizes.tighterBand, braSizing.sisterSizes.looserBand].filter(Boolean).join(", ")}
+                  <span className="font-medium text-text-tertiary block">Sister sizes</span>
+                  <span className="font-mono text-text-primary">
+                    {[braSizing.sisterSizes.tighterBand, braSizing.sisterSizes.looserBand].filter(Boolean).join(", ")}
+                  </span>
                 </div>
               )}
             </div>

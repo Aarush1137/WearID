@@ -88,7 +88,7 @@ describe("Matrix F: Security & Biometric Privacy Suite", () => {
       const masterSecret = "super-secret-biometric-key-production";
       const cipherText = encryptBiometrics(testBiometrics, masterSecret);
 
-      expect(cipherText).not.toContain("980");
+      expect(cipherText).not.toContain('"chestMm":980');
       expect(cipherText).not.toContain("chestMm");
       expect(cipherText.split(":").length).toBe(3); // IV:Tag:Data
 

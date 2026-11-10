@@ -251,14 +251,14 @@ export function PrivacyDashboard() {
       </section>
 
       {/* 3. Account Deletion & Local Data Purge Card */}
-      <section className="rounded-card border border-rose-200 bg-rose-50/40 p-6 shadow-sm">
+      <section className="rounded-card border border-rose-200 dark:border-rose-900/40 bg-rose-50/40 dark:bg-rose-950/20 p-6 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h2 className="font-semibold text-base text-rose-900 flex items-center gap-2">
-              <Trash2 className="w-4 h-4 text-rose-700" />
+            <h2 className="font-semibold text-base text-rose-900 dark:text-rose-200 flex items-center gap-2">
+              <Trash2 className="w-4 h-4 text-rose-700 dark:text-rose-400" />
               Right to Complete Erasure
             </h2>
-            <p className="text-xs text-rose-800/80 mt-0.5 max-w-xl leading-relaxed">
+            <p className="text-xs text-rose-800/80 dark:text-rose-300/80 mt-0.5 max-w-xl leading-relaxed">
               Permanently purge all biometric measurements, fit histories, and saved benchmark garments from this device and cache.
             </p>
           </div>
@@ -273,8 +273,8 @@ export function PrivacyDashboard() {
         </div>
 
         {isDeleted && (
-          <div className="mt-4 p-3 rounded-card bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 font-semibold flex items-center gap-2">
-            <Check className="w-4 h-4 text-emerald-700" />
+          <div className="mt-4 p-3 rounded-card bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs text-emerald-900 dark:text-emerald-200 font-semibold flex items-center gap-2">
+            <Check className="w-4 h-4 text-emerald-700 dark:text-emerald-400" />
             All local biometric records have been permanently purged and reset.
           </div>
         )}
