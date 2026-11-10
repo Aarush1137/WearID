@@ -31,6 +31,7 @@ export function TailorCardView() {
       { brandName: "FabIndia", label: "Handloom Kurta", productId: "prod_fabindia_comfort_kurta" },
       { brandName: "Raymond", label: "Formal Dress Shirt", productId: "prod_raymond_formal_dress_shirt" },
       { brandName: "Peter England", label: "University Oxford", productId: "prod_peter_england_oxford_shirt" },
+      { brandName: "Allen Solly", label: "Prime Chino", productId: "prod_allen_solly_smart_chinos" },
       { brandName: "Levi's", label: "501 Original Jeans", productId: "prod_levis_501_original" },
       { brandName: "Uniqlo", label: "AIRism Oversized", productId: "prod_uniqlo_airism_oversized" },
     ];

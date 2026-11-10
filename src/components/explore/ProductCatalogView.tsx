@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { PILOT_BRANDS, PILOT_PRODUCTS, PilotBrand } from "@/core/data/pilotBrands";
-import { ShieldCheck, ArrowRight, Layers, ExternalLink, Check, Search, X, Sparkles, UserCheck } from "lucide-react";
+import { ShieldCheck, ArrowRight, Layers, ExternalLink, Check, Search, X, Sparkles, UserCheck, Scale } from "lucide-react";
 import { CategoryHierarchyNavigator, CategorySelection } from "@/components/catalog/CategoryHierarchyNavigator";
 import { useProfileStore } from "@/core/state/profileStore";
 
@@ -377,13 +377,22 @@ export function ProductCatalogView() {
                   <span>Provenance Audited</span>
                 </div>
 
-                <Link
-                  href={`/app/recommend?productId=${prod.id}`}
-                  className="min-h-[44px] px-4 rounded-btn bg-accent text-white text-xs font-semibold inline-flex items-center gap-1.5 hover:bg-accent-hover transition-colors shadow-xs"
-                >
-                  Match My Fit
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={`/app/compare?prodA=${prod.id}`}
+                    title={`Compare ${prod.name} with other brands`}
+                    className="min-h-[44px] px-2.5 rounded-btn border border-border bg-bg-surface hover:bg-bg-elevated text-text-secondary hover:text-text-primary text-xs inline-flex items-center justify-center transition-colors"
+                  >
+                    <Scale className="w-3.5 h-3.5" />
+                  </Link>
+                  <Link
+                    href={`/app/recommend?productId=${prod.id}`}
+                    className="min-h-[44px] px-3.5 rounded-btn bg-accent text-white text-xs font-semibold inline-flex items-center gap-1.5 hover:bg-accent-hover transition-colors shadow-xs"
+                  >
+                    Match My Fit
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
               </div>
             </div>
           ))}

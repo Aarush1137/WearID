@@ -329,7 +329,7 @@ describe("Matrix E: Data Provenance & Contributor Staging Suite", () => {
 
     it("ensures PILOT_PRODUCTS spans intimates, bottoms, outerwear, and tops with full specs", async () => {
       const { PILOT_PRODUCTS } = await import("@/core/data/pilotBrands");
-      expect(PILOT_PRODUCTS.length).toBeGreaterThanOrEqual(33);
+      expect(PILOT_PRODUCTS.length).toBeGreaterThanOrEqual(39);
 
       const categories = new Set(PILOT_PRODUCTS.map((p) => p.category));
       expect(categories.has("bra")).toBe(true);
@@ -402,6 +402,67 @@ describe("Matrix E: Data Provenance & Contributor Staging Suite", () => {
           }
         }
       }
+    });
+
+    it("evaluates deterministic sizing recommendations accurately for bottoms using waist & inseam", async () => {
+      const { PILOT_PRODUCTS } = await import("@/core/data/pilotBrands");
+      const { evaluateSizeRecommendation } = await import("@/core/sizing/recommendationEngine");
+
+      const chino = PILOT_PRODUCTS.find((p) => p.id === "prod_allen_solly_smart_chinos");
+      expect(chino).toBeDefined();
+
+      // Test with waist 785mm (gives +35mm wearing ease for size 32 with 820mm circumference)
+      const res = evaluateSizeRecommendation({
+        profile: {
+          profileId: "test_profile",
+          chestMm: 960,
+          waistMm: 785,
+          hipsMm: 960,
+          inseamMm: 810,
+        },
+        fitPreference: {
+          profileId: "test_profile",
+          category: "trousers_chinos",
+          fitType: "regular",
+        },
+        garmentDimensions: chino!.layer3Specs,
+        brandSizeCharts: chino!.layer2Charts,
+        fabricSpec: chino!.fabric,
+      });
+
+      expect(res.recommendedSize).toBe("32");
+      expect(res.fitScore).toBeGreaterThanOrEqual(80);
+      expect(res.summaryText).toBeDefined();
+    });
+
+    it("evaluates deterministic sizing recommendations accurately for new top brands (H&M, Van Heusen, Westside, Nike, M&S)", async () => {
+      const { PILOT_PRODUCTS } = await import("@/core/data/pilotBrands");
+      const { evaluateSizeRecommendation } = await import("@/core/sizing/recommendationEngine");
+
+      const hmTee = PILOT_PRODUCTS.find((p) => p.id === "prod_hm_relaxed_fit_tee");
+      expect(hmTee).toBeDefined();
+
+      // Test with chest 1000mm (M range)
+      const res = evaluateSizeRecommendation({
+        profile: {
+          profileId: "test_profile",
+          chestMm: 1000,
+          waistMm: 820,
+          shoulderWidthMm: 450,
+        },
+        fitPreference: {
+          profileId: "test_profile",
+          category: "t_shirt",
+          fitType: "regular",
+        },
+        garmentDimensions: hmTee!.layer3Specs,
+        brandSizeCharts: hmTee!.layer2Charts,
+        fabricSpec: hmTee!.fabric,
+      });
+
+      expect(res.recommendedSize).toBe("M");
+      expect(res.fitScore).toBeGreaterThanOrEqual(80);
+      expect(res.summaryText).toBeDefined();
     });
   });
 });
