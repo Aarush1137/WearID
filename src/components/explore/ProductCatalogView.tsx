@@ -248,6 +248,16 @@ export function ProductCatalogView() {
                     </span>
                   )}
                 </div>
+
+                {/* Available Verified Size Tiers */}
+                <div className="mt-3 pt-2.5 border-t border-border/60 flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[10px] text-text-tertiary font-semibold uppercase tracking-wider">Sizes:</span>
+                  {(prod.layer3Specs?.map((s) => s.sizeLabel) || prod.layer2Charts?.map((c) => c.sizeLabel) || []).map((sz) => (
+                    <span key={sz} className="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded bg-bg-elevated border border-border text-text-secondary">
+                      {sz}
+                    </span>
+                  ))}
+                </div>
               </div>
 
               <div className="mt-6 pt-4 border-t border-border flex items-center justify-between">

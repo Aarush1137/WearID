@@ -3,10 +3,11 @@
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useProfileStore } from "@/core/state/profileStore";
+import { useAuthStore } from "@/lib/auth/authStore";
 import { PILOT_BRANDS } from "@/core/data/pilotBrands";
 import { cmToMm, inchesToMm } from "@/core/units";
 import { FitType } from "@/core/types";
-import { Zap, Shirt, Ruler, ArrowRight, Check, HelpCircle, Users, Sparkles } from "lucide-react";
+import { Zap, Shirt, Ruler, ArrowRight, Check, HelpCircle, Users, Sparkles, CheckCircle2 } from "lucide-react";
 
 type OnboardingPath = "quick" | "garment" | "tape";
 type ShoppingCategory = "mens" | "womens" | "both";
@@ -29,11 +30,14 @@ export function OnboardingWizard() {
     displayUnit,
   } = useProfileStore();
 
+  const { user } = useAuthStore();
   const activeProfile = getActiveProfile();
 
   // Step 0 state (Who are we fitting?)
   const [wizardStep, setWizardStep] = useState<0 | 1>(0);
-  const [profileName, setProfileName] = useState<string>("");
+  const [profileName, setProfileName] = useState<string>(
+    activeProfile.name || user?.fullName || (isAddMemberMode ? "" : "My Size Passport")
+  );
   const [morphology, setMorphology] = useState<BiologicalMorphology>("male");
   const [shoppingFor, setShoppingFor] = useState<ShoppingCategory>("mens");
   const [relation, setRelation] = useState<RelationOption>(isAddMemberMode ? "partner" : "self");
@@ -109,10 +113,31 @@ export function OnboardingWizard() {
     return r;
   };
 
-  // Step 0 â†’ Step 1
+  // Step 0 → Step 1
   const handleStep0Continue = () => {
-    if (!profileName.trim()) return;
+    const finalName = profileName.trim() || user?.fullName || (isAddMemberMode ? "Partner" : "My Size Passport");
+    setProfileName(finalName);
     setWizardStep(1);
+  };
+
+  // 1-Click Fast Baseline Setup
+  const handleFastBaselineSetup = () => {
+    const finalName = profileName.trim() || user?.fullName || (isAddMemberMode ? "Partner" : "My Size Passport");
+    setProfileName(finalName);
+    setIsSubmitting(true);
+    saveProfileAndRedirect({
+      chestMm: morphology === "female" ? 880 : 980,
+      waistMm: morphology === "female" ? 720 : 820,
+      hipsMm: morphology === "female" ? 980 : 960,
+      heightMm: morphology === "female" ? 1640 : 1780,
+      shoulderWidthMm: morphology === "female" ? 390 : 450,
+      inseamMm: morphology === "female" ? 740 : 790,
+      neckMm: morphology === "female" ? 340 : 390,
+      sleeveLengthMm: morphology === "female" ? 570 : 620,
+      measurementMethod: {
+        chestMm: "baseline_median",
+      },
+    });
   };
 
   // Shared profile save before redirect
@@ -461,15 +486,26 @@ export function OnboardingWizard() {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={handleStep0Continue}
-            disabled={!profileName.trim()}
-            className="w-full btn-primary min-h-[48px] text-base font-semibold shadow-sm"
-          >
-            Continue to Measurement Calibration
-            <ArrowRight className="w-4 h-4 ml-2" />
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <button
+              type="button"
+              onClick={handleStep0Continue}
+              className="flex-1 btn-primary min-h-[48px] text-sm font-semibold shadow-sm flex items-center justify-center gap-2"
+            >
+              <span>Continue to Calibration</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleFastBaselineSetup}
+              disabled={isSubmitting}
+              className="min-h-[48px] px-5 rounded-btn border border-accent/40 bg-accent-subtle/50 hover:bg-accent-subtle text-accent text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-xs"
+            >
+              <Sparkles className="w-4 h-4" />
+              <span>1-Click Fast Baseline</span>
+            </button>
+          </div>
         </div>
       )}
 
@@ -728,7 +764,7 @@ export function OnboardingWizard() {
                     onChange={(e) => setGarmentSize(e.target.value)}
                     className="input-editorial w-full"
                   >
-                    {["XS", "S", "M", "L", "XL", "XXL"].map((sz) => (
+                    {["XS", "S", "M", "L", "XL", "XXL", "3XL"].map((sz) => (
                       <option key={sz} value={sz}>
                         Size {sz}
                       </option>

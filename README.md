@@ -3,7 +3,7 @@
 > **Your clothing identity, everywhere.**  
 > Universal clothing identity, deterministic body-to-garment fitting, and sovereign measurement portability.
 
-[![CI Status](https://img.shields.io/badge/tests-474%20passed-2D6A4F.svg?style=flat-square)](file:///tests.md)
+[![CI Status](https://img.shields.io/badge/tests-479%20passed-2D6A4F.svg?style=flat-square)](file:///tests.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue.svg?style=flat-square)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-14.2-black.svg?style=flat-square)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC.svg?style=flat-square)](https://tailwindcss.com/)
@@ -13,15 +13,17 @@
 
 ## 🎬 Product Launch Overview
 
-https://github.com/user-attachments/assets/brag-video
+https://github.com/Aarush1137/WearID/raw/main/brag-output/brag.mp4
 
 <p align="center">
-  <video src="brag-output/brag.mp4" poster="brag-output/brag.jpg" width="100%" controls autoplay loop muted playsinline>
-    <img src="brag-output/brag.jpg" alt="WearID Launch Showcase" width="100%" />
+  <video src="https://github.com/Aarush1137/WearID/raw/main/brag-output/brag.mp4" poster="https://raw.githubusercontent.com/Aarush1137/WearID/main/brag-output/brag.jpg" width="100%" controls loop muted playsinline>
+    <a href="https://github.com/Aarush1137/WearID/raw/main/brag-output/brag.mp4">
+      <img src="https://raw.githubusercontent.com/Aarush1137/WearID/main/brag-output/brag.jpg" alt="WearID Launch Showcase" width="100%" />
+    </a>
   </video>
 </p>
 
-*Watch the official launch video ([`brag.mp4`](file:///brag-output/brag.mp4)) showcasing WearID's end-to-end sovereign biometric passport, couture lingerie visualizer, and deterministic ease engine.*
+*Watch the official launch video showcasing WearID's end-to-end sovereign biometric passport, couture lingerie visualizer, and deterministic ease engine.*
 
 ---
 
@@ -30,6 +32,7 @@ https://github.com/user-attachments/assets/brag-video
 ### 1. Sovereign Biometric Passport (Layer 1)
 - **Millimeter-Precision Biometrics:** Human dimensions stored strictly as canonical integer millimeters (`mm`) and mass in grams (`g`).
 - **Cryptographic Privacy by Default:** Local client-side AES-256-GCM encryption at rest. Zero anatomical biometrics leaked to third parties without explicit user consent.
+- **Mandatory Authentication & Persistent Session Security:** Enforces persistent user sessions across reloads with automated 7-day inactivity security timeout protection.
 - **Multi-Member Profile Management:** Seamlessly manage measurements for self, partner, and family.
 
 ### 2. Deterministic Fitting Engine (Layers 2 & 3)
@@ -42,16 +45,18 @@ https://github.com/user-attachments/assets/brag-video
 - **Intimate Apparel & Bra Sizing Visualizer:**
   - Dynamic 3D cup projection scaling with anatomical underwire curvature.
   - Real-time ribcage underband tension and sternum gore contact checks.
-  - Sister-size volume equivalency matrix (same cup cubic volume across alternative band sizes).
+  - Equivalent cup volume matching across alternative band sizes.
 - **Proportional Anatomical Silhouette (`BodySilhouetteCanvas`):**
-  - Interactive landmark inspection (Shoulders, Chest Girth, Natural Waist, High Hips, Inseam).
+  - Interactive landmark inspection (Shoulders, Chest Girth, Natural Waist, High Hips, Inseam) with pulsing sensor nodes.
   - Morphological classification (V-Taper, Balanced, Lean, Robust).
 - **2D Garment Drape & Ease Silhouette (`GarmentDrapeOverlay`):**
   - Superimposed body contour vs. finished textile outline.
   - Color-coded ease halos (Tension Red $\rightarrow$ Snug Amber $\rightarrow$ Ideal Forest Green $\rightarrow$ Loose Amber).
 - **5-Axis Fit Polygon Radar (`FitRadarChart`):**
-  - Polar coordinates across Chest, Waist, Shoulders, Length, and Sleeve.
+  - Polar coordinates across Chest, Waist, Shoulders, Length, and Sleeve with smooth morphing transitions.
   - Interactive vertex inspection chips displaying exact ease delta.
+- **Brand Sizing Comparison Tool (`/app/compare`):**
+  - Side-by-side cutting table variance comparison between any two verified brands.
 
 ### 4. Sovereign Tailor Card & Portability SDK
 - **Digital Tailor Card:** Instant QR code and WhatsApp share card with formatted imperial/metric dimensions for custom tailors and master cutters.
@@ -59,13 +64,16 @@ https://github.com/user-attachments/assets/brag-video
 
 ---
 
-## 🗂️ Verified Brand Catalog
+## 🗂️ Verified Brand Catalog (18 Brands)
 
-WearID's brand database is backed by verified brand size charts and flat garment specifications:
-- **Intimates & Bras:** Uniqlo 3D Hold Wireless Bra, Marks & Spencer Total Support Underwired Bra, Nike Swoosh Medium-Support Sports Bra.
-- **Bottoms & Pants:** Levi's 501 Original Fit Rigid Denim Jeans, Uniqlo Slim Fit Chino Pants.
-- **Outerwear & Jackets:** Levi's Classic Trucker Denim Jacket, Uniqlo Ultra Light Down Jacket.
-- **Tops & Shirts:** Uniqlo Oxford Slim Fit Shirt, Uniqlo AIRism Cotton Oversized Tee, Snitch Heavyweight Boxy Tee, Zara Textured Tee.
+WearID's database is backed by verified brand size charts and flat garment specifications with verified provenance:
+- **International Flagships:** Uniqlo India, Levi's India, Zara India, H&M India, Marks & Spencer, Nike, Decathlon India, Puma India.
+- **Indian Heritage & Contemporary Tailoring:** FabIndia, Raymond, Peter England, Allen Solly, Van Heusen, Westside, Snitch, Mufti, Manyavar, Max Fashion.
+- **Multi-Category Coverage:**
+  - *Intimates & Bras:* Uniqlo 3D Hold Wireless Bra, Marks & Spencer Total Support Underwired Bra, Nike Swoosh Sports Bra.
+  - *Bottoms, Denims & Chinos:* Levi's 501 Original Fit Rigid Denim Jeans, Uniqlo Slim Fit Chino Pants.
+  - *Outerwear & Jackets:* Levi's Classic Trucker Denim Jacket, Uniqlo Ultra Light Down Jacket.
+  - *Tops, Shirts & Polos:* Uniqlo Oxford Slim Fit Shirt, Uniqlo AIRism Cotton Oversized Tee, Snitch Heavyweight Boxy Tee, Zara Textured Tee.
 
 ---
 
@@ -112,8 +120,9 @@ npm run build
 |:---|:---|:---:|
 | **Type Integrity** | `tsc --noEmit` | **PASS (0 errors)** |
 | **Linting** | `eslint` | **PASS (0 warnings)** |
-| **Unit & E2E Tests** | `vitest` | **PASS (474/474 tests)** |
-| **Production Build** | `next build` | **PASS (26/26 routes)** |
+| **Unit & E2E Tests** | `vitest` | **PASS (479/479 tests across 22 suites)** |
+| **Production Build** | `next build` | **PASS (29/29 routes)** |
+| **Security Audit** | `DevSecOps Headers` | **PASS (CSP, HSTS, X-Frame-Options)** |
 
 ---
 

@@ -16,19 +16,25 @@ export async function POST(request: Request) {
       profile = mockStore.getMeasurements();
     }
 
-    // Invariant 1: Never synthesize missing body girths
-    if (!profile || !profile.chestMm || profile.chestMm <= 0) {
+    // Invariant 1: Never synthesize missing body girths & validate physical bounds
+    if (
+      !profile ||
+      typeof profile.chestMm !== "number" ||
+      isNaN(profile.chestMm) ||
+      profile.chestMm <= 0 ||
+      profile.chestMm > 2500
+    ) {
       return NextResponse.json(
         {
           type: "https://wearid.in/errors/insufficient-data",
           title: "Insufficient Measurement Data",
           status: 400,
-          detail: "Chest measurement (Layer 1) in integer millimeters is strictly required to evaluate apparel sizing.",
+          detail: "Chest measurement (Layer 1) in valid integer millimeters (1..2500 mm) is strictly required to evaluate apparel sizing.",
           instance: "/api/v1/sizing/match",
           invalid_params: [
             {
               name: "profile.chestMm",
-              reason: "chestMm must be a positive integer in canonical millimeters (mm).",
+              reason: "chestMm must be a positive integer in canonical millimeters (mm) within valid human anatomical bounds.",
             },
           ],
         },

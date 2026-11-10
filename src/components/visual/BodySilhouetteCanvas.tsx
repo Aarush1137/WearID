@@ -154,18 +154,32 @@ export function BodySilhouetteCanvas({
             >
               <defs>
                 <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.25" />
-                  <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.15" />
+                  <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.30" />
+                  <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.12" />
                 </linearGradient>
                 <linearGradient id="activeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="var(--terracotta)" />
                   <stop offset="100%" stopColor="var(--accent)" />
                 </linearGradient>
+                <radialGradient id="studioLighting" cx="50%" cy="40%" r="60%">
+                  <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.18" />
+                  <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.0" />
+                </radialGradient>
+                <filter id="glowPulse" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="2" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
               </defs>
 
+              {/* Studio Backlight Aura */}
+              <circle cx="50" cy="75" r="55" fill="url(#studioLighting)" pointerEvents="none" />
+
               {/* Head & Neck */}
-              <circle cx="50" cy="18" r="9" fill="url(#bodyGradient)" stroke="var(--accent)" strokeWidth="1.5" />
-              <path d="M47 27 L47 34 L53 34 L53 27 Z" fill="url(#bodyGradient)" stroke="var(--accent)" strokeWidth="1.5" />
+              <circle cx="50" cy="18" r="9" fill="url(#bodyGradient)" stroke="var(--accent)" strokeWidth="1.5" className="transition-all duration-300" />
+              <path d="M47 27 L47 34 L53 34 L53 27 Z" fill="url(#bodyGradient)" stroke="var(--accent)" strokeWidth="1.5" className="transition-all duration-300" />
 
               {/* Torso & Legs Contour (Dynamically derived from width factors) */}
               <path
@@ -191,6 +205,7 @@ export function BodySilhouetteCanvas({
                 fill="url(#bodyGradient)"
                 stroke="var(--accent)"
                 strokeWidth="1.75"
+                className="transition-all duration-500 ease-out"
               />
 
               {/* Arms */}
@@ -273,11 +288,15 @@ export function BodySilhouetteCanvas({
                       strokeWidth={strokeWidth}
                       strokeDasharray={dash}
                     />
-                    {/* Pulsing indicator node on active */}
+                    {/* Pulsing indicator nodes on active landmark */}
                     {isActive && (
-                      <g className="animate-pulse-subtle">
-                        <circle cx={x2 + 2} cy={l.yPos} r="4.5" fill="var(--terracotta)" opacity="0.3" />
+                      <g>
+                        <circle cx={x2 + 2} cy={l.yPos} r="5" fill="var(--terracotta)" className="animate-ping" opacity="0.6" />
+                        <circle cx={x2 + 2} cy={l.yPos} r="4.5" fill="var(--terracotta)" opacity="0.4" />
                         <circle cx={x2 + 2} cy={l.yPos} r="2.5" fill="var(--terracotta)" />
+                        <circle cx={x1 - 2} cy={l.yPos} r="5" fill="var(--terracotta)" className="animate-ping" opacity="0.6" />
+                        <circle cx={x1 - 2} cy={l.yPos} r="4.5" fill="var(--terracotta)" opacity="0.4" />
+                        <circle cx={x1 - 2} cy={l.yPos} r="2.5" fill="var(--terracotta)" />
                       </g>
                     )}
                   </g>

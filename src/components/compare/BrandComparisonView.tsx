@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import { PILOT_BRANDS, PILOT_PRODUCTS, PilotProduct } from "@/core/data/pilotBrands";
 import { useProfileStore } from "@/core/state/profileStore";
@@ -59,6 +59,21 @@ export function BrandComparisonView() {
     return ["S", "M", "L", "XL"];
   }, [prodB]);
 
+  // Auto-synchronize size selections if changing to products with distinct sizing systems
+  useEffect(() => {
+    if (!availableSizesA.includes(sizeA) && availableSizesA.length > 0) {
+      const preferred = availableSizesA.includes("M") ? "M" : availableSizesA[0];
+      setSizeA(preferred);
+    }
+  }, [availableSizesA, sizeA]);
+
+  useEffect(() => {
+    if (!availableSizesB.includes(sizeB) && availableSizesB.length > 0) {
+      const preferred = availableSizesB.includes("M") ? "M" : availableSizesB[0];
+      setSizeB(preferred);
+    }
+  }, [availableSizesB, sizeB]);
+
   // Derive flat chest or body mid chest for A
   const specA = useMemo(() => {
     if (prodA.layer3Specs) {
@@ -69,6 +84,9 @@ export function BrandComparisonView() {
           chestCircMm: match.chestFlatMm * 2,
           shoulderMm: match.shoulderMm || 460,
           lengthMm: match.lengthMm || 720,
+          waistFlatMm: match.waistFlatMm,
+          waistCircMm: match.waistFlatMm ? match.waistFlatMm * 2 : undefined,
+          inseamMm: match.inseamMm,
           isLayer3: true,
         };
       }
@@ -82,6 +100,8 @@ export function BrandComparisonView() {
           chestCircMm: Math.round(mid),
           shoulderMm: 450,
           lengthMm: 710,
+          waistFlatMm: match.waistMinMm && match.waistMaxMm ? Math.round((match.waistMinMm + match.waistMaxMm) / 4) : undefined,
+          waistCircMm: match.waistMinMm && match.waistMaxMm ? Math.round((match.waistMinMm + match.waistMaxMm) / 2) : undefined,
           isLayer3: false,
         };
       }
@@ -99,6 +119,9 @@ export function BrandComparisonView() {
           chestCircMm: match.chestFlatMm * 2,
           shoulderMm: match.shoulderMm || 450,
           lengthMm: match.lengthMm || 710,
+          waistFlatMm: match.waistFlatMm,
+          waistCircMm: match.waistFlatMm ? match.waistFlatMm * 2 : undefined,
+          inseamMm: match.inseamMm,
           isLayer3: true,
         };
       }
@@ -112,6 +135,8 @@ export function BrandComparisonView() {
           chestCircMm: Math.round(mid),
           shoulderMm: 440,
           lengthMm: 700,
+          waistFlatMm: match.waistMinMm && match.waistMaxMm ? Math.round((match.waistMinMm + match.waistMaxMm) / 4) : undefined,
+          waistCircMm: match.waistMinMm && match.waistMaxMm ? Math.round((match.waistMinMm + match.waistMaxMm) / 2) : undefined,
           isLayer3: false,
         };
       }
@@ -230,6 +255,22 @@ export function BrandComparisonView() {
                 {formatMeasurement(specA.shoulderMm, displayUnit)}
               </span>
             </div>
+            {specA.waistCircMm && (
+              <div className="flex justify-between">
+                <span className="text-text-secondary">Waist Girth:</span>
+                <span className="font-mono text-text-primary">
+                  {formatMeasurement(specA.waistCircMm, displayUnit)}
+                </span>
+              </div>
+            )}
+            {specA.inseamMm && (
+              <div className="flex justify-between">
+                <span className="text-text-secondary">Inseam:</span>
+                <span className="font-mono text-text-primary">
+                  {formatMeasurement(specA.inseamMm, displayUnit)}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -306,6 +347,22 @@ export function BrandComparisonView() {
                 {formatMeasurement(specB.shoulderMm, displayUnit)}
               </span>
             </div>
+            {specB.waistCircMm && (
+              <div className="flex justify-between">
+                <span className="text-text-secondary">Waist Girth:</span>
+                <span className="font-mono text-text-primary">
+                  {formatMeasurement(specB.waistCircMm, displayUnit)}
+                </span>
+              </div>
+            )}
+            {specB.inseamMm && (
+              <div className="flex justify-between">
+                <span className="text-text-secondary">Inseam:</span>
+                <span className="font-mono text-text-primary">
+                  {formatMeasurement(specB.inseamMm, displayUnit)}
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>

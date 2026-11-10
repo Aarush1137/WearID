@@ -143,6 +143,7 @@ export function FitRadarChart({ dimensionBreakdown, fitIntent }: FitRadarChartPr
               fill="url(#targetZoneGrad)"
               stroke="#059669"
               strokeWidth="1.5"
+              className="transition-all duration-500 ease-out"
             />
 
             {/* Garment Actual Spec Polygon (Accent Stroke with glow) */}
@@ -152,6 +153,7 @@ export function FitRadarChart({ dimensionBreakdown, fitIntent }: FitRadarChartPr
               stroke="var(--accent)"
               strokeWidth="2.2"
               filter="url(#radarGlow)"
+              className="transition-all duration-500 ease-out"
             />
 
             {/* Vertices Nodes */}

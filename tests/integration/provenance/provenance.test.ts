@@ -296,7 +296,26 @@ describe("Matrix E: Data Provenance & Contributor Staging Suite", () => {
   describe("TC-P-007: Verified Multi-Category Catalog Provenance Adherence", () => {
     it("ensures all brands in PILOT_BRANDS possess valid official provenance metadata", async () => {
       const { PILOT_BRANDS } = await import("@/core/data/pilotBrands");
-      expect(PILOT_BRANDS.length).toBeGreaterThanOrEqual(10);
+      expect(PILOT_BRANDS.length).toBeGreaterThanOrEqual(18);
+
+      const brandIds = new Set(PILOT_BRANDS.map((b) => b.id));
+      const requiredBrands = [
+        "fabindia",
+        "raymond",
+        "peter_england",
+        "allen_solly",
+        "puma",
+        "mufti",
+        "decathlon",
+        "manyavar",
+        "uniqlo",
+        "levis",
+        "marks_and_spencer",
+        "nike",
+      ];
+      for (const reqBrand of requiredBrands) {
+        expect(brandIds.has(reqBrand)).toBe(true);
+      }
 
       for (const brand of PILOT_BRANDS) {
         expect(brand.id).toBeDefined();
@@ -310,7 +329,7 @@ describe("Matrix E: Data Provenance & Contributor Staging Suite", () => {
 
     it("ensures PILOT_PRODUCTS spans intimates, bottoms, outerwear, and tops with full specs", async () => {
       const { PILOT_PRODUCTS } = await import("@/core/data/pilotBrands");
-      expect(PILOT_PRODUCTS.length).toBeGreaterThanOrEqual(16);
+      expect(PILOT_PRODUCTS.length).toBeGreaterThanOrEqual(33);
 
       const categories = new Set(PILOT_PRODUCTS.map((p) => p.category));
       expect(categories.has("bra")).toBe(true);
@@ -319,6 +338,11 @@ describe("Matrix E: Data Provenance & Contributor Staging Suite", () => {
       expect(categories.has("trousers_chinos")).toBe(true);
       expect(categories.has("jacket")).toBe(true);
       expect(categories.has("shirt_casual")).toBe(true);
+      expect(categories.has("joggers")).toBe(true);
+      expect(categories.has("shorts")).toBe(true);
+      expect(categories.has("kurta")).toBe(true);
+      expect(categories.has("blazer")).toBe(true);
+      expect(categories.has("polo")).toBe(true);
 
       for (const prod of PILOT_PRODUCTS) {
         expect(prod.priceInr).toBeGreaterThan(0);
@@ -328,6 +352,53 @@ describe("Matrix E: Data Provenance & Contributor Staging Suite", () => {
         const hasLayer3 = prod.layer3Specs && prod.layer3Specs.length > 0;
         const hasLayer2 = prod.layer2Charts && prod.layer2Charts.length > 0;
         expect(hasLayer3 || hasLayer2).toBe(true);
+
+        // Invariant #4: Canonical millimeters (positive integers, realistic dimensions)
+        if (prod.layer3Specs) {
+          for (const spec of prod.layer3Specs) {
+            expect(Number.isInteger(spec.chestFlatMm)).toBe(true);
+            expect(spec.chestFlatMm).toBeGreaterThan(200);
+            expect(spec.chestFlatMm).toBeLessThan(1200);
+
+            if (spec.shoulderMm !== undefined) {
+              expect(Number.isInteger(spec.shoulderMm)).toBe(true);
+              expect(spec.shoulderMm).toBeGreaterThan(200);
+            }
+            if (spec.lengthMm !== undefined) {
+              expect(Number.isInteger(spec.lengthMm)).toBe(true);
+              expect(spec.lengthMm).toBeGreaterThan(200);
+            }
+            if (spec.waistFlatMm !== undefined) {
+              expect(Number.isInteger(spec.waistFlatMm)).toBe(true);
+              expect(spec.waistFlatMm).toBeGreaterThan(200);
+            }
+            if (spec.inseamMm !== undefined) {
+              expect(Number.isInteger(spec.inseamMm)).toBe(true);
+              expect(spec.inseamMm).toBeGreaterThan(100);
+            }
+          }
+        }
+
+        if (prod.layer2Charts) {
+          for (const chart of prod.layer2Charts) {
+            if (chart.chestMinMm !== undefined) {
+              expect(Number.isInteger(chart.chestMinMm)).toBe(true);
+              expect(chart.chestMinMm).toBeGreaterThan(300);
+            }
+            if (chart.chestMaxMm !== undefined) {
+              expect(Number.isInteger(chart.chestMaxMm)).toBe(true);
+              expect(chart.chestMaxMm).toBeGreaterThan(chart.chestMinMm ?? 0);
+            }
+            if (chart.waistMinMm !== undefined) {
+              expect(Number.isInteger(chart.waistMinMm)).toBe(true);
+              expect(chart.waistMinMm).toBeGreaterThan(300);
+            }
+            if (chart.waistMaxMm !== undefined) {
+              expect(Number.isInteger(chart.waistMaxMm)).toBe(true);
+              expect(chart.waistMaxMm).toBeGreaterThan(chart.waistMinMm ?? 0);
+            }
+          }
+        }
       }
     });
   });

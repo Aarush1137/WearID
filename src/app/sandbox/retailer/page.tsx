@@ -36,7 +36,10 @@ export default function RetailerSandboxPage() {
   const product: PilotProduct =
     PILOT_PRODUCTS.find((p) => p.id === selectedProductId) || PILOT_PRODUCTS[0];
 
-  const availableSizes = ["XS", "S", "M", "L", "XL", "XXL"];
+  const availableSizes =
+    product.layer3Specs?.map((s) => s.sizeLabel) ||
+    product.layer2Charts?.map((c) => c.sizeLabel) ||
+    ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
 
   // Handle direct sizing handshake via API route
   const handleConnectHandshake = async () => {

@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useProfileStore } from "@/core/state/profileStore";
 import { formatDualMeasurement } from "@/core/formatters";
-import { Scissors, Copy, Check, Printer, QrCode, ShieldCheck } from "lucide-react";
+import { PILOT_PRODUCTS } from "@/core/data/pilotBrands";
+import { evaluateSizeRecommendation } from "@/core/sizing/recommendationEngine";
+import { Scissors, Copy, Check, Printer, QrCode, ShieldCheck, Shirt } from "lucide-react";
 
 export function TailorCardView() {
   const { getActiveProfile } = useProfileStore();
@@ -23,6 +25,40 @@ export function TailorCardView() {
     { label: "Sleeve Span / Length", dual: formatDualMeasurement(m.sleeveLengthMm) },
   ];
 
+  // Calibrate benchmark ready-to-wear sizes across verified pilot brands for tailor reference
+  const benchmarkBrandSizes = useMemo(() => {
+    const benchmarks = [
+      { brandName: "FabIndia", label: "Handloom Kurta", productId: "prod_fabindia_comfort_kurta" },
+      { brandName: "Raymond", label: "Formal Dress Shirt", productId: "prod_raymond_formal_dress_shirt" },
+      { brandName: "Peter England", label: "University Oxford", productId: "prod_peter_england_oxford_shirt" },
+      { brandName: "Levi's", label: "501 Original Jeans", productId: "prod_levis_501_original" },
+      { brandName: "Uniqlo", label: "AIRism Oversized", productId: "prod_uniqlo_airism_oversized" },
+    ];
+
+    return benchmarks.map((bm) => {
+      const prod = PILOT_PRODUCTS.find((p) => p.id === bm.productId);
+      if (!prod) return { ...bm, recommendedSize: "M" };
+
+      const res = evaluateSizeRecommendation({
+        profile: profile.measurements,
+        fitPreference: {
+          profileId: profile.id,
+          category: prod.category,
+          fitType: "regular",
+        },
+        garmentDimensions: prod.layer3Specs,
+        brandSizeCharts: prod.layer2Charts,
+        fabricSpec: prod.fabric,
+      });
+
+      return {
+        ...bm,
+        recommendedSize: res.recommendedSize || "M",
+        fitScore: res.fitScore,
+      };
+    });
+  }, [profile]);
+
   // WhatsApp shareable text formatted for Indian tailors
   const generateWhatsAppMessage = () => {
     let msg = `*WearID Tailor Measurement Card*\n`;
@@ -34,6 +70,11 @@ export function TailorCardView() {
       if (item.dual.cm !== "—") {
         msg += `• ${item.label}: ${item.dual.cm} / ${item.dual.inches}\n`;
       }
+    });
+
+    msg += `\n*Calibrated Ready-to-Wear References:*\n`;
+    benchmarkBrandSizes.forEach((bm) => {
+      msg += `• ${bm.brandName} (${bm.label}): Size ${bm.recommendedSize}\n`;
     });
 
     msg += `\nCalibrated via WearID Sovereign Clothing Passport.\nCanonical Millimeter Precision.`;
@@ -182,6 +223,37 @@ export function TailorCardView() {
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Calibrated Ready-to-Wear Benchmark Sizes (Tailor Cutting Reference) */}
+          <div className="mt-6 pt-5 border-t border-border">
+            <div className="flex items-center gap-2 mb-3">
+              <Shirt className="w-4 h-4 text-accent" />
+              <h3 className="font-semibold text-xs uppercase tracking-wider text-text-primary">
+                Calibrated Ready-to-Wear Benchmark Blocks (Master Tailor Reference)
+              </h3>
+            </div>
+            <p className="text-[11px] text-text-secondary mb-3 leading-relaxed">
+              Standardized size tags matched deterministically against official pilot brand blocks. Tailors can cross-check pattern allowances against these validated commercial cuts:
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+              {benchmarkBrandSizes.map((bm) => (
+                <div
+                  key={bm.brandName}
+                  className="p-3 rounded-card bg-bg-elevated/40 border border-border text-center flex flex-col justify-between"
+                >
+                  <span className="text-[10px] font-semibold text-text-secondary uppercase tracking-wider block">
+                    {bm.brandName}
+                  </span>
+                  <span className="font-sans font-semibold text-lg text-accent my-1 block">
+                    {bm.recommendedSize}
+                  </span>
+                  <span className="text-[10px] text-text-tertiary block truncate">
+                    {bm.label}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

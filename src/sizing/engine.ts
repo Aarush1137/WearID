@@ -55,7 +55,16 @@ export function getCategoryWeights(category: string): Record<string, number> {
       return { waist: 0.40, inseam: 0.35, thigh: 0.25 };
     case "trousers":
     case "chinos":
+    case "trousers_chinos":
       return { waist: 0.40, inseam: 0.30, thigh: 0.20, rise: 0.10 };
+    case "joggers":
+    case "jogger":
+    case "track_pants":
+    case "sweatpants":
+      return { waist: 0.40, hips: 0.30, inseam: 0.20, thigh: 0.10 };
+    case "shorts":
+    case "short":
+      return { waist: 0.45, hips: 0.35, length: 0.20 };
     case "kurta":
       return { chest: 0.35, shoulder: 0.25, torso_length: 0.25, sleeve: 0.15 };
     case "shoe":

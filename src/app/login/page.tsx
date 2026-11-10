@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useAuthStore } from "@/lib/auth/authStore";
 import {
@@ -17,13 +17,18 @@ import {
   UserCheck,
 } from "lucide-react";
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get("returnUrl") || searchParams.get("redirect") || "/app";
+  const reason = searchParams.get("reason");
+
   const {
     isAuthenticated,
     user,
     isLoading,
     authError,
+    sessionTimeoutReason,
     signInWithPhoneOtp,
     verifyPhoneOtp,
     signInWithEmailOtp,
@@ -46,9 +51,9 @@ export default function LoginPage() {
   // Auto-redirect if already signed in
   useEffect(() => {
     if (isAuthenticated) {
-      router.replace("/app/profile");
+      router.replace(returnUrl);
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, returnUrl, router]);
 
   // Countdown timer for OTP resend
   useEffect(() => {
@@ -105,7 +110,7 @@ export default function LoginPage() {
     // Test bypass check
     if ((clean === "7722890254" || clean.endsWith("7722890254")) && otpCode === "958921") {
       signInWithTestAccount(fullPhone);
-      router.push("/app/profile");
+      router.push(returnUrl);
       return;
     }
 
@@ -113,7 +118,7 @@ export default function LoginPage() {
     if (res.error) {
       setLocalError(res.error);
     } else {
-      router.push("/app/profile");
+      router.push(returnUrl);
     }
   };
 
@@ -147,13 +152,13 @@ export default function LoginPage() {
     if (res.error) {
       setLocalError(res.error);
     } else {
-      router.push("/app/profile");
+      router.push(returnUrl);
     }
   };
 
   const handleInstantTestLogin = () => {
     signInWithTestAccount("+917722890254");
-    router.push("/app/profile");
+    router.push(returnUrl);
   };
 
   return (
@@ -185,6 +190,14 @@ export default function LoginPage() {
 
       {/* Main Authentication Card */}
       <main className="max-w-md mx-auto w-full my-auto py-6">
+        {/* Security Timeout Alert */}
+        {(reason === "timeout" || sessionTimeoutReason === "inactivity") && (
+          <div className="mb-4 p-3.5 rounded-card bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs text-amber-800 dark:text-amber-200 flex items-center gap-2.5 shadow-xs">
+            <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>For your biometric security, your session expired due to inactivity. Please sign in to resume.</span>
+          </div>
+        )}
+
         {/* Instant Reviewer Test Account Banner */}
         <div className="mb-6 p-4 rounded-card bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs shadow-xs">
           <div className="flex items-center justify-between gap-3">
@@ -488,5 +501,22 @@ export default function LoginPage() {
         </p>
       </footer>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-bg-base text-text-primary flex items-center justify-center text-xs font-semibold text-text-secondary">
+          <div className="flex items-center gap-2">
+            <span className="w-4 h-4 rounded-full border-2 border-accent border-t-transparent animate-spin" />
+            <span>Loading authentication...</span>
+          </div>
+        </div>
+      }
+    >
+      <LoginContent />
+    </Suspense>
   );
 }
