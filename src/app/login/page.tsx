@@ -279,21 +279,41 @@ function LoginContent() {
                     {isLoading ? "Sending Code..." : "Send Verification Code"}
                   </button>
 
-                  {/* Configured Test Account Quick-Fill */}
-                  <div className="p-2 rounded-card bg-accent/5 border border-accent/20 text-center">
-                    <p className="text-[10px] text-text-secondary">
-                      Firebase Test Number: <span className="font-mono font-bold text-text-primary">+91 7722890254</span> (Code: <span className="font-mono font-bold text-accent">958921</span>)
+                  {/* Configured Test Account Card with 1-Click Instant Sign-In */}
+                  <div className="p-3 rounded-card bg-accent/5 border border-accent/20">
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <span className="text-[11px] font-semibold text-text-primary">
+                        Pre-configured Developer Account
+                      </span>
+                      <span className="text-[9px] uppercase tracking-wider font-mono font-bold px-1.5 py-0.5 rounded-full bg-accent/15 text-accent">
+                        Instant
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-text-secondary leading-relaxed mb-2.5">
+                      Number: <span className="font-mono font-semibold text-text-primary">+91 7722890254</span> · Code: <span className="font-mono font-bold text-accent">958921</span>
                     </p>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setPhoneNumber("7722890254");
-                        setOtpCode("958921");
-                      }}
-                      className="text-[10px] font-semibold text-accent hover:underline mt-0.5 inline-block"
-                    >
-                      Click to Auto-fill Test Credentials
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          signInWithTestAccount("+917722890254");
+                          router.push(returnUrl);
+                        }}
+                        className="btn-primary flex-1 min-h-[36px] text-xs font-semibold"
+                      >
+                        Sign In as Test Member (1-Click)
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setPhoneNumber("7722890254");
+                          setOtpCode("958921");
+                        }}
+                        className="btn-secondary px-3 min-h-[36px] text-xs font-medium"
+                      >
+                        Auto-fill
+                      </button>
+                    </div>
                   </div>
                 </form>
               ) : (

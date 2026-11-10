@@ -212,7 +212,7 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                   </label>
                   <div className="flex gap-2">
                     <span className="inline-flex items-center px-3 rounded-btn border border-border bg-bg-elevated text-xs font-semibold text-text-primary">
-                      🇮🇳 +91
+                      IN +91
                     </span>
                     <input
                       type="tel"
@@ -247,21 +247,42 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                   )}
                 </button>
 
-                {/* Configured Test Account Quick-Fill */}
-                <div className="p-2 rounded-card bg-accent/5 border border-accent/20 text-center">
-                  <p className="text-[10px] text-text-secondary">
-                    Test Account: <span className="font-mono font-bold text-text-primary">+91 7722890254</span> (Code: <span className="font-mono font-bold text-accent">958921</span>)
+                {/* Pre-configured Developer Test Account Card */}
+                <div className="p-3 rounded-card bg-accent/5 border border-accent/20">
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="text-[11px] font-semibold text-text-primary">
+                      Pre-configured Test Account
+                    </span>
+                    <span className="text-[9px] uppercase tracking-wider font-mono font-bold px-1.5 py-0.5 rounded-full bg-accent/15 text-accent">
+                      Instant Access
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-text-secondary leading-relaxed mb-2">
+                    Number: <span className="font-mono font-semibold text-text-primary">+91 7722890254</span> · OTP: <span className="font-mono font-bold text-accent">958921</span>
                   </p>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setPhone("7722890254");
-                      setPhoneOtp("958921");
-                    }}
-                    className="text-[10px] font-semibold text-accent hover:underline mt-0.5 inline-block"
-                  >
-                    Auto-fill Test Credentials
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        signInWithTestAccount("+917722890254");
+                        onClose();
+                        if (onSuccess) onSuccess();
+                      }}
+                      className="btn-primary flex-1 min-h-[34px] text-xs font-semibold"
+                    >
+                      Sign In as Test Member (1-Click)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPhone("7722890254");
+                        setPhoneOtp("958921");
+                      }}
+                      className="btn-secondary px-3 min-h-[34px] text-xs font-medium"
+                    >
+                      Auto-fill
+                    </button>
+                  </div>
                 </div>
               </form>
             ) : (

@@ -326,7 +326,7 @@ export class WearIDConnect {
             ${rec.summaryText}
           </p>
           <div style="font-size: 10px; color: #73776F; margin-bottom: 12px;">
-            ✓ Invariant 7: Zero anatomical measurements transmitted (latency: ${rec.latencyMs}ms)
+            [Verified] Invariant 7: Zero anatomical measurements transmitted (latency: ${rec.latencyMs}ms)
           </div>
           <button 
             id="wearid-apply-size-btn"

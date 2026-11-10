@@ -1,7 +1,7 @@
 {
   "version": 1,
   "historyId": "d156bdf0-ce64-4f71-a157-06b4c93c6651",
-  "currentRevision": "4ba68fa8-b451-49db-a008-29eae77612c4",
+  "currentRevision": "46358f75-ba3f-48e1-b841-09abff40eaa6",
   "pendingChanges": false,
   "files": {
     "AGENTS.md": {
@@ -25,8 +25,8 @@
       "content": "C:\\Users\\aarus\\.cache\\hyperframes\\history\\d156bdf0-ce64-4f71-a157-06b4c93c6651\\blobs\\53\\53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
     },
     "index.html": {
-      "hash": "45cc1c27e3f6b3ac97f63aefcccc4f9dd57d5ae4e31adb28f06f4368cf74f0cc",
-      "content": "C:\\Users\\aarus\\.cache\\hyperframes\\history\\d156bdf0-ce64-4f71-a157-06b4c93c6651\\blobs\\45\\45cc1c27e3f6b3ac97f63aefcccc4f9dd57d5ae4e31adb28f06f4368cf74f0cc"
+      "hash": "c70579ada2782896b5524d02de63f302f1a184e71d38811a2533ea85e51de8aa",
+      "content": "C:\\Users\\aarus\\.cache\\hyperframes\\history\\d156bdf0-ce64-4f71-a157-06b4c93c6651\\blobs\\c7\\c70579ada2782896b5524d02de63f302f1a184e71d38811a2533ea85e51de8aa"
     },
     "meta.json": {
       "hash": "d807f86a5bbdc0852468172295fab00eee5feecaa8696aa2b10a0468be8b740c",
@@ -56,12 +56,27 @@
           "after": "C:\\Users\\aarus\\.cache\\hyperframes\\history\\d156bdf0-ce64-4f71-a157-06b4c93c6651\\blobs\\45\\45cc1c27e3f6b3ac97f63aefcccc4f9dd57d5ae4e31adb28f06f4368cf74f0cc"
         }
       }
+    },
+    "46358f75-ba3f-48e1-b841-09abff40eaa6": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1794309465953,
+      "endedAt": 1794309465956,
+      "files": {
+        "index.html": {
+          "before": "C:\\Users\\aarus\\.cache\\hyperframes\\history\\d156bdf0-ce64-4f71-a157-06b4c93c6651\\blobs\\45\\45cc1c27e3f6b3ac97f63aefcccc4f9dd57d5ae4e31adb28f06f4368cf74f0cc",
+          "after": "C:\\Users\\aarus\\.cache\\hyperframes\\history\\d156bdf0-ce64-4f71-a157-06b4c93c6651\\blobs\\c7\\c70579ada2782896b5524d02de63f302f1a184e71d38811a2533ea85e51de8aa"
+        }
+      }
     }
   },
   "checks": {
     "latest": {
-      "revision": "4ba68fa8-b451-49db-a008-29eae77612c4",
-      "id": "f3beb101-959f-4fc3-81a1-92fa53736fb7"
+      "revision": "46358f75-ba3f-48e1-b841-09abff40eaa6",
+      "id": "eba3b6d7-b618-4ff7-a98c-c34207fad8b7"
     },
     "revisions": {
       "4ba68fa8-b451-49db-a008-29eae77612c4": [
@@ -92,6 +107,38 @@
           "contentHash": "b6dfd8bc70438080417616439fc2747fad167a399bf8ed17838a9afec9204765",
           "revision": "4ba68fa8-b451-49db-a008-29eae77612c4",
           "inputFingerprint": "d3c5ec4ef3e3972590171192a3ea5d2683175cab0ffeabe8cda583d4de66b9ca",
+          "inputScope": "local-project-files",
+          "attribution": "recorded-revision"
+        }
+      ],
+      "46358f75-ba3f-48e1-b841-09abff40eaa6": [
+        {
+          "id": "eba3b6d7-b618-4ff7-a98c-c34207fad8b7",
+          "scope": "project",
+          "report": "E:\\Projects\\WearID\\brag-output\\composition\\.hyperframes\\artifacts\\checks\\eba3b6d7-b618-4ff7-a98c-c34207fad8b7.json",
+          "metadata": {
+            "ok": true,
+            "browserSkipped": false,
+            "options": {
+              "samples": 9,
+              "atTransitions": false,
+              "maxIssues": 80,
+              "collapseStatic": true,
+              "tolerance": 2,
+              "timeout": 45000,
+              "cache": true,
+              "contrast": true,
+              "craft": true,
+              "strict": false,
+              "snapshots": false,
+              "browserGpuMode": "auto",
+              "includeUnmounted": false
+            }
+          },
+          "createdAt": 1794309478780,
+          "contentHash": "5288bcfee3d1f370e1c4c18cd20e2a69efdeea9945afd0f62c898253903bf4da",
+          "revision": "46358f75-ba3f-48e1-b841-09abff40eaa6",
+          "inputFingerprint": "218c106d5c31753975605bb3ead7bf27e3a6aa043c99836adc6a2bbe1da2a7ea",
           "inputScope": "local-project-files",
           "attribution": "recorded-revision"
         }
@@ -137,13 +184,14 @@
   },
   "renders": {
     "latest": {
-      "id": "58a82d86-c09f-487d-bb9e-ba7ae0386d03",
-      "completedAt": 1794299870154,
+      "id": "c163db4c-fb90-4a0d-9237-c906b5f33d1d",
+      "completedAt": 1794309524272,
       "output": "E:\\Projects\\WearID\\brag-output\\brag.mp4",
       "status": "completed",
-      "revision": "4ba68fa8-b451-49db-a008-29eae77612c4"
+      "revision": "46358f75-ba3f-48e1-b841-09abff40eaa6"
     },
     "retainedRevisions": [
+      "46358f75-ba3f-48e1-b841-09abff40eaa6",
       "4ba68fa8-b451-49db-a008-29eae77612c4"
     ]
   },

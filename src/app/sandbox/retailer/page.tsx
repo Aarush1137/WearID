@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { PILOT_PRODUCTS, PILOT_BRANDS, PilotProduct } from "@/core/data/pilotBrands";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, Badge } from "@/components/ui";
+import { Check } from "lucide-react";
 
 interface HandshakeLog {
   timestamp: string;
@@ -387,7 +388,7 @@ export default function RetailerSandboxPage() {
                 {/* Security Compliance Badge */}
                 <div className="p-3 rounded-lg bg-[#DDE4D9]/40 border border-[#425B48]/20 flex items-start gap-3">
                   <div className="w-5 h-5 rounded-full bg-[#2D6A4F] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
-                    ✓
+                    <Check className="w-3.5 h-3.5 text-white" />
                   </div>
                   <div className="text-xs">
                     <span className="font-bold text-[#242821] block">

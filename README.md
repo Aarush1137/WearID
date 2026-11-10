@@ -12,7 +12,7 @@
 
 ---
 
-## 🎬 Product Launch Overview
+## Product Launch Overview
 
 <p align="center">
   <video src="https://raw.githubusercontent.com/Aarush1137/WearID/main/brag-output/brag.mp4" poster="https://raw.githubusercontent.com/Aarush1137/WearID/main/brag-output/brag.jpg" width="100%" height="auto" controls="controls" playsinline muted autoplay loop>
@@ -26,7 +26,7 @@
 
 ---
 
-## 🌟 Key Capabilities
+## Key Capabilities
 
 ### 1. Sovereign Biometric Passport (Layer 1)
 - **Millimeter-Precision Biometrics:** Human dimensions stored strictly as canonical integer millimeters (`mm`) and mass in grams (`g`).
@@ -71,7 +71,7 @@
 
 ---
 
-## 🗂️ Verified Brand Catalog (28 Brands)
+## Verified Brand Catalog (28 Brands)
 
 WearID's database is backed by verified brand size charts and flat garment specifications with verified provenance:
 - **International Flagships:** Uniqlo India, Levi's India, Zara India, H&M India, Marks & Spencer, Nike, Decathlon India, Puma India, Clarks.
@@ -86,7 +86,7 @@ WearID's database is backed by verified brand size charts and flat garment speci
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## Tech Stack & Architecture
 
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript 5.7 (Strict Mode)
@@ -99,7 +99,7 @@ WearID's database is backed by verified brand size charts and flat garment speci
 
 ---
 
-## 🚀 Quickstart
+## Quickstart
 
 ### 1. Install Dependencies
 ```bash
@@ -124,13 +124,13 @@ npm run build
 
 ---
 
-## 🔒 Verification & Quality Certification
+## Verification & Quality Certification
 
 | Check | Tool | Status |
 |:---|:---|:---:|
-| **Unit & Integration Tests** | Vitest 2.1 | ✅ **502 passed across 24 suites** |
-| **Type Integrity** | TypeScript 5.7 (`tsc --noEmit`) | ✅ **0 errors** |
-| **Code Style & Lint** | ESLint (`next lint`) | ✅ **0 warnings, 0 errors** |
-| **Production Build** | Next.js 14 (`next build`) | ✅ **31 routes compiled** |
-| **Data Provenance** | Immutable Checksum Hashes | ✅ **100% verified** |
-| **Biometric Privacy** | AES-256-GCM Client Vault | ✅ **Invariants Certified** |
+| **Unit & Integration Tests** | Vitest 2.1 | **502 passed across 24 suites** |
+| **Type Integrity** | TypeScript 5.7 (`tsc --noEmit`) | **0 errors** |
+| **Code Style & Lint** | ESLint (`next lint`) | **0 warnings, 0 errors** |
+| **Production Build** | Next.js 14 (`next build`) | **31 routes compiled** |
+| **Data Provenance** | Immutable Checksum Hashes | **100% verified** |
+| **Biometric Privacy** | AES-256-GCM Client Vault | **Invariants Certified** |

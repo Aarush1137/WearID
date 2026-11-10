@@ -5,6 +5,7 @@ import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 import { OfflineBanner } from "@/components/pwa/OfflineBanner";
 import { InstallPrompt } from "@/components/pwa/InstallPrompt";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -20,9 +21,33 @@ const dmSerifDisplay = DM_Serif_Display({
   display: "swap",
 });
 
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://wear-id.vercel.app";
+
 export const metadata: Metadata = {
-  title: "WearID — Universal Clothing Size Profile",
-  description: "Universal clothing identity, deterministic body-to-garment fitting, and sovereign measurement portability.",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "WearID — Universal Clothing Identity & Deterministic Fitting",
+    template: "%s | WearID",
+  },
+  description:
+    "Universal clothing identity, deterministic body-to-garment fitting, shoe size cross-brand equivalence, and sovereign measurement portability.",
+  applicationName: "WearID",
+  authors: [{ name: "WearID Engineering Team", url: siteUrl }],
+  creator: "WearID",
+  publisher: "WearID",
+  keywords: [
+    "clothing size",
+    "size recommendation",
+    "shoe size comparison",
+    "bra size calculator",
+    "body measurement app",
+    "sizing passport",
+    "fit engine",
+    "tailor measurements",
+    "Uniqlo sizes",
+    "Zara sizes",
+    "Nike shoe sizes",
+  ],
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
@@ -33,6 +58,37 @@ export const metadata: Metadata = {
     icon: "/icons/icon-192.png",
     apple: "/icons/apple-touch-icon.png",
   },
+  openGraph: {
+    type: "website",
+    locale: "en_IN",
+    url: siteUrl,
+    siteName: "WearID",
+    title: "WearID — Universal Clothing Identity & Deterministic Fitting",
+    description:
+      "One sovereign sizing profile calibrated to your actual measurements. Deterministic fit matching across 28+ verified apparel and footwear brands.",
+    images: [
+      {
+        url: `${siteUrl}/media/brag.jpg`,
+        width: 1280,
+        height: 720,
+        alt: "WearID Universal Clothing Identity",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "WearID — Universal Clothing Identity & Deterministic Fitting",
+    description:
+      "Deterministic fit matching across 28+ verified apparel and footwear brands. Private by default.",
+    images: [`${siteUrl}/media/brag.jpg`],
+    creator: "@wearid",
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || "google_verification_placeholder_wearid",
+  },
+  alternates: {
+    canonical: siteUrl,
+  },
 };
 
 export const viewport: Viewport = {
@@ -41,6 +97,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   viewportFit: "cover",
+  interactiveWidget: "resizes-content",
 };
 
 export default function RootLayout({
@@ -59,6 +116,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased min-h-screen bg-bg-base text-text-primary flex flex-col">
+        <GoogleAnalytics />
         <ServiceWorkerRegister />
         <OfflineBanner />
         <ErrorBoundary>

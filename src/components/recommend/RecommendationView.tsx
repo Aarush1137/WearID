@@ -17,6 +17,7 @@ import {
   Shield,
   ThumbsUp,
   RotateCcw,
+  Star,
 } from "lucide-react";
 import { FitZoneVisualizer } from "./FitZoneVisualizer";
 import { GarmentDrapeOverlay } from "@/components/visual/GarmentDrapeOverlay";
@@ -450,13 +451,14 @@ export function RecommendationView() {
                       key={star}
                       type="button"
                       onClick={() => setFeedbackRating(star)}
-                      className={`min-h-[44px] min-w-[44px] rounded-btn border text-base font-bold transition-colors ${
+                      aria-label={`${star} star rating`}
+                      className={`min-h-[44px] min-w-[44px] rounded-btn border transition-colors flex items-center justify-center ${
                         feedbackRating >= star
-                          ? "bg-amber-100 border-amber-300 text-amber-700"
+                          ? "bg-amber-100 dark:bg-amber-950/50 border-amber-300 dark:border-amber-800 text-amber-600 dark:text-amber-400"
                           : "bg-bg-elevated border-border text-text-tertiary"
                       }`}
                     >
-                      ★
+                      <Star className={`w-4 h-4 ${feedbackRating >= star ? "fill-amber-500 text-amber-500" : "text-text-tertiary"}`} />
                     </button>
                   ))}
                 </div>
@@ -500,8 +502,10 @@ export function RecommendationView() {
           </form>
         ) : (
           <div className="flex items-center justify-between bg-bg-elevated/40 p-3.5 rounded-card border border-border">
-            <span className="text-xs text-text-secondary">
-              Logged {feedbackRating}★ ({feedbackFeel}) for {selectedProduct.brandName} Size {recommendation.recommendedSize}.
+            <span className="text-xs text-text-secondary flex items-center gap-1">
+              <span>Logged {feedbackRating}</span>
+              <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500 inline" />
+              <span>({feedbackFeel}) for {selectedProduct.brandName} Size {recommendation.recommendedSize}.</span>
             </span>
             <button
               type="button"

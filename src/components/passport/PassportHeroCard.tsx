@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useProfileStore } from "@/core/state/profileStore";
 import { formatMeasurement, calculateProfileCompleteness, getConfidenceMeta } from "@/core/formatters";
 import { CompletenessRing } from "./CompletenessRing";
-import { ShieldCheck, Sparkles, Share2, Ruler, Shirt, User, Layers, Heart } from "lucide-react";
+import { ShieldCheck, Sparkles, Share2, Ruler, Shirt, User, Layers, Heart, Star } from "lucide-react";
 import { BodySilhouetteCanvas } from "@/components/visual/BodySilhouetteCanvas";
 import { calculateBraSize } from "@/core/sizing/braSizing";
 
@@ -223,8 +223,10 @@ export function PassportHeroCard() {
                     </p>
                   )}
                 </div>
-                <div className="flex items-center text-amber-600 text-xs font-semibold">
-                  {"★".repeat(ref.fitRating)}
+                <div className="flex items-center gap-0.5" aria-label={`${ref.fitRating} of 5 stars`}>
+                  {Array.from({ length: ref.fitRating }).map((_, i) => (
+                    <Star key={i} className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                  ))}
                 </div>
               </div>
             ))}

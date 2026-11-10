@@ -23,6 +23,7 @@ import {
   Lock,
   Plus,
   RefreshCw,
+  X,
 } from "lucide-react";
 
 export default function ProfilePage() {
@@ -269,9 +270,10 @@ export default function ProfilePage() {
                   <button
                     type="button"
                     onClick={() => setIsAddMemberOpen(false)}
-                    className="text-text-tertiary hover:text-text-primary text-sm font-bold"
+                    aria-label="Close modal"
+                    className="p-1 rounded-btn text-text-tertiary hover:text-text-primary hover:bg-bg-elevated transition-colors"
                   >
-                    ✕
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
 

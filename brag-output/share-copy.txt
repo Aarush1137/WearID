@@ -1,16 +1,16 @@
-# Twitter / X / LinkedIn Launch Copy
+# Launch Announcement Copy
 
-Clothing sizes are completely inconsistent. Your fit profile shouldn't be. 
+Clothing sizes are completely inconsistent across brands. Your fit profile shouldn't be.
 
-One body. Four completely different sizes across brands (Zara L = H&M M = Westside S = Snitch XL).
+One body. Four completely different sizes (Zara L = H&M M = Westside S = Snitch XL).
 
-Introducing WearID — sovereign biometric clothing identity and deterministic millimeter body-to-garment sizing. 👗📏
+Introducing WearID — sovereign biometric clothing identity and deterministic body-to-garment fitting.
 
-✨ Pure millimeter anatomical passport
-✨ 2D garment drape & ease modeling (zero guesswork)
-✨ Instant WhatsApp tailor card export
-✨ Zero raw biometrics shared with retailers
+- Pure millimeter anatomical passport (AES-256 encrypted)
+- 2D garment drape & ease modeling with 96% fit confidence
+- Instant WhatsApp tailor card export for bespoke cutters
+- Zero raw biometrics shared with third-party retailers
 
-Try it free: https://wear-id.vercel.app
+Experience the fitting engine: https://wear-id.vercel.app
 
-#FashionTech #WearID #SovereignIdentity #NextJS #Tailoring #ECommerce
+#FashionTech #WearID #SovereignIdentity #NextJS #Engineering #Tailoring #ECommerce

@@ -50,4 +50,4 @@ Big editorial split screen: "ONE BODY. FOUR DIFFERENT SIZES." Rapid punch-in on 
 | **Scene 5: Brand Outro** | 15.5s – 18.0s | 2.5s | WearID emblem, editorial tagline, and live URL | "WearID — Your clothing identity, everywhere. wear-id.vercel.app" |
 
 ## Share copy (draft)
-"Clothing sizes are completely inconsistent. Your fit profile shouldn't be. Introducing WearID — pure millimeter deterministic sizing across every brand. 👗📏 https://wear-id.vercel.app"
+"Clothing sizes are completely inconsistent. Your fit profile shouldn't be. Introducing WearID — pure millimeter deterministic sizing across every brand. https://wear-id.vercel.app"

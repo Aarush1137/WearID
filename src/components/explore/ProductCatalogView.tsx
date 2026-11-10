@@ -64,6 +64,35 @@ export function ProductCatalogView() {
 
   const handleSelectBrand = (brandId: string) => {
     setSelectedBrandFilter(brandId);
+
+    // If a specific brand is selected, automatically ensure gender or category filters do not hide all its items
+    if (brandId !== "all") {
+      const brandProducts = PILOT_PRODUCTS.filter((p) => p.brandId === brandId);
+      if (brandProducts.length > 0) {
+        // Check if current gender filter excludes every product for this brand
+        if (genderFilter !== "all") {
+          const hasMatchingGender = brandProducts.some((p) => {
+            const itemGender = p.layer2Charts?.[0]?.gender || "unisex";
+            if (genderFilter === "female") return itemGender !== "male";
+            if (genderFilter === "male") return itemGender !== "female";
+            return true;
+          });
+          if (!hasMatchingGender) {
+            setGenderFilter("all");
+          }
+        }
+
+        // Check if current category filter excludes every product for this brand
+        if (categorySelection.mainCategory !== "all") {
+          setCategorySelection({
+            mainCategory: "all",
+            subCategory: "all",
+            label: "All Items",
+          });
+        }
+      }
+    }
+
     setTimeout(() => {
       const el = document.getElementById("catalog-section");
       if (el) {
@@ -211,6 +240,7 @@ export function ProductCatalogView() {
 
           <div
             ref={brandScrollRef}
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             className="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth px-1 py-1"
           >
             <button
@@ -286,8 +316,9 @@ export function ProductCatalogView() {
                 <span className="text-[10px] font-semibold px-2 py-0.5 rounded-badge bg-accent text-white uppercase tracking-wider">
                   Active Brand Filter
                 </span>
-                <span className="text-[10px] font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-badge uppercase">
-                  ✓ Verified Provenance
+                <span className="text-[10px] font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950 px-2 py-0.5 rounded-badge uppercase inline-flex items-center gap-1">
+                  <Check className="w-3 h-3 text-emerald-600 dark:text-emerald-400 inline" />
+                  Verified Provenance
                 </span>
                 <span className="text-[10px] text-text-tertiary">
                   {activeBrand.layerSupport[0]}

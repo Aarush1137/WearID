@@ -5,9 +5,23 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useProfileStore } from "@/core/state/profileStore";
 import { useAuthStore } from "@/lib/auth/authStore";
-import { ChevronDown, Plus, User, ArrowRightLeft, LogIn, LogOut, ShieldCheck, Users, Sparkles } from "lucide-react";
+import {
+  ChevronDown,
+  Plus,
+  User,
+  ArrowRightLeft,
+  LogIn,
+  LogOut,
+  ShieldCheck,
+  Users,
+  Sparkles,
+  MessageSquarePlus,
+  UserPlus,
+} from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { AuthModal } from "@/components/auth/AuthModal";
+import { FeedbackModal } from "@/components/feedback/FeedbackModal";
+import { InviteModal } from "@/components/invite/InviteModal";
 
 export function TopNavigation() {
   const pathname = usePathname();
@@ -23,6 +37,8 @@ export function TopNavigation() {
   const { user, isAuthenticated, signOut, initAuth } = useAuthStore();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+  const [isInviteOpen, setIsInviteOpen] = useState(false);
 
   useEffect(() => {
     initAuth();
@@ -135,7 +151,29 @@ export function TopNavigation() {
         </div>
 
         {/* Right Controls: Unit Toggle, Theme Toggle & Profile Switcher */}
-        <div className="flex items-center gap-2.5 sm:gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Quick Invite Button */}
+          <button
+            type="button"
+            onClick={() => setIsInviteOpen(true)}
+            className="min-h-[44px] px-3 rounded-btn border border-accent/30 bg-accent/10 text-accent hover:bg-accent/20 transition-colors hidden md:inline-flex items-center gap-1.5 text-xs font-semibold shadow-xs"
+            title="Invite friends & family to WearID"
+          >
+            <UserPlus className="w-3.5 h-3.5" />
+            <span>Invite</span>
+          </button>
+
+          {/* Quick Beta Feedback Button */}
+          <button
+            type="button"
+            onClick={() => setIsFeedbackOpen(true)}
+            className="min-h-[44px] px-3 rounded-btn border border-border bg-bg-surface hover:bg-bg-elevated transition-colors hidden lg:inline-flex items-center gap-1.5 text-xs font-semibold text-text-secondary hover:text-text-primary shadow-xs"
+            title="Submit Beta feedback or request brand"
+          >
+            <MessageSquarePlus className="w-3.5 h-3.5 text-accent" />
+            <span>Feedback</span>
+          </button>
+
           {/* Unit Toggle Switch */}
           <button
             onClick={toggleDisplayUnit}
@@ -252,6 +290,30 @@ export function TopNavigation() {
                         type="button"
                         onClick={() => {
                           setIsProfileMenuOpen(false);
+                          setIsInviteOpen(true);
+                        }}
+                        className="w-full text-left px-3.5 py-2.5 min-h-[44px] flex items-center gap-2 text-xs font-medium text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition-colors"
+                      >
+                        <UserPlus className="w-4 h-4 text-accent" />
+                        Invite Friends & Family
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsProfileMenuOpen(false);
+                          setIsFeedbackOpen(true);
+                        }}
+                        className="w-full text-left px-3.5 py-2.5 min-h-[44px] flex items-center gap-2 text-xs font-medium text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition-colors"
+                      >
+                        <MessageSquarePlus className="w-4 h-4 text-accent" />
+                        Submit Beta Feedback
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsProfileMenuOpen(false);
                           if (typeof window !== "undefined") {
                             localStorage.removeItem("wearid_tutorial_completed");
                             window.location.reload();
@@ -283,11 +345,21 @@ export function TopNavigation() {
         </div>
       </div>
 
-      {/* Embedded Auth Modal */}
+      {/* Embedded Modals */}
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         onSuccess={() => setIsAuthModalOpen(false)}
+      />
+
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        onClose={() => setIsFeedbackOpen(false)}
+      />
+
+      <InviteModal
+        isOpen={isInviteOpen}
+        onClose={() => setIsInviteOpen(false)}
       />
     </header>
   );
