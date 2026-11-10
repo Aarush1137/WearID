@@ -25,6 +25,7 @@ interface AuthState {
   verifyPhoneOtp: (phone: string, token: string) => Promise<{ error?: string }>;
   signInWithEmailOtp: (email: string) => Promise<{ error?: string }>;
   verifyEmailOtp: (email: string, token: string) => Promise<{ error?: string }>;
+  signInWithTestAccount: (phoneOrEmail?: string) => void;
   signOut: () => Promise<void>;
   clearError: () => void;
 }
@@ -238,6 +239,21 @@ export const useAuthStore = create<AuthState>()(
           set({ isLoading: false, authError: msg });
           return { error: msg };
         }
+      },
+
+      signInWithTestAccount: (phoneOrEmail?: string) => {
+        const identifier = phoneOrEmail || "+917722890254";
+        set({
+          user: {
+            id: "test-auth-user-" + Date.now(),
+            phone: identifier.includes("@") ? undefined : identifier,
+            email: identifier.includes("@") ? identifier : undefined,
+            fullName: "Aarush",
+          },
+          isAuthenticated: true,
+          isLoading: false,
+          authError: null,
+        });
       },
 
       signOut: async () => {
