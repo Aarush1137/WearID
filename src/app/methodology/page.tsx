@@ -1,6 +1,24 @@
 import React from "react";
 import Link from "next/link";
+import { Metadata } from "next";
 import { ShieldCheck, ArrowLeft, Ruler, BookOpen, Layers } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Apparel Sizing Methodology & Measurement Science — WearID",
+  description:
+    "Deterministic fitting methodology, anatomical human dimensions vs laid-flat textile dimensions, ease allowance modeling, and provenance verification standards.",
+  keywords: [
+    "clothing sizing methodology",
+    "anatomical body measurements",
+    "garment dimensions",
+    "wearing ease allowance",
+    "clothing size comparison science",
+    "cloth size comparisons",
+  ],
+  alternates: {
+    canonical: "https://wear-id.vercel.app/methodology",
+  },
+};
 
 export default function MethodologyPage() {
   return (

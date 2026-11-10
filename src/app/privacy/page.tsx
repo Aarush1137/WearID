@@ -1,6 +1,22 @@
 import React from "react";
 import Link from "next/link";
+import { Metadata } from "next";
 import { ShieldCheck, ArrowLeft, Lock, EyeOff, KeyRound } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Biometric Privacy Charter & Data Sovereignty — WearID",
+  description:
+    "Private by default. Sovereign body measurements stored locally and encrypted. Granular scoped retailer authorization tokens without sharing raw anatomical biometrics.",
+  keywords: [
+    "clothing privacy charter",
+    "biometric data sovereignty",
+    "private size recommendations",
+    "wearid privacy policy",
+  ],
+  alternates: {
+    canonical: "https://wear-id.vercel.app/privacy",
+  },
+};
 
 export default function PrivacyPage() {
   return (

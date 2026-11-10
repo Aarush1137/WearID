@@ -46,12 +46,21 @@ export const metadata: Metadata = {
     "wear-id",
     "wear id app",
     "wearid clothing",
+    "clothing size comparison",
+    "cloth size comparisons",
+    "cloth size comparison",
+    "fit check",
+    "clothing fit check",
+    "size comparison",
+    "find my clothing size across brands",
+    "clothing size converter",
     "universal clothing identity",
     "deterministic fitting",
     "clothing size passport",
     "clothing size",
     "size recommendation",
     "shoe size comparison",
+    "shoe size converter",
     "bra size calculator",
     "body measurement app",
     "sizing passport",
@@ -60,6 +69,8 @@ export const metadata: Metadata = {
     "Uniqlo sizes",
     "Zara sizes",
     "Nike shoe sizes",
+    "H&M sizes",
+    "Levi's sizes",
   ],
   manifest: "/manifest.json",
   appleWebApp: {
@@ -183,6 +194,52 @@ export default function RootLayout({
                   url: siteUrl,
                   logo: `${siteUrl}/icons/icon-512.png`,
                   sameAs: ["https://github.com/Aarush1137/WearID"],
+                },
+                {
+                  "@type": "FAQPage",
+                  "@id": `${siteUrl}/#faq`,
+                  mainEntity: [
+                    {
+                      "@type": "Question",
+                      name: "How does clothing size comparison work across different brands?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Every clothing brand grades their sizes differently—a Medium in Zara may measure 520mm chest laid flat, while a Medium in Uniqlo measures 560mm. WearID performs deterministic millimeter-level comparison between your actual body measurements and physical laid-flat pattern dimensions from 28+ verified brand databases, eliminating vanity sizing guesswork.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "What is a digital fit check and how does WearID do it?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "A digital fit check calculates the precise wearing ease (the difference between your body circumference and garment dimensions laid flat) across chest, shoulders, waist, and hips. WearID checks your anatomical profile against brand grading tables and explains whether an item will fit tight, true to size, or relaxed before you order.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Why do cloth size comparisons vary so much between brands?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Brands cut garments using different fit models, regional target demographics (European slim cut vs US relaxed fit), and fabric stretch allowances. WearID eliminates size ambiguity by converting all measurements to canonical millimeters (mm) with verified brand provenance.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Is my body measurement data kept private?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "Yes. Following WearID's strict privacy invariants, body biometrics are stored locally on your device and private by default. When sharing sizing with third-party retailers, WearID issues cryptographic fit tokens (e.g., 'Size L fits best (96% fit confidence)') without ever revealing raw anatomical numbers.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "Which brands can I compare on WearID?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "WearID supports 28+ audited apparel and footwear brands including Zara, H&M, Uniqlo, Levi's, Snitch, Westside, Marks & Spencer, Nike, Adidas, Puma, and New Balance with verified garment dimension provenance.",
+                      },
+                    },
+                  ],
                 },
               ],
             }),

@@ -15,6 +15,8 @@ import {
   Scissors,
   Heart,
   Store,
+  HelpCircle,
+  ChevronDown,
 } from "lucide-react";
 import { PILOT_BRANDS } from "@/core/data/pilotBrands";
 import { useAuthStore } from "@/lib/auth/authStore";
@@ -370,6 +372,62 @@ export default function HomePage() {
                     Verified
                   </span>
                 </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Frequently Asked Questions: Clothing Size Comparison & Fit Check SEO */}
+        <section className="py-16 border-t border-border bg-bg-base" id="faq">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-badge bg-accent-subtle text-accent text-xs font-semibold uppercase mb-2">
+                <HelpCircle className="w-3.5 h-3.5" />
+                <span>Frequently Asked Questions</span>
+              </div>
+              <h2 className="font-bold text-2xl sm:text-3xl text-text-primary tracking-tight">
+                Clothing Size Comparisons & Digital Fit Check
+              </h2>
+              <p className="text-xs sm:text-sm text-text-secondary mt-2 max-w-xl mx-auto">
+                Everything you need to know about comparing sizes across brands and finding your perfect fit without guesswork.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {[
+                {
+                  q: "How does clothing size comparison work across different brands?",
+                  a: "Every clothing brand grades their garments differently—a Medium in Zara may measure 520mm chest laid flat, while a Medium in Uniqlo measures 560mm. WearID eliminates size confusion through deterministic millimeter-level comparison between your actual body measurements and physical laid-flat pattern dimensions from 28+ verified brand databases.",
+                },
+                {
+                  q: "What is a digital fit check and how does WearID perform it?",
+                  a: "A digital fit check calculates the precise wearing ease (the difference between your body circumference and garment dimensions laid flat) across chest, shoulders, waist, and hips. WearID evaluates your anatomical profile against brand grading tables and explains whether an item will fit tight, true to size, or relaxed before you place an order.",
+                },
+                {
+                  q: "Why do cloth size comparisons vary so much between brands like Zara, H&M, and Uniqlo?",
+                  a: "Brands cut garments using different regional target demographics (European slim cut vs US/Asian relaxed fit) and fabric stretch tolerances. A size 'Large' is not a universal metric. WearID standardizes all sizing into canonical millimeters (mm) with verified manufacturer provenance.",
+                },
+                {
+                  q: "Is my personal body measurement data kept private and secure?",
+                  a: "Yes. In accordance with WearID's strict privacy invariants, all anatomical measurements are stored locally on your device and private by default. When sharing sizing with third-party retailers, WearID generates cryptographic fit tokens (e.g. 'Size L fits best (96% fit confidence)') without ever disclosing raw biometric numbers.",
+                },
+                {
+                  q: "Which apparel and footwear brands can I compare on WearID?",
+                  a: "WearID supports 28+ audited apparel and footwear brands including Zara, H&M, Uniqlo, Levi's, Snitch, Westside, Marks & Spencer, Nike, Adidas, Puma, and New Balance with verified garment dimensions and grading rules.",
+                },
+              ].map((faq, idx) => (
+                <details
+                  key={idx}
+                  className="group rounded-card border border-border bg-bg-surface p-4 sm:p-5 transition-colors open:border-accent/40 open:bg-bg-surface"
+                >
+                  <summary className="flex items-center justify-between cursor-pointer list-none text-sm sm:text-base font-semibold text-text-primary gap-4">
+                    <span>{faq.q}</span>
+                    <ChevronDown className="w-4 h-4 text-text-tertiary transition-transform duration-200 group-open:rotate-180 flex-shrink-0" />
+                  </summary>
+                  <p className="mt-3 text-xs sm:text-sm text-text-secondary leading-relaxed pt-2 border-t border-border/50">
+                    {faq.a}
+                  </p>
+                </details>
               ))}
             </div>
           </div>
