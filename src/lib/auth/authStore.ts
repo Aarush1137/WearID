@@ -197,8 +197,9 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ isLoading: true, authError: null });
           const appUrl =
-            process.env.NEXT_PUBLIC_APP_URL ||
-            (typeof window !== "undefined" ? window.location.origin : "https://wear-id.vercel.app");
+            typeof window !== "undefined" && window.location.origin
+              ? window.location.origin
+              : process.env.NEXT_PUBLIC_APP_URL || "https://wear-id.vercel.app";
 
           const { error } = await supabase.auth.signInWithOAuth({
             provider: "google",
@@ -329,8 +330,9 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ isLoading: true, authError: null });
           const appUrl =
-            process.env.NEXT_PUBLIC_APP_URL ||
-            (typeof window !== "undefined" ? window.location.origin : "https://wear-id.vercel.app");
+            typeof window !== "undefined" && window.location.origin
+              ? window.location.origin
+              : process.env.NEXT_PUBLIC_APP_URL || "https://wear-id.vercel.app";
 
           const { error } = await supabase.auth.signInWithOtp({
             email: email.trim().toLowerCase(),

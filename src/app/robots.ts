@@ -1,7 +1,15 @@
 import { MetadataRoute } from "next";
 
+function getBaseUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_APP_URL;
+  if (envUrl && !envUrl.includes("localhost") && !envUrl.includes("127.0.0.1") && envUrl.startsWith("http")) {
+    return envUrl.replace(/\/$/, "");
+  }
+  return "https://wear-id.vercel.app";
+}
+
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://wear-id.vercel.app";
+  const baseUrl = getBaseUrl();
 
   return {
     rules: [
@@ -9,6 +17,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: [
           "/",
+          "/app",
           "/app/compare",
           "/app/explore",
           "/methodology",

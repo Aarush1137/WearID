@@ -21,7 +21,11 @@ const dmSerifDisplay = DM_Serif_Display({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://wear-id.vercel.app";
+const envUrl = process.env.NEXT_PUBLIC_APP_URL;
+const siteUrl =
+  envUrl && !envUrl.includes("localhost") && !envUrl.includes("127.0.0.1") && envUrl.startsWith("http")
+    ? envUrl.replace(/\/$/, "")
+    : "https://wear-id.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

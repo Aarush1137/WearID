@@ -1,7 +1,15 @@
 import { MetadataRoute } from "next";
 
+function getBaseUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_APP_URL;
+  if (envUrl && !envUrl.includes("localhost") && !envUrl.includes("127.0.0.1") && envUrl.startsWith("http")) {
+    return envUrl.replace(/\/$/, "");
+  }
+  return "https://wear-id.vercel.app";
+}
+
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://wear-id.vercel.app";
+  const baseUrl = getBaseUrl();
   const now = new Date();
 
   return [
@@ -10,6 +18,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "daily",
       priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/app`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.95,
     },
     {
       url: `${baseUrl}/app/compare`,
