@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppShell } from "@/components/layout/AppShell";
 import { PassportHeroCard } from "@/components/passport/PassportHeroCard";
@@ -8,20 +8,37 @@ import { PILOT_BRANDS } from "@/core/data/pilotBrands";
 import Link from "next/link";
 import { ArrowRight, ShieldCheck } from "lucide-react";
 import { useProfileStore } from "@/core/state/profileStore";
+import { GuidedTutorialModal } from "@/components/tutorial/GuidedTutorialModal";
 
 export function AppPageClient() {
   const router = useRouter();
   const { getActiveProfile } = useProfileStore();
+  const [showTutorial, setShowTutorial] = useState(false);
 
   useEffect(() => {
     const activeProfile = getActiveProfile();
     if (!activeProfile?.name) {
       router.replace("/onboarding");
+      return;
+    }
+
+    // Check if first-time user has completed the tutorial
+    if (typeof window !== "undefined") {
+      const completed = localStorage.getItem("wearid_tutorial_completed");
+      if (!completed) {
+        setShowTutorial(true);
+      }
     }
   }, [getActiveProfile, router]);
 
   return (
     <AppShell>
+      {/* Mandatory First-Time Onboarding Tutorial */}
+      <GuidedTutorialModal
+        isOpen={showTutorial}
+        onComplete={() => setShowTutorial(false)}
+      />
+
       <div className="space-y-8">
         {/* Active Profile Biometric Passport */}
         <PassportHeroCard />
@@ -50,7 +67,7 @@ export function AppPageClient() {
             {PILOT_BRANDS.map((brand) => (
               <Link
                 key={brand.id}
-                href="/app/recommendations"
+                href="/app/recommend"
                 className="p-3.5 rounded-card bg-bg-elevated/40 border border-border hover:border-accent/40 hover:bg-bg-elevated/70 transition-all flex flex-col justify-between min-h-[96px] group"
               >
                 <div>
@@ -63,7 +80,7 @@ export function AppPageClient() {
                 </div>
                 <div className="flex items-center justify-between mt-2 pt-2 border-t border-border/60">
                   <span className="text-[10px] font-semibold text-accent uppercase">
-                    Test Fit
+                    Match Fit
                   </span>
                   <ArrowRight className="w-3 h-3 text-text-secondary group-hover:translate-x-0.5 transition-transform" />
                 </div>

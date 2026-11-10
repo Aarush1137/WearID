@@ -275,7 +275,10 @@ export function BodySilhouetteCanvas({
                     />
                     {/* Pulsing indicator node on active */}
                     {isActive && (
-                      <circle cx={x2 + 2} cy={l.yPos} r="3" fill="var(--terracotta)" />
+                      <g className="animate-pulse-subtle">
+                        <circle cx={x2 + 2} cy={l.yPos} r="4.5" fill="var(--terracotta)" opacity="0.3" />
+                        <circle cx={x2 + 2} cy={l.yPos} r="2.5" fill="var(--terracotta)" />
+                      </g>
                     )}
                   </g>
                 );

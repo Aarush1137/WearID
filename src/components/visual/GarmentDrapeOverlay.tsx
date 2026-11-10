@@ -257,6 +257,19 @@ export function GarmentDrapeOverlay({
               </span>
             </div>
           </div>
+
+          {/* Color-Coded Ease Halo Legend */}
+          <div className="mt-2.5 flex items-center justify-center gap-4 text-[11px] text-text-secondary select-none">
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" /> Ideal Ease (+40 to +120mm)
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-amber-500" /> Snug / Loose
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-rose-500" /> Tension Pull
+            </span>
+          </div>
         </div>
 
         {/* Sensory Fit Breakdown Cards (Everyday feel explanations) */}

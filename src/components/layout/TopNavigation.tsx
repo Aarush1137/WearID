@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useProfileStore } from "@/core/state/profileStore";
 import { useAuthStore } from "@/lib/auth/authStore";
-import { ChevronDown, Plus, User, ArrowRightLeft, LogIn, LogOut, ShieldCheck, Users } from "lucide-react";
+import { ChevronDown, Plus, User, ArrowRightLeft, LogIn, LogOut, ShieldCheck, Users, Sparkles } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { AuthModal } from "@/components/auth/AuthModal";
 
@@ -219,6 +219,21 @@ export function TopNavigation() {
                         <Users className="w-4 h-4" />
                         + Add Partner or Family Member
                       </Link>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsProfileMenuOpen(false);
+                          if (typeof window !== "undefined") {
+                            localStorage.removeItem("wearid_tutorial_completed");
+                            window.location.reload();
+                          }
+                        }}
+                        className="w-full text-left px-3.5 py-2.5 min-h-[44px] flex items-center gap-2 text-xs font-medium text-text-secondary hover:text-text-primary hover:bg-bg-elevated transition-colors"
+                      >
+                        <Sparkles className="w-4 h-4 text-accent" />
+                        Replay Guided Tour
+                      </button>
 
                       <button
                         type="button"

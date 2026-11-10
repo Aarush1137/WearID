@@ -439,3 +439,45 @@ html.light {
 .safe-bottom {
   bottom: env(safe-area-inset-bottom, 0px);
 }
+
+/* ─── WearID Refined Motion & Micro-Interactions ─── */
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 0.85;
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.02);
+  }
+}
+
+@keyframes halo-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 4px rgba(78, 154, 110, 0.25));
+  }
+  50% {
+    filter: drop-shadow(0 0 9px rgba(78, 154, 110, 0.45));
+  }
+}
+
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+.animate-halo-glow {
+  animation: halo-glow 2.5s ease-in-out infinite;
+}
+
+.animate-float-gentle {
+  animation: float-gentle 4s ease-in-out infinite;
+}
