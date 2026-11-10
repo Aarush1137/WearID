@@ -36,6 +36,15 @@ export const metadata: Metadata = {
   creator: "WearID",
   publisher: "WearID",
   keywords: [
+    "WearID",
+    "Wear ID",
+    "wearid",
+    "wear-id",
+    "wear id app",
+    "wearid clothing",
+    "universal clothing identity",
+    "deterministic fitting",
+    "clothing size passport",
     "clothing size",
     "size recommendation",
     "shoe size comparison",
@@ -57,6 +66,17 @@ export const metadata: Metadata = {
   icons: {
     icon: "/icons/icon-192.png",
     apple: "/icons/apple-touch-icon.png",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   openGraph: {
     type: "website",
@@ -92,7 +112,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#425B48",
+  themeColor: "#1B2A4A",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -112,6 +132,56 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('wearid-theme');if(t==='dark'){document.documentElement.classList.add('dark')}else if(t==='light'){document.documentElement.classList.add('light')}}catch(e){}})()`,
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "WebSite",
+                  "@id": `${siteUrl}/#website`,
+                  url: siteUrl,
+                  name: "WearID",
+                  alternateName: [
+                    "Wear ID",
+                    "wearid",
+                    "wear-id",
+                    "WearID App",
+                    "WearID Clothing Identity",
+                  ],
+                  description:
+                    "Universal clothing identity, deterministic body-to-garment fitting engine, and sovereign sizing passport.",
+                  potentialAction: {
+                    "@type": "SearchAction",
+                    target: `${siteUrl}/app/explore?q={search_term_string}`,
+                    "query-input": "required name=search_term_string",
+                  },
+                },
+                {
+                  "@type": "SoftwareApplication",
+                  "@id": `${siteUrl}/#application`,
+                  name: "WearID",
+                  applicationCategory: "LifestyleApplication",
+                  operatingSystem: "All",
+                  offers: {
+                    "@type": "Offer",
+                    price: "0",
+                    priceCurrency: "USD",
+                  },
+                },
+                {
+                  "@type": "Organization",
+                  "@id": `${siteUrl}/#organization`,
+                  name: "WearID",
+                  url: siteUrl,
+                  logo: `${siteUrl}/icons/icon-512.png`,
+                  sameAs: ["https://github.com/Aarush1137/WearID"],
+                },
+              ],
+            }),
           }}
         />
       </head>

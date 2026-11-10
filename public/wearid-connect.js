@@ -85,13 +85,13 @@
     btn.style.transition = "all 0.2s ease";
 
     if (isSolid) {
-      btn.style.backgroundColor = "#425B48";
+      btn.style.backgroundColor = "#1B2A4A";
       btn.style.color = "#FFFFFF";
-      btn.style.border = "1px solid #425B48";
+      btn.style.border = "1px solid #1B2A4A";
     } else {
       btn.style.backgroundColor = "#FFFFFF";
-      btn.style.color = "#425B48";
-      btn.style.border = "1.5px solid #425B48";
+      btn.style.color = "#1B2A4A";
+      btn.style.border = "1.5px solid #1B2A4A";
     }
 
     btn.innerHTML =
@@ -126,37 +126,37 @@
     var overlay = document.createElement("div");
     overlay.className = "wearid-modal-overlay";
     overlay.style.cssText =
-      "position:fixed;inset:0;background:rgba(36,40,33,0.65);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:999999;padding:16px;";
+      "position:fixed;inset:0;background:rgba(17,22,34,0.65);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;z-index:999999;padding:16px;";
 
     var dialog = document.createElement("div");
     dialog.style.cssText =
-      "background:#FFFFFF;border-radius:12px;max-width:440px;width:100%;box-shadow:0 20px 40px rgba(0,0,0,0.2);border:1px solid #DDE4D9;overflow:hidden;font-family:system-ui,-apple-system,sans-serif;color:#242821;";
+      "background:#FFFFFF;border-radius:12px;max-width:440px;width:100%;box-shadow:0 20px 40px rgba(0,0,0,0.2);border:1px solid #E3DDD2;overflow:hidden;font-family:system-ui,-apple-system,sans-serif;color:#111622;";
 
     dialog.innerHTML =
-      '<div style="background:#F5F3ED;padding:18px 24px;border-bottom:1px solid #DDE4D9;display:flex;align-items:center;justify-content:space-between;">' +
+      '<div style="background:#FAF8F5;padding:18px 24px;border-bottom:1px solid #E3DDD2;display:flex;align-items:center;justify-content:space-between;">' +
       '<div style="display:flex;align-items:center;gap:8px;">' +
-      '<span style="background:#425B48;color:#FFFFFF;border-radius:6px;padding:4px 8px;font-weight:700;font-size:13px;">WearID</span>' +
-      '<span style="font-size:14px;font-weight:600;color:#425B48;">Connect</span>' +
+      '<span style="background:#1B2A4A;color:#FFFFFF;border-radius:6px;padding:4px 8px;font-weight:700;font-size:13px;">WearID</span>' +
+      '<span style="font-size:14px;font-weight:600;color:#1B2A4A;">Connect</span>' +
       "</div>" +
-      '<button id="wearid-close-btn" style="background:none;border:none;font-size:20px;cursor:pointer;color:#73776F;min-width:32px;min-height:32px;">&times;</button>' +
+      '<button id="wearid-close-btn" style="background:none;border:none;font-size:20px;cursor:pointer;color:#535D70;min-width:32px;min-height:32px;">&times;</button>' +
       "</div>" +
       '<div style="padding:24px;">' +
-      '<h3 style="font-size:17px;font-weight:700;margin:0 0 8px 0;color:#242821;">Sovereign Sizing Handshake</h3>' +
-      '<p style="font-size:13px;color:#73776F;margin:0 0 16px 0;line-height:1.4;">Zero biometric data is transmitted. Only the deterministic size recommendation is calculated.</p>' +
-      '<label style="display:block;font-size:12px;font-weight:600;text-transform:uppercase;color:#73776F;margin-bottom:6px;">WearID Token</label>' +
+      '<h3 style="font-size:17px;font-weight:700;margin:0 0 8px 0;color:#111622;">Sovereign Sizing Handshake</h3>' +
+      '<p style="font-size:13px;color:#535D70;margin:0 0 16px 0;line-height:1.4;">Zero biometric data is transmitted. Only the deterministic size recommendation is calculated.</p>' +
+      '<label style="display:block;font-size:12px;font-weight:600;text-transform:uppercase;color:#535D70;margin-bottom:6px;">WearID Token</label>' +
       '<input id="wearid-tok-input" type="text" placeholder="wearid_tok_... or select demo below" value="' +
       (options.defaultToken || "") +
-      '" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #DDE4D9;border-radius:6px;font-family:monospace;font-size:12px;margin-bottom:12px;" />' +
+      '" style="width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #E3DDD2;border-radius:6px;font-family:monospace;font-size:12px;margin-bottom:12px;" />' +
       '<div style="margin-bottom:16px;">' +
-      '<span style="font-size:11px;color:#73776F;display:block;margin-bottom:6px;">Quick Presets:</span>' +
+      '<span style="font-size:11px;color:#535D70;display:block;margin-bottom:6px;">Quick Presets:</span>' +
       '<div style="display:flex;gap:6px;">' +
-      '<button type="button" class="wearid-chip" data-val="regular" style="flex:1;padding:6px;font-size:11px;font-weight:600;border:1px solid #DDE4D9;background:#F5F3ED;border-radius:4px;cursor:pointer;">Regular</button>' +
-      '<button type="button" class="wearid-chip" data-val="athletic" style="flex:1;padding:6px;font-size:11px;font-weight:600;border:1px solid #DDE4D9;background:#F5F3ED;border-radius:4px;cursor:pointer;">Athletic</button>' +
-      '<button type="button" class="wearid-chip" data-val="slim" style="flex:1;padding:6px;font-size:11px;font-weight:600;border:1px solid #DDE4D9;background:#F5F3ED;border-radius:4px;cursor:pointer;">Slim</button>' +
+      '<button type="button" class="wearid-chip" data-val="regular" style="flex:1;padding:6px;font-size:11px;font-weight:600;border:1px solid #E3DDD2;background:#FAF8F5;border-radius:4px;cursor:pointer;">Regular</button>' +
+      '<button type="button" class="wearid-chip" data-val="athletic" style="flex:1;padding:6px;font-size:11px;font-weight:600;border:1px solid #E3DDD2;background:#FAF8F5;border-radius:4px;cursor:pointer;">Athletic</button>' +
+      '<button type="button" class="wearid-chip" data-val="slim" style="flex:1;padding:6px;font-size:11px;font-weight:600;border:1px solid #E3DDD2;background:#FAF8F5;border-radius:4px;cursor:pointer;">Slim</button>' +
       "</div>" +
       "</div>" +
-      '<button id="wearid-submit-btn" style="width:100%;background:#425B48;color:#FFFFFF;border:none;padding:12px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;min-height:44px;">Calculate Deterministic Size</button>' +
-      '<div id="wearid-res-box" style="display:none;margin-top:16px;padding:14px;border-radius:8px;background:#F5F3ED;border:1px solid #DDE4D9;"></div>' +
+      '<button id="wearid-submit-btn" style="width:100%;background:#1B2A4A;color:#FFFFFF;border:none;padding:12px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;min-height:44px;">Calculate Deterministic Size</button>' +
+      '<div id="wearid-res-box" style="display:none;margin-top:16px;padding:14px;border-radius:8px;background:#FAF8F5;border:1px solid #E3DDD2;"></div>' +
       "</div>";
 
     overlay.appendChild(dialog);
@@ -201,20 +201,20 @@
           resBox.style.display = "block";
           resBox.innerHTML =
             '<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;">' +
-            '<div><span style="font-size:11px;text-transform:uppercase;color:#73776F;font-weight:700;">Recommended Size</span><div style="font-size:26px;font-weight:800;color:#425B48;">' +
+            '<div><span style="font-size:11px;text-transform:uppercase;color:#535D70;font-weight:700;">Recommended Size</span><div style="font-size:26px;font-weight:800;color:#1B2A4A;">' +
             rec.recommendedSize +
             "</div></div>" +
-            '<div style="text-align:right;"><span style="display:inline-block;padding:3px 8px;font-size:11px;font-weight:700;border-radius:12px;background:#DDE4D9;color:#2D6A4F;">' +
+            '<div style="text-align:right;"><span style="display:inline-block;padding:3px 8px;font-size:11px;font-weight:700;border-radius:12px;background:#EBF5F0;color:#1D5D42;">' +
             Math.round(rec.fitScore * 100) +
             "% Match</span></div>" +
             "</div>" +
-            '<p style="font-size:12px;color:#242821;margin:0 0 12px 0;line-height:1.4;">' +
+            '<p style="font-size:12px;color:#111622;margin:0 0 12px 0;line-height:1.4;">' +
             rec.summaryText +
             "</p>" +
-            '<div style="font-size:10px;color:#73776F;margin-bottom:12px;">✓ Invariant 7: Zero biometric values transferred (latency: ' +
+            '<div style="font-size:10px;color:#535D70;margin-bottom:12px;">✓ Invariant 7: Zero biometric values transferred (latency: ' +
             rec.latencyMs +
             "ms)</div>" +
-            '<button id="wearid-apply-btn" style="width:100%;background:#242821;color:#FFFFFF;border:none;padding:10px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;min-height:40px;">Apply Size ' +
+            '<button id="wearid-apply-btn" style="width:100%;background:#111622;color:#FFFFFF;border:none;padding:10px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;min-height:40px;">Apply Size ' +
             rec.recommendedSize +
             " to Store</button>";
 

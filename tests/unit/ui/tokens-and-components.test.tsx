@@ -35,33 +35,33 @@ describe("Design System Tokens (R2)", () => {
     const content = fs.readFileSync(srcTokensPath, "utf-8");
 
     // Surfaces
-    expect(content).toContain("--bg-base:          #F5F3ED");
+    expect(content).toContain("--bg-base:          #FAF8F5");
     expect(content).toContain("--bg-surface:       #FFFFFF");
-    expect(content).toContain("--bg-elevated:      #EFEDE6");
-    expect(content).toContain("--bg-accent-subtle: #DDE4D9");
+    expect(content).toContain("--bg-elevated:      #F2EDE4");
+    expect(content).toContain("--bg-accent-subtle: #E6EDF7");
 
     // Text
-    expect(content).toContain("--text-primary:   #242821");
-    expect(content).toContain("--text-secondary: #73776F");
-    expect(content).toContain("--text-tertiary:  #A5A9A1");
+    expect(content).toContain("--text-primary:   #111622");
+    expect(content).toContain("--text-secondary: #535D70");
+    expect(content).toContain("--text-tertiary:  #8D96A5");
     expect(content).toContain("--text-on-accent: #FFFFFF");
-    expect(content).toContain("--text-link:      #425B48");
+    expect(content).toContain("--text-link:      #1B2A4A");
 
-    // Accent (Forest Green)
-    expect(content).toContain("--accent:         #425B48");
-    expect(content).toContain("--accent-hover:   #354A3A");
-    expect(content).toContain("--accent-active:  #2C3D30");
+    // Accent (Savile Row Bespoke Navy)
+    expect(content).toContain("--accent:         #1B2A4A");
+    expect(content).toContain("--accent-hover:   #121D34");
+    expect(content).toContain("--accent-active:  #0B1323");
 
-    // Terracotta
-    expect(content).toContain("--terracotta:        #C38367");
-    expect(content).toContain("--terracotta-hover:  #B0704F");
-    expect(content).toContain("--terracotta-subtle: #F5EAE3");
+    // Tailor's Camel / Brass
+    expect(content).toContain("--terracotta:        #A47834");
+    expect(content).toContain("--terracotta-hover:  #8C6325");
+    expect(content).toContain("--terracotta-subtle: #FAF4EB");
 
     // Confidence
-    expect(content).toContain("--confidence-high:   #2D6A4F");
-    expect(content).toContain("--confidence-medium: #B5621A");
-    expect(content).toContain("--confidence-low:    #C38367");
-    expect(content).toContain("--confidence-none:   #73776F");
+    expect(content).toContain("--confidence-high:   #1D5D42");
+    expect(content).toContain("--confidence-medium: #9E5E10");
+    expect(content).toContain("--confidence-low:    #A47834");
+    expect(content).toContain("--confidence-none:   #535D70");
 
     // Typography
     expect(content).toContain("--font-sans:");

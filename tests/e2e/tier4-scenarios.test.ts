@@ -334,8 +334,8 @@ describe("Tier 4 — Real-World Application Workload Scenarios", () => {
       expect(manifest.display).toBe("standalone");
       expect(manifest.start_url).toBe("/app");
       expect(manifest.orientation).toBe("portrait-primary");
-      expect(manifest.theme_color).toBe("#425B48");
-      expect(manifest.background_color).toBe("#F5F3ED");
+      expect(manifest.theme_color).toBe("#1B2A4A");
+      expect(manifest.background_color).toBe("#FAF8F5");
     });
 
     it("4.2: verifies local zero-credential mock data contains pilot brand records", () => {

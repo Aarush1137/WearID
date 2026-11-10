@@ -10,7 +10,7 @@ export default function RootGlobalError({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-[#F5F3ED] text-[#141613] flex flex-col items-center justify-center p-6 text-center font-sans">
+      <body className="min-h-screen bg-[#FAF8F5] text-[#111622] flex flex-col items-center justify-center p-6 text-center font-sans">
         <div className="w-14 h-14 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-xl mb-4">
           !
         </div>
@@ -21,7 +21,7 @@ export default function RootGlobalError({
         <button
           type="button"
           onClick={() => reset()}
-          className="px-6 py-2.5 rounded-lg bg-[#425B48] text-white font-semibold text-xs shadow"
+          className="px-6 py-2.5 rounded-lg bg-[#1B2A4A] hover:bg-[#121D34] text-white font-semibold text-xs shadow transition-colors"
         >
           Reload WearID
         </button>

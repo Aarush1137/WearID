@@ -299,31 +299,31 @@ describe("Tier 1 — Feature Coverage (F1 through F25 in Isolation)", () => {
     const css = fs.readFileSync(cssPath, "utf-8");
 
     it("F7-1: defines warm surface CSS custom properties", () => {
-      expect(css).toContain("--bg-base:          #F5F3ED");
+      expect(css).toContain("--bg-base:          #FAF8F5");
       expect(css).toContain("--bg-surface:       #FFFFFF");
-      expect(css).toContain("--bg-elevated:      #EFEDE6");
+      expect(css).toContain("--bg-elevated:      #F2EDE4");
     });
 
     it("F7-2: defines ink text custom properties", () => {
-      expect(css).toContain("--text-primary:   #242821");
-      expect(css).toContain("--text-secondary: #73776F");
+      expect(css).toContain("--text-primary:   #111622");
+      expect(css).toContain("--text-secondary: #535D70");
     });
 
     it("F7-3: defines forest green accent tokens", () => {
-      expect(css).toContain("--accent:         #425B48");
-      expect(css).toContain("--accent-hover:   #354A3A");
+      expect(css).toContain("--accent:         #1B2A4A");
+      expect(css).toContain("--accent-hover:   #121D34");
     });
 
     it("F7-4: defines terracotta highlight tokens", () => {
-      expect(css).toContain("--terracotta:        #C38367");
-      expect(css).toContain("--terracotta-subtle: #F5EAE3");
+      expect(css).toContain("--terracotta:        #A47834");
+      expect(css).toContain("--terracotta-subtle: #FAF4EB");
     });
 
     it("F7-5: defines 4-tier confidence indicator colors", () => {
-      expect(css).toContain("--confidence-high:   #2D6A4F");
-      expect(css).toContain("--confidence-medium: #B5621A");
-      expect(css).toContain("--confidence-low:    #C38367");
-      expect(css).toContain("--confidence-none:   #73776F");
+      expect(css).toContain("--confidence-high:   #1D5D42");
+      expect(css).toContain("--confidence-medium: #9E5E10");
+      expect(css).toContain("--confidence-low:    #A47834");
+      expect(css).toContain("--confidence-none:   #535D70");
     });
   });
 
@@ -380,7 +380,7 @@ describe("Tier 1 — Feature Coverage (F1 through F25 in Isolation)", () => {
     });
 
     it("F9-3: focus ring style uses accent color with standard outline offset", () => {
-      expect(tokens).toContain("--border-focus:  #425B48");
+      expect(tokens).toContain("--border-focus:  #1B2A4A");
     });
 
     it("F9-4: subtle elevation shadows are defined for card components", () => {
@@ -999,12 +999,12 @@ describe("Tier 1 — Feature Coverage (F1 through F25 in Isolation)", () => {
       expect(manifest.display).toBe("standalone");
     });
 
-    it("F19-4: specifies theme_color '#425B48' matching design token --accent", () => {
-      expect(manifest.theme_color).toBe("#425B48");
+    it("F19-4: specifies theme_color '#1B2A4A' matching design token --accent", () => {
+      expect(manifest.theme_color).toBe("#1B2A4A");
     });
 
-    it("F19-5: specifies background_color '#F5F3ED' matching design token --bg-base", () => {
-      expect(manifest.background_color).toBe("#F5F3ED");
+    it("F19-5: specifies background_color '#FAF8F5' matching design token --bg-base", () => {
+      expect(manifest.background_color).toBe("#FAF8F5");
     });
   });
 

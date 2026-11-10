@@ -145,8 +145,8 @@ export class WearIDConnect {
       text-decoration: none;
       ${
         isSolid
-          ? "background-color: #425B48; color: #FFFFFF; border: 1px solid #425B48;"
-          : "background-color: #FFFFFF; color: #425B48; border: 1.5px solid #425B48;"
+          ? "background-color: #1B2A4A; color: #FFFFFF; border: 1px solid #1B2A4A;"
+          : "background-color: #FFFFFF; color: #1B2A4A; border: 1.5px solid #1B2A4A;"
       }
     `;
 
@@ -160,10 +160,10 @@ export class WearIDConnect {
     `;
 
     button.addEventListener("mouseenter", () => {
-      button.style.backgroundColor = isSolid ? "#354A3A" : "#F5F3ED";
+      button.style.backgroundColor = isSolid ? "#121D34" : "#FAF8F5";
     });
     button.addEventListener("mouseleave", () => {
-      button.style.backgroundColor = isSolid ? "#425B48" : "#FFFFFF";
+      button.style.backgroundColor = isSolid ? "#1B2A4A" : "#FFFFFF";
     });
 
     button.addEventListener("click", () => {
@@ -195,7 +195,7 @@ export class WearIDConnect {
     overlay.style.cssText = `
       position: fixed;
       inset: 0;
-      background-color: rgba(36, 40, 33, 0.65);
+      background-color: rgba(17, 22, 34, 0.65);
       backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
@@ -212,27 +212,27 @@ export class WearIDConnect {
       max-width: 440px;
       width: 100%;
       box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      border: 1px solid #DDE4D9;
+      border: 1px solid #E3DDD2;
       overflow: hidden;
       font-family: system-ui, -apple-system, sans-serif;
-      color: #242821;
+      color: #111622;
     `;
 
     dialog.innerHTML = `
-      <div style="background-color: #F5F3ED; padding: 18px 24px; border-bottom: 1px solid #DDE4D9; display: flex; align-items: center; justify-content: space-between;">
+      <div style="background-color: #FAF8F5; padding: 18px 24px; border-bottom: 1px solid #E3DDD2; display: flex; align-items: center; justify-content: space-between;">
         <div style="display: flex; align-items: center; gap: 8px;">
-          <div style="background-color: #425B48; color: #FFFFFF; border-radius: 6px; padding: 4px 8px; font-weight: 700; font-size: 13px;">WearID</div>
-          <span style="font-size: 14px; font-weight: 600; color: #425B48;">Connect</span>
+          <div style="background-color: #1B2A4A; color: #FFFFFF; border-radius: 6px; padding: 4px 8px; font-weight: 700; font-size: 13px;">WearID</div>
+          <span style="font-size: 14px; font-weight: 600; color: #1B2A4A;">Connect</span>
         </div>
-        <button id="wearid-close-btn" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #73776F; min-width: 32px; min-height: 32px;" aria-label="Close dialog">&times;</button>
+        <button id="wearid-close-btn" style="background: none; border: none; font-size: 20px; cursor: pointer; color: #535D70; min-width: 32px; min-height: 32px;" aria-label="Close dialog">&times;</button>
       </div>
       <div style="padding: 24px;" id="wearid-modal-body">
-        <h3 style="font-size: 17px; font-weight: 700; margin: 0 0 8px 0; color: #242821;">Sovereign Sizing Handshake</h3>
-        <p style="font-size: 13px; color: #73776F; margin: 0 0 18px 0; line-height: 1.4;">
+        <h3 style="font-size: 17px; font-weight: 700; margin: 0 0 8px 0; color: #111622;">Sovereign Sizing Handshake</h3>
+        <p style="font-size: 13px; color: #535D70; margin: 0 0 18px 0; line-height: 1.4;">
           Your anatomical biometrics remain completely private. Only the deterministic size recommendation will be delivered.
         </p>
 
-        <label style="display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #73776F; margin-bottom: 6px;">
+        <label style="display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #535D70; margin-bottom: 6px;">
           WearID Sizing Token
         </label>
         <input 
@@ -240,26 +240,26 @@ export class WearIDConnect {
           type="text" 
           placeholder="Paste wearid_tok_... or select demo below"
           value="${options.defaultToken || ""}"
-          style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid #DDE4D9; border-radius: 6px; font-family: monospace; font-size: 12px; margin-bottom: 14px;"
+          style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid #E3DDD2; border-radius: 6px; font-family: monospace; font-size: 12px; margin-bottom: 14px;"
         />
 
         <div style="margin-bottom: 18px;">
-          <span style="font-size: 11px; color: #73776F; display: block; margin-bottom: 6px;">Quick Demo Profiles:</span>
+          <span style="font-size: 11px; color: #535D70; display: block; margin-bottom: 6px;">Quick Demo Profiles:</span>
           <div style="display: flex; gap: 6px;">
-            <button type="button" class="wearid-demo-chip" data-profile="regular" style="flex: 1; padding: 6px 4px; font-size: 11px; font-weight: 600; border: 1px solid #DDE4D9; background: #F5F3ED; border-radius: 4px; cursor: pointer; color: #242821;">Regular</button>
-            <button type="button" class="wearid-demo-chip" data-profile="athletic" style="flex: 1; padding: 6px 4px; font-size: 11px; font-weight: 600; border: 1px solid #DDE4D9; background: #F5F3ED; border-radius: 4px; cursor: pointer; color: #242821;">Athletic</button>
-            <button type="button" class="wearid-demo-chip" data-profile="slim" style="flex: 1; padding: 6px 4px; font-size: 11px; font-weight: 600; border: 1px solid #DDE4D9; background: #F5F3ED; border-radius: 4px; cursor: pointer; color: #242821;">Slim</button>
+            <button type="button" class="wearid-demo-chip" data-profile="regular" style="flex: 1; padding: 6px 4px; font-size: 11px; font-weight: 600; border: 1px solid #E3DDD2; background: #FAF8F5; border-radius: 4px; cursor: pointer; color: #111622;">Regular</button>
+            <button type="button" class="wearid-demo-chip" data-profile="athletic" style="flex: 1; padding: 6px 4px; font-size: 11px; font-weight: 600; border: 1px solid #E3DDD2; background: #FAF8F5; border-radius: 4px; cursor: pointer; color: #111622;">Athletic</button>
+            <button type="button" class="wearid-demo-chip" data-profile="slim" style="flex: 1; padding: 6px 4px; font-size: 11px; font-weight: 600; border: 1px solid #E3DDD2; background: #FAF8F5; border-radius: 4px; cursor: pointer; color: #111622;">Slim</button>
           </div>
         </div>
 
         <button 
           id="wearid-calculate-btn"
-          style="width: 100%; background-color: #425B48; color: #FFFFFF; border: none; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; min-height: 44px;"
+          style="width: 100%; background-color: #1B2A4A; color: #FFFFFF; border: none; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; min-height: 44px;"
         >
           Calculate Deterministic Size
         </button>
 
-        <div id="wearid-result-container" style="display: none; margin-top: 18px; padding: 14px; border-radius: 8px; background: #F5F3ED; border: 1px solid #DDE4D9;"></div>
+        <div id="wearid-result-container" style="display: none; margin-top: 18px; padding: 14px; border-radius: 8px; background: #FAF8F5; border: 1px solid #E3DDD2;"></div>
       </div>
     `;
 
@@ -312,25 +312,25 @@ export class WearIDConnect {
         resultBox.innerHTML = `
           <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px;">
             <div>
-              <span style="font-size: 11px; text-transform: uppercase; color: #73776F; font-weight: 700; letter-spacing: 0.05em;">Recommended Size</span>
-              <div style="font-size: 28px; font-weight: 800; color: #425B48;">${rec.recommendedSize}</div>
+              <span style="font-size: 11px; text-transform: uppercase; color: #535D70; font-weight: 700; letter-spacing: 0.05em;">Recommended Size</span>
+              <div style="font-size: 28px; font-weight: 800; color: #1B2A4A;">${rec.recommendedSize}</div>
             </div>
             <div style="text-align: right;">
-              <span style="display: inline-block; padding: 3px 8px; font-size: 11px; font-weight: 700; border-radius: 12px; background: #DDE4D9; color: #2D6A4F;">
+              <span style="display: inline-block; padding: 3px 8px; font-size: 11px; font-weight: 700; border-radius: 12px; background: #EBF5F0; color: #1D5D42;">
                 ${Math.round(rec.fitScore * 100)}% Match
               </span>
-              <div style="font-size: 11px; color: #73776F; margin-top: 4px;">Confidence: ${rec.confidenceLabel}</div>
+              <div style="font-size: 11px; color: #535D70; margin-top: 4px;">Confidence: ${rec.confidenceLabel}</div>
             </div>
           </div>
-          <p style="font-size: 12px; color: #242821; margin: 0 0 12px 0; line-height: 1.4;">
+          <p style="font-size: 12px; color: #111622; margin: 0 0 12px 0; line-height: 1.4;">
             ${rec.summaryText}
           </p>
-          <div style="font-size: 10px; color: #73776F; margin-bottom: 12px;">
+          <div style="font-size: 10px; color: #535D70; margin-bottom: 12px;">
             [Verified] Invariant 7: Zero anatomical measurements transmitted (latency: ${rec.latencyMs}ms)
           </div>
           <button 
             id="wearid-apply-size-btn"
-            style="width: 100%; background: #242821; color: #FFFFFF; border: none; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; min-height: 40px;"
+            style="width: 100%; background: #111622; color: #FFFFFF; border: none; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; min-height: 40px;"
           >
             Apply Size ${rec.recommendedSize} to Store
           </button>

@@ -14,8 +14,8 @@ describe("PWA Assets & Manifest Integration", () => {
 
     expect(manifest.display).toBe("standalone");
     expect(manifest.orientation).toBe("portrait-primary");
-    expect(manifest.theme_color).toBe("#425B48");
-    expect(manifest.background_color).toBe("#F5F3ED");
+    expect(manifest.theme_color).toBe("#1B2A4A");
+    expect(manifest.background_color).toBe("#FAF8F5");
     expect(manifest.start_url).toBe("/app");
     expect(Array.isArray(manifest.icons)).toBe(true);
     expect(manifest.icons.length).toBeGreaterThanOrEqual(3);
@@ -79,8 +79,8 @@ describe("PWA Assets & Manifest Integration", () => {
 
     const html = fs.readFileSync(offlinePath, "utf-8");
     expect(html).toContain("<!DOCTYPE html>");
-    expect(html).toContain("#425B48"); // Forest green accent
-    expect(html).toContain("#F5F3ED"); // Warm ivory
+    expect(html).toContain("#1B2A4A"); // Bespoke navy accent
+    expect(html).toContain("#FAF8F5"); // Warm cashmere wool
     expect(html).toContain("WearID");
     expect(html).toContain("offline");
     expect(html).toContain("Retry Connection");

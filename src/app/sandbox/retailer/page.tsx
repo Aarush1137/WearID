@@ -152,21 +152,21 @@ export default function RetailerSandboxPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F3ED] text-[#242821] pb-16">
+    <div className="min-h-screen bg-[#FAF8F5] text-[#111622] pb-16">
       {/* Top Banner */}
-      <div className="bg-[#242821] text-white px-4 py-3 border-b border-[#354A3A]">
+      <div className="bg-[#111622] text-white px-4 py-3 border-b border-[#1E283A]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2">
-            <span className="bg-[#425B48] text-white font-bold px-2 py-0.5 rounded text-[11px] tracking-wide uppercase">
+            <span className="bg-[#1B2A4A] text-white font-bold px-2 py-0.5 rounded text-[11px] tracking-wide uppercase">
               Partner Sandbox
             </span>
-            <span className="font-medium text-[#EFEDE6]">
+            <span className="font-medium text-[#F2F5FA]">
               WearID Connect (Phase 4 Retailer Integration Testbed)
             </span>
           </div>
-          <div className="flex items-center gap-4 text-[#A5A9A1]">
+          <div className="flex items-center gap-4 text-[#8D96A5]">
             <span>Invariant 7: Zero Biometric Leakage</span>
-            <Link href="/app/privacy-settings" className="text-[#C38367] hover:underline">
+            <Link href="/app/privacy-settings" className="text-[#A47834] hover:underline">
               Generate Sovereign Token →
             </Link>
           </div>
@@ -175,9 +175,9 @@ export default function RetailerSandboxPage() {
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Sandbox Controls Bar */}
-        <div className="bg-white rounded-xl p-4 shadow-sm border border-[#DDE4D9] mb-8 flex flex-wrap items-center justify-between gap-4">
+        <div className="bg-white rounded-xl p-4 shadow-sm border border-[#E3DDD2] mb-8 flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <label className="text-xs font-bold text-[#73776F] uppercase tracking-wider">
+            <label className="text-xs font-bold text-[#535D70] uppercase tracking-wider">
               Storefront Brand:
             </label>
             <select
@@ -189,7 +189,7 @@ export default function RetailerSandboxPage() {
                 setHandshakeLog(null);
                 setWebhookLog(null);
               }}
-              className="bg-[#F5F3ED] border border-[#DDE4D9] rounded-lg px-3 py-1.5 text-xs font-semibold text-[#242821] focus:outline-none focus:ring-1 focus:ring-[#425B48]"
+              className="bg-[#FAF8F5] border border-[#E3DDD2] rounded-lg px-3 py-1.5 text-xs font-semibold text-[#111622] focus:outline-none focus:ring-1 focus:ring-[#1B2A4A]"
             >
               {PILOT_PRODUCTS.map((p) => (
                 <option key={p.id} value={p.id}>
@@ -200,10 +200,10 @@ export default function RetailerSandboxPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-[#73776F] uppercase tracking-wider">
+            <span className="text-xs font-bold text-[#535D70] uppercase tracking-wider">
               Active Passport:
             </span>
-            <div className="flex bg-[#F5F3ED] p-0.5 rounded-lg border border-[#DDE4D9]">
+            <div className="flex bg-[#FAF8F5] p-0.5 rounded-lg border border-[#E3DDD2]">
               {(["regular", "athletic", "slim"] as const).map((prof) => (
                 <button
                   key={prof}
@@ -214,8 +214,8 @@ export default function RetailerSandboxPage() {
                   }}
                   className={`px-3 py-1 text-xs font-semibold rounded-md capitalize transition-all ${
                     demoProfile === prof && !customToken
-                      ? "bg-[#425B48] text-white shadow-sm"
-                      : "text-[#73776F] hover:text-[#242821]"
+                      ? "bg-[#1B2A4A] text-white shadow-sm"
+                      : "text-[#535D70] hover:text-[#111622]"
                   }`}
                 >
                   {prof}
@@ -229,22 +229,22 @@ export default function RetailerSandboxPage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Mock E-Commerce PDP (Col 1-7) */}
           <div className="lg:col-span-7">
-            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-[#DDE4D9]">
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-[#E3DDD2]">
               {/* Merchant Breadcrumb */}
-              <div className="text-xs text-[#73776F] mb-4 flex items-center gap-2">
+              <div className="text-xs text-[#535D70] mb-4 flex items-center gap-2">
                 <span>{product.brandName}</span>
                 <span>/</span>
                 <span className="capitalize">{product.category.replace(/_/g, " ")}</span>
                 <span>/</span>
-                <span className="text-[#242821] font-medium">{product.name}</span>
+                <span className="text-[#111622] font-medium">{product.name}</span>
               </div>
 
               {/* Product Visual & Details */}
               <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 mb-6">
-                <div className="sm:col-span-5 bg-[#F5F3ED] rounded-xl flex items-center justify-center p-8 border border-[#DDE4D9] relative min-h-[220px]">
+                <div className="sm:col-span-5 bg-[#FAF8F5] rounded-xl flex items-center justify-center p-8 border border-[#E3DDD2] relative min-h-[220px]">
                   <div className="text-center">
                     <svg
-                      className="w-20 h-20 mx-auto text-[#425B48] opacity-80 mb-2"
+                      className="w-20 h-20 mx-auto text-[#1B2A4A] opacity-80 mb-2"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -252,34 +252,34 @@ export default function RetailerSandboxPage() {
                     >
                       <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z" />
                     </svg>
-                    <span className="text-[11px] font-bold text-[#73776F] uppercase tracking-widest block">
+                    <span className="text-[11px] font-bold text-[#535D70] uppercase tracking-widest block">
                       {product.brandName}
                     </span>
                   </div>
-                  <span className="absolute top-2 right-2 bg-white text-[10px] font-bold text-[#2D6A4F] px-2 py-0.5 rounded border border-[#DDE4D9]">
+                  <span className="absolute top-2 right-2 bg-white text-[10px] font-bold text-[#1D5D42] px-2 py-0.5 rounded border border-[#E3DDD2]">
                     Verified Specs
                   </span>
                 </div>
 
                 <div className="sm:col-span-7 flex flex-col justify-between">
                   <div>
-                    <h1 className="text-xl sm:text-2xl font-bold font-display text-[#242821] mb-2">
+                    <h1 className="text-xl sm:text-2xl font-bold font-display text-[#111622] mb-2">
                       {product.name}
                     </h1>
                     <div className="flex items-center gap-3 mb-3">
-                      <span className="text-2xl font-black text-[#242821]">₹{product.priceInr}</span>
-                      <span className="text-xs text-[#73776F] line-through">₹{product.priceInr + 600}</span>
+                      <span className="text-2xl font-black text-[#111622]">₹{product.priceInr}</span>
+                      <span className="text-xs text-[#535D70] line-through">₹{product.priceInr + 600}</span>
                       <Badge variant="neutral" className="text-[11px]">
                         Save ₹600
                       </Badge>
                     </div>
-                    <p className="text-xs text-[#73776F] leading-relaxed mb-4">
+                    <p className="text-xs text-[#535D70] leading-relaxed mb-4">
                       {product.description}
                     </p>
                   </div>
 
-                  <div className="text-xs text-[#73776F] border-t border-[#DDE4D9] pt-3">
-                    <span className="font-semibold text-[#242821]">Fabric: </span>
+                  <div className="text-xs text-[#535D70] border-t border-[#E3DDD2] pt-3">
+                    <span className="font-semibold text-[#111622]">Fabric: </span>
                     {product.fabric.materialComposition} ({product.fabric.elastanePercentage}% elastane,{" "}
                     {product.fabric.stretchLevel !== "none" ? "stretch" : "rigid"}).
                   </div>
@@ -287,19 +287,19 @@ export default function RetailerSandboxPage() {
               </div>
 
               {/* Size Selection Section */}
-              <div className="border-t border-[#DDE4D9] pt-6 mb-6">
+              <div className="border-t border-[#E3DDD2] pt-6 mb-6">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#73776F]">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#535D70]">
                       Select Size
                     </span>
                     {selectedSize && (
-                      <span className="text-xs font-bold text-[#2D6A4F]">
+                      <span className="text-xs font-bold text-[#1D5D42]">
                         (Selected: {selectedSize})
                       </span>
                     )}
                   </div>
-                  <span className="text-xs text-[#73776F]">Size Guide</span>
+                  <span className="text-xs text-[#535D70]">Size Guide</span>
                 </div>
 
                 {/* Size Buttons Grid */}
@@ -313,8 +313,8 @@ export default function RetailerSandboxPage() {
                         onClick={() => setSelectedSize(size)}
                         className={`h-11 rounded-lg text-xs font-bold transition-all border ${
                           isSelected
-                            ? "bg-[#242821] text-white border-[#242821] ring-2 ring-offset-1 ring-[#242821]"
-                            : "bg-white text-[#242821] border-[#DDE4D9] hover:border-[#73776F]"
+                            ? "bg-[#111622] text-white border-[#111622] ring-2 ring-offset-1 ring-[#111622]"
+                            : "bg-white text-[#111622] border-[#E3DDD2] hover:border-[#535D70]"
                         }`}
                       >
                         {size}
@@ -324,14 +324,14 @@ export default function RetailerSandboxPage() {
                 </div>
 
                 {/* "Fit with WearID" Embeddable Button */}
-                <div className="bg-[#F5F3ED] p-4 rounded-xl border border-[#DDE4D9] mb-4">
+                <div className="bg-[#FAF8F5] p-4 rounded-xl border border-[#E3DDD2] mb-4">
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                     <div>
-                      <div className="text-xs font-bold text-[#242821] flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-[#2D6A4F]"></span>
+                      <div className="text-xs font-bold text-[#111622] flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-[#1D5D42]"></span>
                         Unsure of your size in {product.brandName}?
                       </div>
-                      <p className="text-[11px] text-[#73776F] mt-0.5">
+                      <p className="text-[11px] text-[#535D70] mt-0.5">
                         Instant zero-knowledge recommendation using your private WearID passport.
                       </p>
                     </div>
@@ -340,7 +340,7 @@ export default function RetailerSandboxPage() {
                       type="button"
                       onClick={handleConnectHandshake}
                       disabled={isLoading}
-                      className="h-11 px-5 rounded-lg bg-[#425B48] hover:bg-[#354A3A] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50 min-w-[160px]"
+                      className="h-11 px-5 rounded-lg bg-[#1B2A4A] hover:bg-[#121D34] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all disabled:opacity-50 min-w-[160px]"
                     >
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M12 2a3 3 0 0 0-3 3c0 .8.3 1.5.8 2.1L2 14.5A2 2 0 0 0 3.5 17H20.5a2 2 0 0 0 1.5-2.5L14.2 7.1c.5-.6.8-1.3.8-2.1a3 3 0 0 0-3-3z"/>
@@ -351,7 +351,7 @@ export default function RetailerSandboxPage() {
                   </div>
 
                   {statusMessage && (
-                    <div className="mt-3 p-2.5 rounded bg-white text-xs border border-[#DDE4D9] text-[#242821]">
+                    <div className="mt-3 p-2.5 rounded bg-white text-xs border border-[#E3DDD2] text-[#111622]">
                       {statusMessage}
                     </div>
                   )}
@@ -361,7 +361,7 @@ export default function RetailerSandboxPage() {
                 <button
                   type="button"
                   onClick={handleSimulateWebhook}
-                  className="w-full h-12 rounded-xl bg-[#242821] hover:bg-[#1a1d18] text-white font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2"
+                  className="w-full h-12 rounded-xl bg-[#111622] hover:bg-[#182030] text-white font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2"
                 >
                   <span>Simulate Order Checkout (Webhook)</span>
                 </button>
@@ -372,41 +372,41 @@ export default function RetailerSandboxPage() {
           {/* Zero-Knowledge Dev Inspector (Col 8-12) */}
           <div className="lg:col-span-5 space-y-6">
             {/* Real-time Handshake Wire Inspector */}
-            <Card className="border-[#DDE4D9]">
+            <Card className="border-[#E3DDD2]">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base text-[#242821]">Zero-Knowledge Wire Inspector</CardTitle>
-                  <span className="text-[11px] font-bold text-[#2D6A4F] bg-[#DDE4D9] px-2 py-0.5 rounded">
+                  <CardTitle className="text-base text-[#111622]">Zero-Knowledge Wire Inspector</CardTitle>
+                  <span className="text-[11px] font-bold text-[#1D5D42] bg-[#EBF5F0] px-2 py-0.5 rounded">
                     HTTP Wire View
                   </span>
                 </div>
-                <CardDescription className="text-xs text-[#73776F]">
+                <CardDescription className="text-xs text-[#535D70]">
                   Auditing data transmitted between merchant storefront and WearID sizing gateway.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 {/* Security Compliance Badge */}
-                <div className="p-3 rounded-lg bg-[#DDE4D9]/40 border border-[#425B48]/20 flex items-start gap-3">
-                  <div className="w-5 h-5 rounded-full bg-[#2D6A4F] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                <div className="p-3 rounded-lg bg-[#EBF1FA] border border-[#1B2A4A]/20 flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-[#1D5D42] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
                     <Check className="w-3.5 h-3.5 text-white" />
                   </div>
                   <div className="text-xs">
-                    <span className="font-bold text-[#242821] block">
+                    <span className="font-bold text-[#111622] block">
                       Invariant 7 Certified (TC-SEC-002)
                     </span>
-                    <span className="text-[#73776F] block mt-0.5">
-                      Raw biometrics transmitted: <strong className="text-[#2D6A4F]">0 bytes</strong>. Retailer receives only deterministic size match and confidence tag.
+                    <span className="text-[#535D70] block mt-0.5">
+                      Raw biometrics transmitted: <strong className="text-[#1D5D42]">0 bytes</strong>. Retailer receives only deterministic size match and confidence tag.
                     </span>
                   </div>
                 </div>
 
                 {/* Request Payload View */}
                 <div>
-                  <div className="flex items-center justify-between text-[11px] font-bold text-[#73776F] mb-1">
+                  <div className="flex items-center justify-between text-[11px] font-bold text-[#535D70] mb-1">
                     <span>Outbound Request:</span>
                     <span>POST /api/v1/portability/recommend</span>
                   </div>
-                  <pre className="bg-[#242821] text-[#EFEDE6] p-3 rounded-lg text-[11px] font-mono overflow-x-auto max-h-40 border border-[#354A3A]">
+                  <pre className="bg-[#111622] text-[#F2F5FA] p-3 rounded-lg text-[11px] font-mono overflow-x-auto max-h-40 border border-[#1E283A]">
                     {handshakeLog
                       ? JSON.stringify(handshakeLog.requestPayload, null, 2)
                       : "// Click 'Fit with WearID' on PDP to capture outbound HTTP handshake"}
@@ -415,13 +415,13 @@ export default function RetailerSandboxPage() {
 
                 {/* Response Payload View */}
                 <div>
-                  <div className="flex items-center justify-between text-[11px] font-bold text-[#73776F] mb-1">
+                  <div className="flex items-center justify-between text-[11px] font-bold text-[#535D70] mb-1">
                     <span>Inbound Zero-Knowledge Response:</span>
                     {handshakeLog && (
-                      <span className="text-[#2D6A4F]">Latency: {handshakeLog.latencyMs}ms</span>
+                      <span className="text-[#1D5D42]">Latency: {handshakeLog.latencyMs}ms</span>
                     )}
                   </div>
-                  <pre className="bg-[#242821] text-[#EFEDE6] p-3 rounded-lg text-[11px] font-mono overflow-x-auto max-h-48 border border-[#354A3A]">
+                  <pre className="bg-[#111622] text-[#F2F5FA] p-3 rounded-lg text-[11px] font-mono overflow-x-auto max-h-48 border border-[#1E283A]">
                     {handshakeLog
                       ? JSON.stringify(handshakeLog.responsePayload, null, 2)
                       : "// Waiting for recommendation payload..."}
@@ -431,20 +431,20 @@ export default function RetailerSandboxPage() {
             </Card>
 
             {/* Webhook Inspector */}
-            <Card className="border-[#DDE4D9]">
+            <Card className="border-[#E3DDD2]">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base text-[#242821]">Fulfillment Webhook Inspector</CardTitle>
-                  <span className="text-[11px] font-bold text-[#425B48] bg-[#DDE4D9] px-2 py-0.5 rounded">
+                  <CardTitle className="text-base text-[#111622]">Fulfillment Webhook Inspector</CardTitle>
+                  <span className="text-[11px] font-bold text-[#1B2A4A] bg-[#EBF1FA] px-2 py-0.5 rounded">
                     HMAC-SHA256
                   </span>
                 </div>
-                <CardDescription className="text-xs text-[#73776F]">
+                <CardDescription className="text-xs text-[#535D70]">
                   Order size confirmation event dispatched to merchant warehouse.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <pre className="bg-[#242821] text-[#EFEDE6] p-3 rounded-lg text-[11px] font-mono overflow-x-auto max-h-44 border border-[#354A3A]">
+                <pre className="bg-[#111622] text-[#F2F5FA] p-3 rounded-lg text-[11px] font-mono overflow-x-auto max-h-44 border border-[#1E283A]">
                   {webhookLog
                     ? JSON.stringify(
                         {

@@ -49,8 +49,8 @@ describe("Phase 4.1: Embeddable Client SDK (WearID Connect)", () => {
     // Accessible touch target (min-height 44px)
     expect(btn.style.minHeight).toBe("44px");
 
-    // WearID brand colors (#425B48 or normalized rgb(66, 91, 72))
-    expect(["#425B48", "rgb(66, 91, 72)"]).toContain(btn.style.backgroundColor);
+    // WearID brand colors (#1B2A4A or normalized rgb(27, 42, 74))
+    expect(["#1B2A4A", "rgb(27, 42, 74)"]).toContain(btn.style.backgroundColor);
 
     // Contains SVG hanger icon and label text
     expect(btn.innerHTML).toContain("<svg");
