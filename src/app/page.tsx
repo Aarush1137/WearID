@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 export default function HomePage() {
-  const pilotBrands = [
+  const partnerBrands = [
     { name: "Westside", status: "Layer 2 Graded" },
     { name: "FabIndia", status: "Layer 2 Graded" },
     { name: "Raymond", status: "Layer 2 & 3 Verified" },
@@ -177,31 +177,31 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Pilot Brands Strip */}
+        {/* Verified Brands Strip */}
         <section className="py-12 border-t border-border bg-bg-surface">
           <div className="max-w-6xl mx-auto px-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-8">
               <div>
                 <p className="text-xs uppercase tracking-wider text-text-secondary font-medium">
-                  Phase 1 Pilot Research Brands & Benchmarks
+                  Verified Brand Registry & Benchmarks
                 </p>
                 <h3 className="font-semibold text-lg text-text-primary mt-0.5">
-                  Verified Men&apos;s Apparel Specifications
+                  Verified Apparel Specifications
                 </h3>
               </div>
               <Link
-                href="/app/recommendations"
+                href="/app/explore"
                 className="text-xs font-semibold text-accent hover:text-accent-hover inline-flex items-center gap-1"
               >
-                Test Recommendations
+                Explore Full Catalog
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-              {pilotBrands.map((b, i) => (
+              {partnerBrands.map((b, i) => (
                 <Link
                   key={i}
-                  href="/app/recommendations"
+                  href="/app/recommend"
                   className="p-3.5 rounded-card border border-border bg-bg-base hover:bg-bg-elevated/70 hover:border-accent/40 text-center flex flex-col items-center justify-center min-h-[72px] transition-all group"
                 >
                   <span className="font-semibold text-sm text-text-primary group-hover:text-accent transition-colors">{b.name}</span>

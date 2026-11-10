@@ -26,7 +26,7 @@ export class SizingTokenService {
   private activeTokens = new Map<string, { payload: SizingTokenPayload; profile: AnatomicalProfile }>();
   private signingSecret: string;
 
-  constructor(signingSecret: string = "mock_jwt_secret_key_wearid_sandbox_2026_deterministic") {
+  constructor(signingSecret: string) {
     if (!signingSecret || signingSecret.trim().length < 32) {
       throw new Error(
         "Security Error: SizingTokenService requires a secure signing secret of at least 32 characters."

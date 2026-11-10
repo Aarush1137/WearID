@@ -17,7 +17,7 @@ export async function GET(request: Request) {
             type: "https://wearid.in/errors/not-found",
             title: "Brand Not Found",
             status: 404,
-            detail: `Pilot brand with identifier '${id}' was not found in catalog.`,
+            detail: `Brand with identifier '${id}' was not found in catalog.`,
           },
           { status: 404, headers: { "Content-Type": "application/problem+json" } }
         );

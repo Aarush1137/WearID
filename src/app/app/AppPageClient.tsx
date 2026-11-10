@@ -26,15 +26,15 @@ export function AppPageClient() {
         {/* Active Profile Biometric Passport */}
         <PassportHeroCard />
 
-        {/* Pilot Brand Sizing Quick Strip */}
+        {/* Brand Sizing Quick Strip */}
         <section className="rounded-card border border-border bg-bg-surface p-6 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <div>
               <h2 className="font-semibold text-lg text-text-primary">
-                Pilot Brands Directory
+                Verified Brand Directory
               </h2>
               <p className="text-xs text-text-secondary mt-0.5">
-                8 Indian pilot brands with verified Layer 2 and Layer 3 size specifications.
+                Top Indian and international apparel brands with verified Layer 2 and Layer 3 size specifications.
               </p>
             </div>
             <Link

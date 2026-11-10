@@ -18,6 +18,9 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { FitZoneVisualizer } from "./FitZoneVisualizer";
+import { GarmentDrapeOverlay } from "@/components/visual/GarmentDrapeOverlay";
+import { FitRadarChart } from "@/components/visual/FitRadarChart";
+import { BraSizingCard } from "@/components/visual/BraSizingCard";
 
 export function RecommendationView() {
   const { getActiveProfile, displayUnit, addReferenceGarment } = useProfileStore();
@@ -67,6 +70,19 @@ export function RecommendationView() {
     });
   }, [profile, selectedProduct, fitOverride]);
 
+  const recommendedSpec = useMemo(() => {
+    const specs = selectedProduct.layer3Specs || [];
+    return (
+      specs.find((s) => s.sizeLabel === recommendation.recommendedSize) ||
+      specs[0] || {
+        productId: selectedProduct.id,
+        sizeLabel: recommendation.recommendedSize || "M",
+        chestFlatMm: 520,
+        waistFlatMm: 460,
+      }
+    );
+  }, [selectedProduct, recommendation.recommendedSize]);
+
   const confidenceMeta = getConfidenceMeta(recommendation.confidence);
 
   const handleFeedbackSubmit = (e: React.FormEvent) => {
@@ -105,7 +121,7 @@ export function RecommendationView() {
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label className="block text-xs font-semibold text-text-primary mb-1.5">
-              Select Pilot Apparel Item
+              Select Apparel Item
             </label>
             <select
               value={selectedProductId}
@@ -234,6 +250,26 @@ export function RecommendationView() {
           </p>
         </div>
 
+        {/* Graphical 2D Garment Drape & Silhouette Overlay */}
+        <div className="pt-6">
+          <GarmentDrapeOverlay
+            profile={profile.measurements}
+            garmentSpecs={recommendedSpec}
+            dimensionBreakdown={recommendation.dimensionBreakdown}
+            fitIntent={fitOverride}
+            category={selectedProduct.category}
+            displayUnit={displayUnit}
+          />
+        </div>
+
+        {/* 5-Axis Fit Radar Polygon Chart */}
+        <div className="pt-6">
+          <FitRadarChart
+            dimensionBreakdown={recommendation.dimensionBreakdown}
+            fitIntent={fitOverride}
+          />
+        </div>
+
         {/* Fit Zone Radar & Tension Visualizer */}
         <div className="pt-6">
           <FitZoneVisualizer
@@ -241,6 +277,22 @@ export function RecommendationView() {
             displayUnit={displayUnit}
           />
         </div>
+
+        {/* Intimate Apparel & Bra Architecture (rendered for female morphology or intimate apparel) */}
+        {(profile.gender === "female" || selectedProduct.category.includes("bra") || selectedProduct.category.includes("intimate")) && (
+          <div className="pt-6">
+            <div className="mb-2">
+              <span className="text-xs font-semibold uppercase tracking-wider text-text-secondary">
+                Intimate Architecture & Bra Fit Matrix
+              </span>
+            </div>
+            <BraSizingCard
+              initialUnderbustMm={profile.measurements.waistMm ? Math.round(profile.measurements.waistMm * 1.05) : 800}
+              initialBustMm={profile.measurements.chestMm || 920}
+              displayUnit={displayUnit}
+            />
+          </div>
+        )}
 
         {/* Expandable Dimension Breakdown Accordion */}
         <div className="mt-6 pt-4 border-t border-border">

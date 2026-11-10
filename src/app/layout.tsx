@@ -4,6 +4,7 @@ import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/pwa/ServiceWorkerRegister";
 import { OfflineBanner } from "@/components/pwa/OfflineBanner";
 import { InstallPrompt } from "@/components/pwa/InstallPrompt";
+import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -60,7 +61,9 @@ export default function RootLayout({
       <body className="antialiased min-h-screen bg-bg-base text-text-primary flex flex-col">
         <ServiceWorkerRegister />
         <OfflineBanner />
-        {children}
+        <ErrorBoundary>
+          {children}
+        </ErrorBoundary>
         <InstallPrompt />
       </body>
     </html>

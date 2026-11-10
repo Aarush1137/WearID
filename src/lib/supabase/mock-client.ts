@@ -8,6 +8,9 @@ export interface MockUserAuth {
   created_at: string;
   user_metadata: {
     full_name: string;
+    phone?: string;
+    avatar_url?: string;
+    [key: string]: any;
   };
 }
 
@@ -274,6 +277,40 @@ export class MockSupabaseClient {
 
     signOut: async () => {
       return { error: null };
+    },
+
+    signInWithOAuth: async (options: { provider: string; options?: { redirectTo?: string } }) => {
+      // Mock OAuth redirect: returns empty error and dummy data
+      return { data: { provider: options.provider, url: options.options?.redirectTo || "/app" }, error: null };
+    },
+
+    signInWithOtp: async (credentials: { email?: string; phone?: string }) => {
+      return { data: { messageId: "mock-otp-msg-123" }, error: null };
+    },
+
+    verifyOtp: async (params: { email?: string; phone?: string; token: string; type: string }) => {
+      const user = mockStore.getUser();
+      const mockUser: MockUserAuth = {
+        id: user.id,
+        email: params.email || (params.phone ? `${params.phone}@phone.wearid.in` : user.email),
+        aud: "authenticated",
+        role: "authenticated",
+        created_at: user.createdAt,
+        user_metadata: { full_name: user.fullName, phone: params.phone },
+      };
+      return {
+        data: {
+          user: mockUser,
+          session: {
+            access_token: "mock-jwt-token-wearid",
+            token_type: "bearer",
+            expires_in: 3600,
+            refresh_token: "mock-refresh-token",
+            user: mockUser,
+          },
+        },
+        error: null,
+      };
     },
 
     onAuthStateChange: (_callback: (event: string, session: MockSession | null) => void) => {

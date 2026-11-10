@@ -132,6 +132,33 @@ export function TailorCardView() {
 
         {/* Dual Measurements Table */}
         <div className="py-6">
+          {/* Technical Mannequin Landmark Pattern */}
+          <div className="mb-6 p-4 rounded-card bg-bg-elevated/40 border border-border flex flex-col sm:flex-row items-center gap-6">
+            <div className="w-28 h-40 shrink-0 bg-bg-surface rounded-card border border-border flex items-center justify-center p-2">
+              <svg viewBox="0 0 100 140" className="w-full h-full text-accent" role="img" aria-label="Technical tailoring pattern mannequin">
+                <path d="M50 15 C45 15 42 20 42 25 C42 30 45 35 50 35 C55 35 58 30 58 25 C58 20 55 15 50 15 Z" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M42 33 L26 42 L22 80 L30 80 L34 52 L36 90 L38 135 L48 135 L48 90 L52 90 L52 135 L62 135 L64 90 L66 52 L70 80 L78 80 L74 42 L58 33 Z" fill="none" stroke="currentColor" strokeWidth="1.5" />
+                {/* Pattern Lines */}
+                <line x1="26" y1="42" x2="74" y2="42" stroke="var(--terracotta)" strokeWidth="2" strokeDasharray="2 2" />
+                <line x1="28" y1="52" x2="72" y2="52" stroke="var(--terracotta)" strokeWidth="2" strokeDasharray="2 2" />
+                <line x1="33" y1="68" x2="67" y2="68" stroke="var(--terracotta)" strokeWidth="2" strokeDasharray="2 2" />
+                <line x1="32" y1="82" x2="68" y2="82" stroke="var(--terracotta)" strokeWidth="2" strokeDasharray="2 2" />
+                <line x1="50" y1="90" x2="50" y2="135" stroke="var(--terracotta)" strokeWidth="2" strokeDasharray="2 2" />
+              </svg>
+            </div>
+            <div className="flex-1 text-xs text-text-secondary leading-relaxed space-y-1">
+              <span className="font-semibold text-text-primary block text-sm mb-1">
+                Bespoke Cutting & Alteration Reference
+              </span>
+              <p>
+                Anatomical girths represent bare-body measurements taken with zero tension. Standard tailoring allowances (wearing ease: +8cm to +12cm on chest, +4cm on waist) should be added based on garment block.
+              </p>
+              <p className="text-[11px] text-text-tertiary">
+                Reference standard: Indian NIFT Anthropometric Specification (2025/2026).
+              </p>
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 divide-y divide-border border border-border rounded-card overflow-hidden">
             <div className="grid grid-cols-12 bg-bg-elevated/70 py-2.5 px-4 text-xs font-semibold text-text-secondary uppercase tracking-wider">
               <div className="col-span-6 sm:col-span-7">Measurement Landmark</div>

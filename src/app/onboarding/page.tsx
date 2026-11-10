@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Link from "next/link";
 import { OnboardingWizard } from "@/components/measure/OnboardingWizard";
 
@@ -24,9 +24,11 @@ export default function OnboardingPage() {
         </Link>
       </header>
 
-      {/* Main Wizard */}
+      {/* Main Wizard wrapped in Suspense */}
       <main className="flex-1 px-4 sm:px-6">
-        <OnboardingWizard />
+        <Suspense fallback={<div className="max-w-3xl mx-auto py-12 text-center text-xs text-text-secondary">Loading calibration wizard...</div>}>
+          <OnboardingWizard />
+        </Suspense>
       </main>
     </div>
   );

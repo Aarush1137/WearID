@@ -1,21 +1,27 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useProfileStore } from "@/core/state/profileStore";
 import { PILOT_BRANDS } from "@/core/data/pilotBrands";
 import { cmToMm, inchesToMm } from "@/core/units";
 import { FitType } from "@/core/types";
-import { Zap, Shirt, Ruler, ArrowRight, Check, HelpCircle } from "lucide-react";
+import { Zap, Shirt, Ruler, ArrowRight, Check, HelpCircle, Users, Sparkles } from "lucide-react";
 
 type OnboardingPath = "quick" | "garment" | "tape";
 type ShoppingCategory = "mens" | "womens" | "both";
 type RelationOption = "self" | "partner" | "parent" | "sibling" | "friend" | "other";
+type BiologicalMorphology = "male" | "female" | "unisex";
 
 export function OnboardingWizard() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const isAddMemberMode = searchParams.get("mode") === "add_member";
+
   const {
     getActiveProfile,
+    addProfile,
+    setActiveProfileId,
     updateProfile,
     updateMeasurements,
     updatePreference,
@@ -28,8 +34,9 @@ export function OnboardingWizard() {
   // Step 0 state (Who are we fitting?)
   const [wizardStep, setWizardStep] = useState<0 | 1>(0);
   const [profileName, setProfileName] = useState<string>("");
+  const [morphology, setMorphology] = useState<BiologicalMorphology>("male");
   const [shoppingFor, setShoppingFor] = useState<ShoppingCategory>("mens");
-  const [relation, setRelation] = useState<RelationOption>("self");
+  const [relation, setRelation] = useState<RelationOption>(isAddMemberMode ? "partner" : "self");
 
   const [selectedPath, setSelectedPath] = useState<OnboardingPath>("quick");
 
@@ -109,13 +116,51 @@ export function OnboardingWizard() {
   };
 
   // Shared profile save before redirect
-  const saveProfileAndRedirect = () => {
-    updateProfile(activeProfile.id, {
-      name: profileName.trim() || "My Profile",
-      gender: derivedGender(),
-      shoppingCategories: derivedCategories(),
-      relation: normalizeRelation(relation),
-    });
+  const saveProfileAndRedirect = (measurementsToSave?: Partial<any>) => {
+    const finalGender = morphology;
+    const finalCategories = derivedCategories();
+    const finalRelation = normalizeRelation(relation);
+    const finalName = profileName.trim() || (isAddMemberMode ? (relation === "partner" ? "Partner" : "Family Member") : "My Identity");
+
+    if (isAddMemberMode) {
+      const newId = addProfile({
+        name: finalName,
+        relation: finalRelation,
+        gender: finalGender,
+        shoppingCategories: finalCategories,
+        measurements: {
+          profileId: "",
+          chestMm: measurementsToSave?.chestMm || (morphology === "female" ? 880 : 980),
+          waistMm: measurementsToSave?.waistMm || (morphology === "female" ? 720 : 820),
+          hipsMm: measurementsToSave?.hipsMm || (morphology === "female" ? 980 : 960),
+          heightMm: measurementsToSave?.heightMm || (morphology === "female" ? 1640 : 1780),
+          shoulderWidthMm: measurementsToSave?.shoulderWidthMm || (morphology === "female" ? 390 : 450),
+          inseamMm: measurementsToSave?.inseamMm || (morphology === "female" ? 740 : 790),
+          neckMm: measurementsToSave?.neckMm || (morphology === "female" ? 340 : 390),
+          sleeveLengthMm: measurementsToSave?.sleeveLengthMm || (morphology === "female" ? 570 : 620),
+          isCurrent: true,
+          recordedAt: new Date().toISOString(),
+          measurementMethod: measurementsToSave?.measurementMethod || { chestMm: "quick_input" },
+        },
+        preferences: {
+          t_shirt: quickFitIntent,
+          shirt_casual: "relaxed",
+        },
+        referenceGarments: [],
+      });
+      setActiveProfileId(newId);
+    } else {
+      updateProfile(activeProfile.id, {
+        name: finalName,
+        gender: finalGender,
+        shoppingCategories: finalCategories,
+        relation: finalRelation,
+      });
+      if (measurementsToSave) {
+        updateMeasurements(activeProfile.id, measurementsToSave);
+      }
+    }
+
     setTimeout(() => {
       router.push("/app");
     }, 300);
@@ -129,20 +174,23 @@ export function OnboardingWizard() {
     const waistMm = parseToCanonicalMm(quickWaist);
     const heightMm = parseToCanonicalMm(quickHeight);
 
-    updateMeasurements(activeProfile.id, {
-      chestMm: chestMm || 980,
-      waistMm: waistMm || 820,
-      heightMm: heightMm || 1780,
+    const measurementsData = {
+      chestMm: chestMm || (morphology === "female" ? 880 : 980),
+      waistMm: waistMm || (morphology === "female" ? 720 : 820),
+      heightMm: heightMm || (morphology === "female" ? 1640 : 1780),
       measurementMethod: {
-        chestMm: "quick_input",
-        waistMm: "quick_input",
+        chestMm: "quick_input" as const,
+        waistMm: "quick_input" as const,
       },
-    });
+    };
 
-    updatePreference(activeProfile.id, "t_shirt", quickFitIntent);
-    updatePreference(activeProfile.id, "t_shirt_oversized", quickFitIntent === "oversized" ? "oversized" : "relaxed");
+    if (!isAddMemberMode) {
+      updateMeasurements(activeProfile.id, measurementsData);
+      updatePreference(activeProfile.id, "t_shirt", quickFitIntent);
+      updatePreference(activeProfile.id, "t_shirt_oversized", quickFitIntent === "oversized" ? "oversized" : "relaxed");
+    }
 
-    saveProfileAndRedirect();
+    saveProfileAndRedirect(measurementsData);
   };
 
   const handleSaveGarment = (e: React.FormEvent) => {
@@ -236,9 +284,52 @@ export function OnboardingWizard() {
         </div>
       </div>
 
-      {/* â”€â”€ STEP 0: Who are we fitting? â”€â”€ */}
+      {/* STEP 0: Who are we fitting? */}
       {wizardStep === 0 && (
         <div className="rounded-card border border-border bg-bg-surface p-6 sm:p-8 shadow-sm">
+          {/* Header banner if adding member */}
+          {isAddMemberMode && (
+            <div className="mb-6 p-3.5 rounded-card bg-accent-subtle/60 border border-accent/30 flex items-center gap-2.5 text-xs text-text-primary">
+              <Users className="w-4 h-4 text-accent shrink-0" />
+              <span>
+                Adding a distinct identity for your partner or family member. Your personal primary measurements will remain intact.
+              </span>
+            </div>
+          )}
+
+          {/* Relationship Selection */}
+          <div className="mb-6">
+            <label className="block text-xs font-semibold text-text-primary mb-2">
+              Who is this size profile for?
+            </label>
+            <div className="flex flex-wrap gap-2" role="group" aria-label="Relationship">
+              {(
+                [
+                  { value: "self", label: "Myself (Account Holder)" },
+                  { value: "partner", label: "Partner / Spouse" },
+                  { value: "parent", label: "Parent" },
+                  { value: "sibling", label: "Sibling" },
+                  { value: "friend", label: "Friend" },
+                  { value: "other", label: "Other" },
+                ] as const
+              ).map((opt) => (
+                <button
+                  key={opt.value}
+                  type="button"
+                  onClick={() => setRelation(opt.value)}
+                  aria-pressed={relation === opt.value}
+                  className={`min-h-[44px] px-4 py-2 rounded-badge border text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+                    relation === opt.value
+                      ? "border-accent bg-accent-subtle/50 text-accent font-semibold"
+                      : "border-border bg-bg-surface text-text-primary hover:bg-bg-elevated"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Display Name */}
           <div className="mb-6">
             <label htmlFor="onboarding-name" className="block text-xs font-semibold text-text-primary mb-1.5">
@@ -249,21 +340,101 @@ export function OnboardingWizard() {
               type="text"
               value={profileName}
               onChange={(e) => setProfileName(e.target.value)}
-              placeholder="e.g. Aarush"
+              placeholder={relation === "partner" ? "e.g. Ananya" : "e.g. Aarush"}
               maxLength={60}
               className="input-editorial w-full"
               autoComplete="given-name"
               autoFocus
             />
             <span className="text-[11px] text-text-secondary block mt-1">
-              Used to personalise your size passport
+              Used to label your passport and tailor exports
             </span>
           </div>
 
-          {/* Shopping For â€” pill buttons */}
+          {/* Biological Sex / Anatomical Pattern Segregation */}
           <div className="mb-6">
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-xs font-semibold text-text-primary">
+                Biological Sex & Anatomical Cut
+              </label>
+              <span className="text-[11px] text-accent font-medium bg-accent-subtle/50 px-2 py-0.5 rounded-badge uppercase">
+                NIFT Standard
+              </span>
+            </div>
+            <p className="text-[11px] text-text-secondary mb-3 leading-relaxed">
+              Pattern grading differs fundamentally between cuts: women&apos;s patterns feature bust apex darting and waist-to-hip flare, while men&apos;s patterns grade along biacromial shoulders and torso drop.
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <button
+                type="button"
+                onClick={() => {
+                  setMorphology("male");
+                  setShoppingFor("mens");
+                }}
+                className={`p-3.5 rounded-card border text-left min-h-[44px] transition-all ${
+                  morphology === "male"
+                    ? "border-accent bg-accent-subtle/50 shadow-xs ring-1 ring-accent"
+                    : "border-border bg-bg-surface hover:bg-bg-elevated"
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-semibold text-xs text-text-primary">Men&apos;s Cut</span>
+                  {morphology === "male" && <Check className="w-3.5 h-3.5 text-accent" />}
+                </div>
+                <span className="text-[11px] text-text-secondary block">
+                  Broad shoulders, chest girth, and standard torso taper.
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setMorphology("female");
+                  setShoppingFor("womens");
+                }}
+                className={`p-3.5 rounded-card border text-left min-h-[44px] transition-all ${
+                  morphology === "female"
+                    ? "border-accent bg-accent-subtle/50 shadow-xs ring-1 ring-accent"
+                    : "border-border bg-bg-surface hover:bg-bg-elevated"
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-semibold text-xs text-text-primary">Women&apos;s Cut</span>
+                  {morphology === "female" && <Check className="w-3.5 h-3.5 text-accent" />}
+                </div>
+                <span className="text-[11px] text-text-secondary block">
+                  Bust apex projection, underbust band, natural waist & hip curve.
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setMorphology("unisex");
+                  setShoppingFor("both");
+                }}
+                className={`p-3.5 rounded-card border text-left min-h-[44px] transition-all ${
+                  morphology === "unisex"
+                    ? "border-accent bg-accent-subtle/50 shadow-xs ring-1 ring-accent"
+                    : "border-border bg-bg-surface hover:bg-bg-elevated"
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-semibold text-xs text-text-primary">Unisex / Adaptive</span>
+                  {morphology === "unisex" && <Check className="w-3.5 h-3.5 text-accent" />}
+                </div>
+                <span className="text-[11px] text-text-secondary block">
+                  Straight-line linear grading across chest and waist.
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Shopping For — pill buttons */}
+          <div className="mb-8">
             <label className="block text-xs font-semibold text-text-primary mb-2">
-              Shopping for
+              Default Apparel Section
             </label>
             <div className="flex flex-wrap gap-2" role="group" aria-label="Shopping category">
               {(
@@ -290,46 +461,13 @@ export function OnboardingWizard() {
             </div>
           </div>
 
-          {/* Relationship â€” always shown, default Myself */}
-          <div className="mb-8">
-            <label className="block text-xs font-semibold text-text-primary mb-2">
-              Shopping for whom?
-            </label>
-            <div className="flex flex-wrap gap-2" role="group" aria-label="Relationship">
-              {(
-                [
-                  { value: "self", label: "Myself" },
-                  { value: "partner", label: "Partner" },
-                  { value: "parent", label: "Parent" },
-                  { value: "sibling", label: "Sibling" },
-                  { value: "friend", label: "Friend" },
-                  { value: "other", label: "Other" },
-                ] as const
-              ).map((opt) => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => setRelation(opt.value)}
-                  aria-pressed={relation === opt.value}
-                  className={`min-h-[44px] px-4 py-2 rounded-badge border text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent ${
-                    relation === opt.value
-                      ? "border-accent bg-accent-subtle/50 text-accent font-semibold"
-                      : "border-border bg-bg-surface text-text-primary hover:bg-bg-elevated"
-                  }`}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
           <button
             type="button"
             onClick={handleStep0Continue}
             disabled={!profileName.trim()}
             className="w-full btn-primary min-h-[48px] text-base font-semibold shadow-sm"
           >
-            Continue
+            Continue to Measurement Calibration
             <ArrowRight className="w-4 h-4 ml-2" />
           </button>
         </div>
@@ -440,7 +578,7 @@ export function OnboardingWizard() {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                 <div>
                   <label className="block text-xs font-semibold text-text-primary mb-1.5">
-                    Chest Circumference ({displayUnit})
+                    {morphology === "female" ? "Bust Apex Circumference" : "Chest Circumference"} ({displayUnit})
                   </label>
                   <input
                     type="number"
@@ -449,10 +587,20 @@ export function OnboardingWizard() {
                     value={quickChest}
                     onChange={(e) => setQuickChest(e.target.value)}
                     className="input-editorial w-full"
-                    placeholder={displayUnit === "cm" ? "e.g. 98" : "e.g. 38.5"}
+                    placeholder={
+                      morphology === "female"
+                        ? displayUnit === "cm"
+                          ? "e.g. 88"
+                          : "e.g. 34.5"
+                        : displayUnit === "cm"
+                        ? "e.g. 98"
+                        : "e.g. 38.5"
+                    }
                   />
                   <span className="text-[11px] text-text-secondary block mt-1">
-                    Measured at the fullest part of the chest
+                    {morphology === "female"
+                      ? "Measured horizontally across the fullest apex of the bust"
+                      : "Measured horizontally at the fullest part of the chest"}
                   </span>
                 </div>
 
@@ -556,7 +704,7 @@ export function OnboardingWizard() {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 <div>
                   <label className="block text-xs font-semibold text-text-primary mb-1.5">
-                    Pilot Brand
+                    Brand
                   </label>
                   <select
                     value={garmentBrand}
