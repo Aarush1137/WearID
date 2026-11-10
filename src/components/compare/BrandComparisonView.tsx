@@ -79,9 +79,10 @@ export function BrandComparisonView() {
     if (prodA.layer3Specs) {
       const match = prodA.layer3Specs.find((s) => s.sizeLabel === sizeA) || prodA.layer3Specs[0];
       if (match) {
+        const flatChest = match.chestFlatMm || (match.waistFlatMm ? Math.round(match.waistFlatMm * 1.1) : 530);
         return {
-          chestFlatMm: match.chestFlatMm,
-          chestCircMm: match.chestFlatMm * 2,
+          chestFlatMm: flatChest,
+          chestCircMm: flatChest * 2,
           shoulderMm: match.shoulderMm || 460,
           lengthMm: match.lengthMm || 720,
           waistFlatMm: match.waistFlatMm,
@@ -114,9 +115,10 @@ export function BrandComparisonView() {
     if (prodB.layer3Specs) {
       const match = prodB.layer3Specs.find((s) => s.sizeLabel === sizeB) || prodB.layer3Specs[0];
       if (match) {
+        const flatChest = match.chestFlatMm || (match.waistFlatMm ? Math.round(match.waistFlatMm * 1.1) : 530);
         return {
-          chestFlatMm: match.chestFlatMm,
-          chestCircMm: match.chestFlatMm * 2,
+          chestFlatMm: flatChest,
+          chestCircMm: flatChest * 2,
           shoulderMm: match.shoulderMm || 450,
           lengthMm: match.lengthMm || 710,
           waistFlatMm: match.waistFlatMm,

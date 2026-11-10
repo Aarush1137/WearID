@@ -822,7 +822,7 @@ describe("Tier 1 — Feature Coverage (F1 through F25 in Isolation)", () => {
       const res = evaluateSizing({ profile, fitPreference: pref, garmentDimensions: garments });
       const chest = res.dimensionBreakdown[0];
       expect(chest.bodyMeasurementMm).toBe(profile.chestMm);
-      expect(chest.garmentSpecMm).toBe(garments[0].chestFlatMm * 2);
+      expect(chest.garmentSpecMm).toBe((garments[0].chestFlatMm ?? 0) * 2);
       expect(chest.easeDeltaMm).toBe(chest.garmentSpecMm - chest.bodyMeasurementMm);
     });
   });

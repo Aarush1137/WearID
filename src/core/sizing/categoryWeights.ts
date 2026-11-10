@@ -65,6 +65,7 @@ export function getCategoryWeights(category: string): DimensionWeights {
 
     case "bra":
     case "sports_bra":
+    case "lingerie":
     case "intimates":
       return { chest: 0.60, waist: 0.40 };
 
@@ -72,11 +73,24 @@ export function getCategoryWeights(category: string): DimensionWeights {
     case "briefs":
       return { chest: 0.50, waist: 0.50 };
 
+    case "dress":
+    case "dresses":
+      return { chest: 0.40, waist: 0.35, hips: 0.25 };
+
     case "kurta":
+    case "kurti":
       return { chest: 0.35, shoulder: 0.25, torso_length: 0.25, sleeve: 0.15 };
 
     case "shoe":
+    case "shoes":
+    case "footwear":
       return { foot_length: 1.0 };
+
+    case "ring":
+      return { ring_finger: 1.0 };
+
+    case "bracelet":
+      return { wrist: 1.0 };
 
     default:
       return { chest: 0.50, shoulder: 0.30, length: 0.20 };

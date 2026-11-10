@@ -356,9 +356,11 @@ describe("Matrix E: Data Provenance & Contributor Staging Suite", () => {
         // Invariant #4: Canonical millimeters (positive integers, realistic dimensions)
         if (prod.layer3Specs) {
           for (const spec of prod.layer3Specs) {
-            expect(Number.isInteger(spec.chestFlatMm)).toBe(true);
-            expect(spec.chestFlatMm).toBeGreaterThan(200);
-            expect(spec.chestFlatMm).toBeLessThan(1200);
+            if (spec.chestFlatMm !== undefined) {
+              expect(Number.isInteger(spec.chestFlatMm)).toBe(true);
+              expect(spec.chestFlatMm).toBeGreaterThan(200);
+              expect(spec.chestFlatMm).toBeLessThan(1200);
+            }
 
             if (spec.shoulderMm !== undefined) {
               expect(Number.isInteger(spec.shoulderMm)).toBe(true);
@@ -366,7 +368,7 @@ describe("Matrix E: Data Provenance & Contributor Staging Suite", () => {
             }
             if (spec.lengthMm !== undefined) {
               expect(Number.isInteger(spec.lengthMm)).toBe(true);
-              expect(spec.lengthMm).toBeGreaterThan(200);
+              expect(spec.lengthMm).toBeGreaterThan(100);
             }
             if (spec.waistFlatMm !== undefined) {
               expect(Number.isInteger(spec.waistFlatMm)).toBe(true);

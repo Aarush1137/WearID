@@ -118,13 +118,16 @@ export function getCategoryWeights(category: string): Record<string, number> {
     // Specific Top Subcategories
     case "tshirt":
     case "t_shirt":
+    case "t_shirt_oversized":
     case "polo":
       return { chest: 0.40, shoulder: 0.35, length: 0.15, sleeve: 0.10 };
 
     case "casual_shirt":
+    case "shirt_casual":
       return { chest: 0.30, shoulder: 0.30, sleeve: 0.20, neck: 0.20 };
 
     case "formal_shirt":
+    case "shirt_formal":
       return { chest: 0.25, shoulder: 0.25, sleeve: 0.25, neck: 0.25 };
 
     case "hoodie":
@@ -167,6 +170,17 @@ export function getCategoryWeights(category: string): Record<string, number> {
     case "coat":
     case "blazer":
       return { chest: 0.40, shoulder: 0.25, sleeve: 0.20, length: 0.15 };
+
+    // Intimates & Foundation
+    case "bra":
+    case "sports_bra":
+    case "lingerie":
+    case "intimates":
+      return { chest: 0.60, waist: 0.40 };
+
+    case "undershirt":
+    case "briefs":
+      return { chest: 0.50, waist: 0.50 };
 
     // Ethnic Wear (Kurtas, Sherwanis)
     case "kurta":

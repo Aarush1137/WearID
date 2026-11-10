@@ -3,11 +3,19 @@
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import { PILOT_BRANDS, PILOT_PRODUCTS, PilotBrand } from "@/core/data/pilotBrands";
-import { ShieldCheck, ArrowRight, Layers, ExternalLink, Check, Search, X } from "lucide-react";
+import { ShieldCheck, ArrowRight, Layers, ExternalLink, Check, Search, X, Sparkles, UserCheck } from "lucide-react";
 import { CategoryHierarchyNavigator, CategorySelection } from "@/components/catalog/CategoryHierarchyNavigator";
+import { useProfileStore } from "@/core/state/profileStore";
 
 export function ProductCatalogView() {
+  const { getActiveProfile } = useProfileStore();
+  const activeProfile = getActiveProfile();
+  const profileGender = activeProfile?.gender || "unisex";
+
   const [selectedBrandFilter, setSelectedBrandFilter] = useState<string>("all");
+  const [genderFilter, setGenderFilter] = useState<"all" | "female" | "male" | "unisex">(
+    profileGender === "female" ? "female" : profileGender === "male" ? "male" : "all"
+  );
   const [categorySelection, setCategorySelection] = useState<CategorySelection>({
     mainCategory: "all",
     subCategory: "all",
@@ -17,10 +25,22 @@ export function ProductCatalogView() {
 
   const filteredProducts = useMemo(() => {
     return PILOT_PRODUCTS.filter((p) => {
+      // Gender filter
+      if (genderFilter !== "all") {
+        const itemGender = p.layer2Charts?.[0]?.gender || "unisex";
+        if (genderFilter === "female" && itemGender === "male") {
+          return false;
+        }
+        if (genderFilter === "male" && itemGender === "female") {
+          return false;
+        }
+      }
+
       // Brand filter
       if (selectedBrandFilter !== "all" && p.brandId !== selectedBrandFilter) {
         return false;
       }
+
       // Hierarchical Category filter
       if (categorySelection.mainCategory !== "all") {
         if (categorySelection.subCategory !== "all" && !categorySelection.subCategory.startsWith("all_")) {
@@ -30,20 +50,66 @@ export function ProductCatalogView() {
           }
         } else {
           // Broad main category matching
-          if (categorySelection.mainCategory === "tops" && !p.category.includes("shirt") && !p.category.includes("top") && !p.category.includes("polo") && !p.category.includes("kurta")) {
+          if (
+            categorySelection.mainCategory === "tops" &&
+            !p.category.includes("shirt") &&
+            !p.category.includes("top") &&
+            !p.category.includes("polo") &&
+            p.category !== "kurta"
+          ) {
             return false;
           }
-          if (categorySelection.mainCategory === "bottoms" && !p.category.includes("jeans") && !p.category.includes("trouser") && !p.category.includes("chino") && !p.category.includes("jogger") && !p.category.includes("short")) {
+          if (
+            categorySelection.mainCategory === "bottoms" &&
+            !p.category.includes("jeans") &&
+            !p.category.includes("trouser") &&
+            !p.category.includes("chino") &&
+            !p.category.includes("jogger") &&
+            !p.category.includes("short")
+          ) {
             return false;
           }
-          if (categorySelection.mainCategory === "intimates" && !p.category.includes("bra") && !p.category.includes("under") && !p.category.includes("brief")) {
+          if (
+            categorySelection.mainCategory === "dresses" &&
+            p.category !== "dress" &&
+            p.category !== "kurta"
+          ) {
             return false;
           }
-          if (categorySelection.mainCategory === "outerwear" && !p.category.includes("jacket") && !p.category.includes("blazer") && !p.category.includes("hoodie")) {
+          if (
+            categorySelection.mainCategory === "intimates" &&
+            !p.category.includes("bra") &&
+            !p.category.includes("under") &&
+            !p.category.includes("brief") &&
+            p.category !== "lingerie"
+          ) {
+            return false;
+          }
+          if (
+            categorySelection.mainCategory === "shoes" &&
+            p.category !== "shoes" &&
+            p.category !== "footwear"
+          ) {
+            return false;
+          }
+          if (
+            categorySelection.mainCategory === "jewelry" &&
+            p.category !== "ring" &&
+            p.category !== "bracelet"
+          ) {
+            return false;
+          }
+          if (
+            categorySelection.mainCategory === "outerwear" &&
+            !p.category.includes("jacket") &&
+            !p.category.includes("blazer") &&
+            !p.category.includes("hoodie")
+          ) {
             return false;
           }
         }
       }
+
       // Text search
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
@@ -56,7 +122,7 @@ export function ProductCatalogView() {
       }
       return true;
     });
-  }, [selectedBrandFilter, categorySelection, searchQuery]);
+  }, [genderFilter, selectedBrandFilter, categorySelection, searchQuery]);
 
   return (
     <div className="max-w-6xl mx-auto py-6 sm:py-10">
@@ -178,6 +244,51 @@ export function ProductCatalogView() {
               </button>
             )}
           </div>
+        </div>
+
+        {/* Gender / Anatomical Cut Filter Pills */}
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          <span className="text-[11px] font-semibold text-text-secondary uppercase tracking-wider mr-1">
+            Wardrobe Cut:
+          </span>
+          {[
+            {
+              id: "all",
+              label: "All Collections",
+            },
+            {
+              id: "female",
+              label: "Women's, Intimates & Dresses",
+              badge: profileGender === "female" ? `Profile: ${activeProfile.name || "You"}` : undefined,
+            },
+            {
+              id: "male",
+              label: "Men's Collection",
+              badge: profileGender === "male" ? `Profile: ${activeProfile.name || "You"}` : undefined,
+            },
+            {
+              id: "unisex",
+              label: "Unisex, Shoes & Jewelry",
+            },
+          ].map((pill) => (
+            <button
+              key={pill.id}
+              type="button"
+              onClick={() => setGenderFilter(pill.id as any)}
+              className={`min-h-[38px] px-3.5 py-1.5 rounded-full text-xs font-medium transition-all flex items-center gap-1.5 ${
+                genderFilter === pill.id
+                  ? "bg-text-primary text-bg-surface font-semibold shadow-xs"
+                  : "bg-bg-surface border border-border text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+              }`}
+            >
+              <span>{pill.label}</span>
+              {pill.badge && (
+                <span className="text-[10px] bg-accent/20 text-accent font-semibold px-1.5 py-0.5 rounded-full">
+                  {pill.badge}
+                </span>
+              )}
+            </button>
+          ))}
         </div>
 
         {/* Multi-Level Hierarchical Category Navigator */}

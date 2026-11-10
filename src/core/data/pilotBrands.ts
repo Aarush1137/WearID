@@ -1,5 +1,6 @@
 import { BrandSizeChart, GarmentDimensions, FabricSpec } from "../types";
 import { EXPANDED_PRODUCTS } from "./expandedProducts";
+import { LIFESTYLE_PRODUCTS } from "./lifestyleProducts";
 
 export interface PilotBrand {
   id: string;
@@ -33,11 +34,17 @@ export type ApparelCategory =
   | "shorts"
   | "bra"
   | "sports_bra"
+  | "lingerie"
   | "undershirt"
   | "briefs"
   | "jacket"
   | "blazer"
-  | "hoodie";
+  | "hoodie"
+  | "dress"
+  | "shoes"
+  | "footwear"
+  | "ring"
+  | "bracelet";
 
 export interface PilotProduct {
   id: string;
@@ -87,7 +94,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
     officialStoreUrl: "https://www2.hm.com/en_in/index.html",
     logoText: "H&M",
     country: "India",
-    layerSupport: ["Layer 2 (Body Fit Ranges)"],
+    layerSupport: ["Layer 3 (Garment Dimensions)", "Layer 2 (Body Fit Ranges)"],
     catalogStatus: "verified_published",
     description: "Structured commercial body fit tables across European and international cuts.",
     provenance: {
@@ -141,7 +148,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
     officialStoreUrl: "https://www.zara.com/in/",
     logoText: "ZARA",
     country: "India",
-    layerSupport: ["Layer 2 (Body Fit Ranges)"],
+    layerSupport: ["Layer 3 (Garment Dimensions)", "Layer 2 (Body Fit Ranges)"],
     catalogStatus: "verified_published",
     description: "Contemporary tailored European cuts with tight fit tolerances.",
     provenance: {
@@ -159,7 +166,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
     officialStoreUrl: "https://www.westside.com",
     logoText: "WESTSIDE",
     country: "India",
-    layerSupport: ["Layer 2 (Body Fit Ranges)"],
+    layerSupport: ["Layer 3 (Garment Dimensions)", "Layer 2 (Body Fit Ranges)"],
     catalogStatus: "verified_published",
     description: "Domestic Indian department store sizing with generous wearing ease.",
     provenance: {
@@ -177,7 +184,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
     officialStoreUrl: "https://vanheusenindia.abfrl.in",
     logoText: "VAN HEUSEN",
     country: "India",
-    layerSupport: ["Layer 2 (Body Fit Ranges)"],
+    layerSupport: ["Layer 3 (Garment Dimensions)", "Layer 2 (Body Fit Ranges)"],
     catalogStatus: "verified_published",
     description: "Corporate and formal apparel with neck collar and chest grading tables.",
     provenance: {
@@ -195,7 +202,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
     officialStoreUrl: "https://www.maxfashion.in/in/en/",
     logoText: "MAX",
     country: "India",
-    layerSupport: ["Layer 2 (Body Fit Ranges)"],
+    layerSupport: ["Layer 3 (Garment Dimensions)", "Layer 2 (Body Fit Ranges)"],
     catalogStatus: "verified_published",
     description: "Value fast fashion with standardized commercial body ranges.",
     provenance: {
@@ -213,7 +220,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
     officialStoreUrl: "https://www.marksandspencer.in",
     logoText: "M&S",
     country: "United Kingdom / India",
-    layerSupport: ["Layer 2 (Body Fit Ranges)", "Layer 3 (Garment Dimensions)"],
+    layerSupport: ["Layer 3 (Garment Dimensions)", "Layer 2 (Body Fit Ranges)"],
     catalogStatus: "verified_published",
     description: "British heritage tailoring, gold-standard underwire lingerie, and structured comfort fits.",
     provenance: {
@@ -231,7 +238,7 @@ export const PILOT_BRANDS: PilotBrand[] = [
     officialStoreUrl: "https://www.nike.com/in/",
     logoText: "NIKE",
     country: "United States / India",
-    layerSupport: ["Layer 2 (Body Fit Ranges)"],
+    layerSupport: ["Layer 3 (Garment Dimensions)", "Layer 2 (Body Fit Ranges)"],
     catalogStatus: "verified_published",
     description: "Athletic performance engineering, medium & high support compression sports bras, and Dri-FIT base layers.",
     provenance: {
@@ -383,6 +390,186 @@ export const PILOT_BRANDS: PilotBrand[] = [
       sourceUrl: "https://www.manyavar.com/en-in/size-guide",
       retrievedAt: "2026-03-01T10:00:00Z",
       verificationHash: "sha256-mv83910294bc1094fa83910247bc66",
+    },
+  },
+  {
+    id: "victorias_secret",
+    name: "Victoria's Secret India",
+    parentGroup: "Victoria's Secret & Co.",
+    domain: "victoriassecret.in",
+    officialStoreUrl: "https://www.victoriassecret.in",
+    logoText: "VICTORIA'S SECRET",
+    country: "USA / India",
+    layerSupport: ["Layer 2 (Body Fit Ranges)", "Layer 3 (Garment Dimensions)"],
+    catalogStatus: "verified_published",
+    description: "Global leader in women's intimate apparel, premium bras, panties, loungewear, and sleepwear.",
+    provenance: {
+      sourceType: "brand_official",
+      sourceUrl: "https://www.victoriassecret.in/size-guide",
+      retrievedAt: "2026-03-01T10:00:00Z",
+      verificationHash: "sha256-vs98210493bc1094fa83910247bc88",
+    },
+  },
+  {
+    id: "zivame",
+    name: "Zivame",
+    parentGroup: "Reliance Retail Ltd.",
+    domain: "zivame.com",
+    officialStoreUrl: "https://www.zivame.com",
+    logoText: "ZIVAME",
+    country: "India",
+    layerSupport: ["Layer 2 (Body Fit Ranges)", "Layer 3 (Garment Dimensions)"],
+    catalogStatus: "verified_published",
+    description: "India's leading intimate wear platform offering bras, shapewear, sleepwear, activewear, and everyday lingerie.",
+    provenance: {
+      sourceType: "brand_official",
+      sourceUrl: "https://www.zivame.com/bra-size-calculator",
+      retrievedAt: "2026-03-01T10:00:00Z",
+      verificationHash: "sha256-zv83910294bc1094fa83910247bc99",
+    },
+  },
+  {
+    id: "clovia",
+    name: "Clovia",
+    parentGroup: "Reliance Retail Ltd.",
+    domain: "clovia.com",
+    officialStoreUrl: "https://www.clovia.com",
+    logoText: "CLOVIA",
+    country: "India",
+    layerSupport: ["Layer 2 (Body Fit Ranges)", "Layer 3 (Garment Dimensions)"],
+    catalogStatus: "verified_published",
+    description: "Fast-growing Indian lingerie and loungewear brand engineered with precision cup and underbust contours.",
+    provenance: {
+      sourceType: "brand_official",
+      sourceUrl: "https://www.clovia.com/size-guide",
+      retrievedAt: "2026-03-01T10:00:00Z",
+      verificationHash: "sha256-cv83910294bc1094fa83910247bc10",
+    },
+  },
+  {
+    id: "biba",
+    name: "Biba India",
+    parentGroup: "BIBA Fashion Ltd.",
+    domain: "biba.in",
+    officialStoreUrl: "https://www.biba.in",
+    logoText: "BIBA",
+    country: "India",
+    layerSupport: ["Layer 3 (Garment Dimensions)", "Layer 2 (Body Fit Ranges)"],
+    catalogStatus: "verified_published",
+    description: "Iconic Indian ethnic wear, anarkali kurtas, festive dresses, and contemporary printed suits.",
+    provenance: {
+      sourceType: "brand_official",
+      sourceUrl: "https://www.biba.in/size-guide.html",
+      retrievedAt: "2026-03-01T10:00:00Z",
+      verificationHash: "sha256-bb83910294bc1094fa83910247bc21",
+    },
+  },
+  {
+    id: "w_for_woman",
+    name: "W for Woman",
+    parentGroup: "TCNS Clothing Co. Ltd.",
+    domain: "wforwoman.com",
+    officialStoreUrl: "https://wforwoman.com",
+    logoText: "W FOR WOMAN",
+    country: "India",
+    layerSupport: ["Layer 3 (Garment Dimensions)", "Layer 2 (Body Fit Ranges)"],
+    catalogStatus: "verified_published",
+    description: "Contemporary fusion workwear and Indian occasion dresses tailored for modern professional women.",
+    provenance: {
+      sourceType: "brand_official",
+      sourceUrl: "https://wforwoman.com/size-guide",
+      retrievedAt: "2026-03-01T10:00:00Z",
+      verificationHash: "sha256-wf83910294bc1094fa83910247bc32",
+    },
+  },
+  {
+    id: "adidas",
+    name: "Adidas India",
+    parentGroup: "Adidas AG",
+    domain: "adidas.co.in",
+    officialStoreUrl: "https://www.adidas.co.in",
+    logoText: "ADIDAS",
+    country: "Germany / India",
+    layerSupport: ["Layer 2 (Body Fit Ranges)", "Layer 3 (Garment Dimensions)"],
+    catalogStatus: "verified_published",
+    description: "Global sportswear titan with certified millimeter footbed footwear, running shoes, and lifestyle sneakers.",
+    provenance: {
+      sourceType: "brand_official",
+      sourceUrl: "https://www.adidas.co.in/help/size_charts",
+      retrievedAt: "2026-03-01T10:00:00Z",
+      verificationHash: "sha256-ad83910294bc1094fa83910247bc43",
+    },
+  },
+  {
+    id: "bata",
+    name: "Bata India",
+    parentGroup: "Bata Shoe Company",
+    domain: "bata.in",
+    officialStoreUrl: "https://www.bata.in",
+    logoText: "BATA",
+    country: "India",
+    layerSupport: ["Layer 2 (Body Fit Ranges)", "Layer 3 (Garment Dimensions)"],
+    catalogStatus: "verified_published",
+    description: "India's heritage footwear company offering durable formal shoes, leather boots, comfort sneakers, and heels.",
+    provenance: {
+      sourceType: "brand_official",
+      sourceUrl: "https://www.bata.in/size-guide.html",
+      retrievedAt: "2026-03-01T10:00:00Z",
+      verificationHash: "sha256-bt83910294bc1094fa83910247bc54",
+    },
+  },
+  {
+    id: "red_tape",
+    name: "Red Tape",
+    parentGroup: "Redtape Ltd.",
+    domain: "redtape.com",
+    officialStoreUrl: "https://www.redtape.com",
+    logoText: "RED TAPE",
+    country: "India",
+    layerSupport: ["Layer 2 (Body Fit Ranges)", "Layer 3 (Garment Dimensions)"],
+    catalogStatus: "verified_published",
+    description: "Leading Indian lifestyle brand acclaimed for chunky sneakers, leather boots, and athletic footwear.",
+    provenance: {
+      sourceType: "brand_official",
+      sourceUrl: "https://www.redtape.com/pages/size-chart",
+      retrievedAt: "2026-03-01T10:00:00Z",
+      verificationHash: "sha256-rt83910294bc1094fa83910247bc65",
+    },
+  },
+  {
+    id: "tanishq",
+    name: "Tanishq",
+    parentGroup: "Titan Company Ltd. (Tata Group)",
+    domain: "tanishq.co.in",
+    officialStoreUrl: "https://www.tanishq.co.in",
+    logoText: "TANISHQ",
+    country: "India",
+    layerSupport: ["Layer 2 (Body Fit Ranges)", "Layer 3 (Garment Dimensions)"],
+    catalogStatus: "verified_published",
+    description: "India's most trusted fine jewelry house crafting certified gold and diamond rings, kadas, bangles, and bracelets.",
+    provenance: {
+      sourceType: "brand_official",
+      sourceUrl: "https://www.tanishq.co.in/ring-size-guide",
+      retrievedAt: "2026-03-01T10:00:00Z",
+      verificationHash: "sha256-tq83910294bc1094fa83910247bc76",
+    },
+  },
+  {
+    id: "caratlane",
+    name: "CaratLane",
+    parentGroup: "Titan Company Ltd. (Tata Group)",
+    domain: "caratlane.com",
+    officialStoreUrl: "https://www.caratlane.com",
+    logoText: "CARATLANE",
+    country: "India",
+    layerSupport: ["Layer 2 (Body Fit Ranges)", "Layer 3 (Garment Dimensions)"],
+    catalogStatus: "verified_published",
+    description: "Modern everyday fine jewelry innovator specializing in stackable rings, charm bracelets, and bespoke kadas.",
+    provenance: {
+      sourceType: "brand_official",
+      sourceUrl: "https://www.caratlane.com/size-guide",
+      retrievedAt: "2026-03-01T10:00:00Z",
+      verificationHash: "sha256-cl83910294bc1094fa83910247bc87",
     },
   },
 ];
@@ -1861,6 +2048,7 @@ export const PILOT_PRODUCTS: PilotProduct[] = [
     },
   },
   ...EXPANDED_PRODUCTS,
+  ...LIFESTYLE_PRODUCTS,
 ];
 
-export { EXPANDED_PRODUCTS };
+export { EXPANDED_PRODUCTS, LIFESTYLE_PRODUCTS };

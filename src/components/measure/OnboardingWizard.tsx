@@ -125,27 +125,34 @@ export function OnboardingWizard() {
     const finalName = profileName.trim() || user?.fullName || (isAddMemberMode ? "Partner" : "My Size Passport");
     setProfileName(finalName);
     setIsSubmitting(true);
-    saveProfileAndRedirect({
-      chestMm: morphology === "female" ? 880 : 980,
-      waistMm: morphology === "female" ? 720 : 820,
-      hipsMm: morphology === "female" ? 980 : 960,
-      heightMm: morphology === "female" ? 1640 : 1780,
-      shoulderWidthMm: morphology === "female" ? 390 : 450,
-      inseamMm: morphology === "female" ? 740 : 790,
-      neckMm: morphology === "female" ? 340 : 390,
-      sleeveLengthMm: morphology === "female" ? 570 : 620,
-      measurementMethod: {
-        chestMm: "baseline_median",
+    saveProfileAndRedirect(
+      {
+        chestMm: morphology === "female" ? 880 : 980,
+        waistMm: morphology === "female" ? 720 : 820,
+        hipsMm: morphology === "female" ? 980 : 960,
+        heightMm: morphology === "female" ? 1640 : 1780,
+        shoulderWidthMm: morphology === "female" ? 390 : 450,
+        inseamMm: morphology === "female" ? 740 : 790,
+        neckMm: morphology === "female" ? 340 : 390,
+        sleeveLengthMm: morphology === "female" ? 570 : 620,
+        measurementMethod: {
+          chestMm: "baseline_median",
+        },
       },
-    });
+      finalName
+    );
   };
 
   // Shared profile save before redirect
-  const saveProfileAndRedirect = (measurementsToSave?: Partial<any>) => {
+  const saveProfileAndRedirect = (measurementsToSave?: Partial<any>, explicitName?: string) => {
     const finalGender = morphology;
     const finalCategories = derivedCategories();
     const finalRelation = normalizeRelation(relation);
-    const finalName = profileName.trim() || (isAddMemberMode ? (relation === "partner" ? "Partner" : "Family Member") : "My Identity");
+    const finalName =
+      explicitName?.trim() ||
+      profileName.trim() ||
+      user?.fullName ||
+      (isAddMemberMode ? (relation === "partner" ? "Partner" : "Family Member") : "My Size Passport");
 
     if (isAddMemberMode) {
       const newId = addProfile({
@@ -186,9 +193,7 @@ export function OnboardingWizard() {
       }
     }
 
-    setTimeout(() => {
-      router.push("/app");
-    }, 300);
+    router.push("/app");
   };
 
   const handleSaveQuick = (e: React.FormEvent) => {

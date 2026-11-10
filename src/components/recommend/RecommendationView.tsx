@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { useProfileStore } from "@/core/state/profileStore";
 import { PILOT_BRANDS, PILOT_PRODUCTS, PilotProduct } from "@/core/data/pilotBrands";
 import { evaluateSizeRecommendation } from "@/core/sizing/recommendationEngine";
@@ -25,11 +26,24 @@ import { BraSizingCard } from "@/components/visual/BraSizingCard";
 export function RecommendationView() {
   const { getActiveProfile, displayUnit, addReferenceGarment } = useProfileStore();
   const profile = getActiveProfile();
+  const searchParams = useSearchParams();
+  const queryProductId = searchParams?.get("productId");
 
   // Selected product state
-  const [selectedProductId, setSelectedProductId] = useState<string>(
-    PILOT_PRODUCTS[0].id
-  );
+  const [selectedProductId, setSelectedProductId] = useState<string>(() => {
+    if (queryProductId && PILOT_PRODUCTS.some((p) => p.id === queryProductId)) {
+      return queryProductId;
+    }
+    return PILOT_PRODUCTS[0].id;
+  });
+
+  // Sync selected product when URL query param changes
+  useEffect(() => {
+    if (queryProductId && PILOT_PRODUCTS.some((p) => p.id === queryProductId)) {
+      setSelectedProductId(queryProductId);
+    }
+  }, [queryProductId]);
+
   const selectedProduct = useMemo(
     () => PILOT_PRODUCTS.find((p) => p.id === selectedProductId) || PILOT_PRODUCTS[0],
     [selectedProductId]
@@ -39,6 +53,10 @@ export function RecommendationView() {
   const [fitOverride, setFitOverride] = useState<FitType>(
     profile.preferences[selectedProduct.category] || "regular"
   );
+
+  useEffect(() => {
+    setFitOverride(profile.preferences[selectedProduct.category] || "regular");
+  }, [selectedProductId, profile.preferences, selectedProduct.category]);
 
   const [isAccordionOpen, setIsAccordionOpen] = useState(true);
   const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);

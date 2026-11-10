@@ -42,15 +42,22 @@ export function getCategoryWeights(category: string): Record<string, number> {
   switch (normalized) {
     case "tshirt":
     case "t_shirt":
+    case "t_shirt_oversized":
     case "polo":
       return { chest: 0.40, shoulder: 0.35, length: 0.15, sleeve: 0.10 };
     case "casual_shirt":
+    case "shirt_casual":
       return { chest: 0.30, shoulder: 0.30, sleeve: 0.20, neck: 0.20 };
     case "formal_shirt":
+    case "shirt_formal":
       return { chest: 0.25, shoulder: 0.25, sleeve: 0.25, neck: 0.25 };
     case "hoodie":
     case "sweatshirt":
       return { chest: 0.45, shoulder: 0.30, length: 0.15, sleeve: 0.10 };
+    case "jacket":
+    case "blazer":
+    case "outerwear":
+      return { chest: 0.40, shoulder: 0.30, sleeve: 0.20, length: 0.10 };
     case "jeans":
       return { waist: 0.40, inseam: 0.35, thigh: 0.25 };
     case "trousers":
@@ -65,10 +72,28 @@ export function getCategoryWeights(category: string): Record<string, number> {
     case "shorts":
     case "short":
       return { waist: 0.45, hips: 0.35, length: 0.20 };
+    case "bra":
+    case "sports_bra":
+    case "lingerie":
+    case "intimates":
+      return { chest: 0.60, waist: 0.40 };
+    case "undershirt":
+    case "briefs":
+      return { chest: 0.50, waist: 0.50 };
+    case "dress":
+    case "dresses":
+      return { chest: 0.40, waist: 0.35, hips: 0.25 };
     case "kurta":
+    case "kurti":
       return { chest: 0.35, shoulder: 0.25, torso_length: 0.25, sleeve: 0.15 };
     case "shoe":
+    case "shoes":
+    case "footwear":
       return { foot_length: 1.0 };
+    case "ring":
+      return { ring_finger: 1.0 };
+    case "bracelet":
+      return { wrist: 1.0 };
     default:
       return { chest: 0.50, shoulder: 0.30, length: 0.20 };
   }
@@ -172,7 +197,7 @@ export function evaluateSizing(req: RecommendationRequest): ExplanationTree {
   // Step 2 & 3: Score candidate sizes
   if (layerUsed === "Layer3_Garment") {
     for (const g of garmentDimensions!) {
-      const gChestCircMm = g.chestFlatMm * 2;
+      const gChestCircMm = (g.chestFlatMm ?? 500) * 2;
       const easeMm = gChestCircMm - profile.chestMm;
       const chestScore = calculateGaussianEaseScore(easeMm, targetEase, isStretch);
 
@@ -245,18 +270,51 @@ export function evaluateSizing(req: RecommendationRequest): ExplanationTree {
     for (const chart of brandSizeCharts!) {
       let score = 0.0;
       let easeDeltaMm = 0;
-      if (chart.chestMinMm && chart.chestMaxMm) {
-        const midMm = (chart.chestMinMm + chart.chestMaxMm) / 2;
-        easeDeltaMm = profile.chestMm - midMm;
+      let primaryDimension = "Chest";
+      let bodyVal = profile.chestMm;
+      let rangeMin = chart.chestMinMm;
+      let rangeMax = chart.chestMaxMm;
 
-        if (profile.chestMm >= chart.chestMinMm && profile.chestMm <= chart.chestMaxMm) {
-          const halfSpan = (chart.chestMaxMm - chart.chestMinMm) / 2;
-          score = 1.0 - Math.abs(profile.chestMm - midMm) / (halfSpan * 1.5);
+      if (chart.footMinMm && chart.footMaxMm && profile.footLengthMm) {
+        primaryDimension = "Foot Length";
+        bodyVal = profile.footLengthMm;
+        rangeMin = chart.footMinMm;
+        rangeMax = chart.footMaxMm;
+      } else if (chart.ringCircMinMm && chart.ringCircMaxMm && profile.ringFingerMm) {
+        primaryDimension = "Ring Finger Circumference";
+        bodyVal = profile.ringFingerMm;
+        rangeMin = chart.ringCircMinMm;
+        rangeMax = chart.ringCircMaxMm;
+      } else if (chart.wristMinMm && chart.wristMaxMm && profile.wristMm) {
+        primaryDimension = "Wrist Circumference";
+        bodyVal = profile.wristMm;
+        rangeMin = chart.wristMinMm;
+        rangeMax = chart.wristMaxMm;
+      } else if (
+        chart.waistMinMm &&
+        chart.waistMaxMm &&
+        (!chart.chestMinMm ||
+          fitPreference.category.includes("bottom") ||
+          fitPreference.category.includes("jean") ||
+          fitPreference.category.includes("trouser") ||
+          fitPreference.category.includes("short"))
+      ) {
+        primaryDimension = "Waist";
+        bodyVal = profile.waistMm || 820;
+        rangeMin = chart.waistMinMm;
+        rangeMax = chart.waistMaxMm;
+      }
+
+      if (rangeMin && rangeMax) {
+        const midMm = (rangeMin + rangeMax) / 2;
+        easeDeltaMm = bodyVal - midMm;
+
+        if (bodyVal >= rangeMin && bodyVal <= rangeMax) {
+          const halfSpan = (rangeMax - rangeMin) / 2;
+          score = 1.0 - Math.abs(bodyVal - midMm) / Math.max(1, halfSpan * 1.5);
         } else {
-          const dist = profile.chestMm < chart.chestMinMm
-            ? chart.chestMinMm - profile.chestMm
-            : profile.chestMm - chart.chestMaxMm;
-          score = Math.max(0, 0.5 - (dist / 100));
+          const dist = bodyVal < rangeMin ? rangeMin - bodyVal : bodyVal - rangeMax;
+          score = Math.max(0, 0.5 - dist / 100);
         }
       }
 
@@ -266,13 +324,13 @@ export function evaluateSizing(req: RecommendationRequest): ExplanationTree {
         chestEaseMm: easeDeltaMm,
         dimensionBreakdown: [
           {
-            dimension: "Brand Body Fit Range",
-            bodyMeasurementMm: profile.chestMm,
-            garmentSpecMm: (chart.chestMinMm && chart.chestMaxMm) ? Math.round((chart.chestMinMm + chart.chestMaxMm) / 2) : 0,
+            dimension: `Brand Body Fit Range (${primaryDimension})`,
+            bodyMeasurementMm: bodyVal,
+            garmentSpecMm: rangeMin && rangeMax ? Math.round((rangeMin + rangeMax) / 2) : 0,
             easeDeltaMm,
-            easeTargetMm: { min: chart.chestMinMm || 0, max: chart.chestMaxMm || 0 },
+            easeTargetMm: { min: rangeMin || 0, max: rangeMax || 0 },
             status: score >= 0.7 ? "ideal" : "acceptable",
-            rationale: `Your chest (${Math.round(profile.chestMm / 10)}cm) falls within the brand's recommended range (${Math.round((chart.chestMinMm || 0) / 10)}–${Math.round((chart.chestMaxMm || 0) / 10)}cm).`,
+            rationale: `Your ${primaryDimension.toLowerCase()} (${Math.round(bodyVal / 10)}cm) falls within the brand's recommended range (${Math.round((rangeMin || 0) / 10)}–${Math.round((rangeMax || 0) / 10)}cm).`,
           },
         ],
       });

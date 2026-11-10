@@ -74,24 +74,10 @@ function LoginContent() {
       return;
     }
 
-    // Auto-detect test number
-    if (clean === "7722890254" || clean.endsWith("7722890254")) {
-      setOtpSent(true);
-      setCountdown(30);
-      setSuccessMsg("Test account recognized. Use code 958921 to sign in.");
-      return;
-    }
-
     const fullPhone = clean.startsWith("91") && clean.length === 12 ? `+${clean}` : `+91${clean.slice(-10)}`;
     const res = await signInWithPhoneOtp(fullPhone);
     if (res.error) {
-      if (res.error.includes("572002") || res.error.includes("trial")) {
-        setLocalError(
-          "Twilio Trial Restriction: Use our pre-verified test number 7722890254 with OTP 958921 or tap 'Instant Test Login' below."
-        );
-      } else {
-        setLocalError(res.error);
-      }
+      setLocalError(res.error || "Unable to send verification code. Please verify your mobile number or use email sign-in.");
     } else {
       setOtpSent(true);
       setCountdown(60);
@@ -107,16 +93,9 @@ function LoginContent() {
     const clean = phoneNumber.replace(/\D/g, "");
     const fullPhone = clean.startsWith("91") && clean.length === 12 ? `+${clean}` : `+91${clean.slice(-10)}`;
 
-    // Test bypass check
-    if ((clean === "7722890254" || clean.endsWith("7722890254")) && otpCode === "958921") {
-      signInWithTestAccount(fullPhone);
-      router.push(returnUrl);
-      return;
-    }
-
     const res = await verifyPhoneOtp(fullPhone, otpCode.trim());
     if (res.error) {
-      setLocalError(res.error);
+      setLocalError(res.error || "Invalid verification code. Please try again.");
     } else {
       router.push(returnUrl);
     }
@@ -156,11 +135,6 @@ function LoginContent() {
     }
   };
 
-  const handleInstantTestLogin = () => {
-    signInWithTestAccount("+917722890254");
-    router.push(returnUrl);
-  };
-
   return (
     <div className="min-h-screen bg-bg-base text-text-primary flex flex-col justify-between p-4 sm:p-8">
       {/* Top Header */}
@@ -197,30 +171,6 @@ function LoginContent() {
             <span>For your biometric security, your session expired due to inactivity. Please sign in to resume.</span>
           </div>
         )}
-
-        {/* Instant Reviewer Test Account Banner */}
-        <div className="mb-6 p-4 rounded-card bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-xs shadow-xs">
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-200 font-semibold">
-              <Sparkles className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span>Instant Reviewer Test Access</span>
-            </div>
-            <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-badge bg-emerald-200/60 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300">
-              Zero Wait
-            </span>
-          </div>
-          <p className="text-[11px] text-emerald-800/80 dark:text-emerald-300/80 mt-1 leading-relaxed">
-            Skip SMS latency and sign in immediately with our pre-verified account.
-          </p>
-          <button
-            type="button"
-            onClick={handleInstantTestLogin}
-            className="w-full mt-3 min-h-[40px] px-3.5 rounded-btn bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold transition-colors flex items-center justify-center gap-2 shadow-xs"
-          >
-            <UserCheck className="w-3.5 h-3.5" />
-            <span>Sign In with Test Account (7722890254)</span>
-          </button>
-        </div>
 
         {/* Primary Auth Form Container */}
         <div className="rounded-card border border-border bg-bg-surface p-6 sm:p-8 shadow-sm">

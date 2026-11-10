@@ -1,11 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { Shirt, Scissors, Heart, Sparkles, ChevronRight, X } from "lucide-react";
+import { Shirt, Scissors, Heart, Sparkles, ChevronRight, X, Footprints, Gem } from "lucide-react";
 
 export interface CategorySelection {
-  mainCategory: "all" | "tops" | "bottoms" | "intimates" | "outerwear";
-  subCategory: string; // e.g. "t_shirt", "polo", "jeans", "joggers", "bra", etc.
+  mainCategory: "all" | "tops" | "bottoms" | "dresses" | "intimates" | "shoes" | "jewelry" | "outerwear";
+  subCategory: string; // e.g. "t_shirt", "polo", "jeans", "joggers", "bra", "shoes", "ring", etc.
   label: string;
 }
 
@@ -19,7 +19,10 @@ export const MAIN_CATEGORIES = [
   { id: "all", label: "All Items", icon: Sparkles },
   { id: "tops", label: "Tops & Shirts", icon: Shirt },
   { id: "bottoms", label: "Bottoms & Pants", icon: Scissors },
-  { id: "intimates", label: "Intimates & Bras", icon: Heart },
+  { id: "dresses", label: "Dresses & Ethnic", icon: Sparkles },
+  { id: "intimates", label: "Intimates & Lingerie", icon: Heart },
+  { id: "shoes", label: "Shoes & Footwear", icon: Footprints },
+  { id: "jewelry", label: "Rings & Jewelry", icon: Gem },
   { id: "outerwear", label: "Outerwear & Layers", icon: Shirt },
 ] as const;
 
@@ -39,12 +42,28 @@ export const SUB_CATEGORIES: Record<string, Array<{ id: string; label: string; d
     { id: "joggers", label: "Joggers & Track Pants", desc: "Elastic waistband & cuffs" },
     { id: "shorts", label: "Shorts", desc: "Casual & athletic" },
   ],
+  dresses: [
+    { id: "all_dresses", label: "All Dresses & Ethnic" },
+    { id: "dress", label: "Festive & Western Dresses", desc: "A-line, anarkali & maxi drapes" },
+    { id: "kurta", label: "Ethnic Kurtas & Tunics", desc: "Comfort straight cuts & printed suits" },
+  ],
   intimates: [
     { id: "all_intimates", label: "All Intimates" },
     { id: "bra", label: "Bras & Bralettes", desc: "Underbust band & cup sizing" },
-    { id: "sports_bra", label: "Sports Bras", desc: "Compression & support" },
+    { id: "lingerie", label: "Lingerie & Pajama Sets", desc: "Silky loungewear & robes" },
+    { id: "sports_bra", label: "Sports Bras", desc: "Compression & bounce support" },
+    { id: "briefs", label: "Briefs & Shapewear", desc: "Waistband comfort & anti-chafe fit" },
     { id: "undershirt", label: "Vests & Undershirts", desc: "Base layer ribs" },
-    { id: "briefs", label: "Briefs & Boxers", desc: "Waistband comfort" },
+  ],
+  shoes: [
+    { id: "all_shoes", label: "All Footwear" },
+    { id: "shoes", label: "Sneakers & Walking Shoes", desc: "Millimeter insole & footbed fit" },
+    { id: "footwear", label: "Formal Leather Shoes", desc: "Oxford & derby standard sizing" },
+  ],
+  jewelry: [
+    { id: "all_jewelry", label: "All Jewelry" },
+    { id: "ring", label: "Gold & Diamond Rings", desc: "Finger circumference & inner diameter" },
+    { id: "bracelet", label: "Kadas & Charm Bracelets", desc: "Wrist circumference & bangle gauge" },
   ],
   outerwear: [
     { id: "all_outerwear", label: "All Outerwear" },

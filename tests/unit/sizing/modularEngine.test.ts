@@ -103,7 +103,7 @@ describe("Requirement 3: Deterministic Sizing Recommendation Engine", () => {
 
     it("bridges flat garment to body circumference via explicit doubling", () => {
       const g = sampleGarments[1];
-      const circ = flatMeasureToCircumference(g.chestFlatMm);
+      const circ = flatMeasureToCircumference(g.chestFlatMm!);
       expect(circ).toBe(1070);
       const ease = calculateTotalEase(circ, sampleProfile.chestMm);
       expect(ease).toBe(110);

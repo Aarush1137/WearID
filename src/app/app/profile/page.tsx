@@ -175,16 +175,9 @@ export default function ProfilePage() {
                 </p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
-                <button
-                  type="button"
-                  onClick={() => signInWithTestAccount("+917722890254")}
-                  className="text-xs font-semibold text-accent hover:underline px-2.5 py-1.5"
-                >
-                  Quick Test Login
-                </button>
                 <Link
                   href="/login"
-                  className="btn-primary min-h-[38px] px-3.5 text-xs font-semibold shadow-xs"
+                  className="btn-primary min-h-[38px] px-4 text-xs font-semibold shadow-xs"
                 >
                   Sign In
                 </Link>

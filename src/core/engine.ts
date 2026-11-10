@@ -108,7 +108,7 @@ export function evaluateSizing(req: SizingEvaluationRequest): ExplanationTree {
   if (layerUsed === "Layer3_Garment") {
     for (const g of garmentDimensions!) {
       // Circumference = flat * 2
-      const gChestCircMm = flatMeasureToCircumference(g.chestFlatMm);
+      const gChestCircMm = flatMeasureToCircumference(g.chestFlatMm ?? 0);
       const easeMm = gChestCircMm - profile.chestMm;
 
       // Score Chest Ease

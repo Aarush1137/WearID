@@ -15,13 +15,20 @@ export interface BuildExplanationParams {
   provenance: string;
   isBorderline: boolean;
   borderlineTradeoff?: string;
-  bodyChestMm: number;
+  bodyChestMm?: number;
   garmentChestCircMm?: number;
   chestEaseMm?: number;
-  targetEase: TargetEaseRange;
+  targetEase?: TargetEaseRange;
   bodyShoulderMm?: number;
   garmentShoulderMm?: number;
   shoulderDeltaMm?: number;
+  bodyWaistMm?: number;
+  garmentWaistCircMm?: number;
+  waistEaseMm?: number;
+  targetWaistEase?: TargetEaseRange;
+  bodyInseamMm?: number;
+  garmentInseamMm?: number;
+  isBottom?: boolean;
   isStretch?: boolean;
 }
 
@@ -40,13 +47,20 @@ export function buildExplanationTree(params: BuildExplanationParams): Explanatio
     provenance,
     isBorderline,
     borderlineTradeoff,
-    bodyChestMm,
+    bodyChestMm = 960,
     garmentChestCircMm,
     chestEaseMm = 0,
-    targetEase,
+    targetEase = { min: 80, max: 140, midpoint: 110, sigma: 35 },
     bodyShoulderMm,
     garmentShoulderMm,
     shoulderDeltaMm,
+    bodyWaistMm,
+    garmentWaistCircMm,
+    waistEaseMm = 0,
+    targetWaistEase = { min: 20, max: 50, midpoint: 35, sigma: 20 },
+    bodyInseamMm,
+    garmentInseamMm,
+    isBottom = false,
     isStretch = false,
   } = params;
 
@@ -61,8 +75,76 @@ export function buildExplanationTree(params: BuildExplanationParams): Explanatio
 
   const dimensionBreakdown: DimensionExplanation[] = [];
 
-  // Chest Dimension Explanation
-  if (garmentChestCircMm !== undefined) {
+  // Waist Dimension Explanation (Primary for bottoms, secondary for tops)
+  if (garmentWaistCircMm !== undefined && bodyWaistMm !== undefined) {
+    const easeCm = Math.round(waistEaseMm / 10);
+    const targetMinCm = Math.round(targetWaistEase.min / 10);
+    const targetMaxCm = Math.round(targetWaistEase.max / 10);
+
+    let status: "ideal" | "tight" | "loose" | "acceptable" = "acceptable";
+    let rationale = "";
+
+    if (waistEaseMm < 0) {
+      if (!isStretch) {
+        status = "tight";
+        rationale = `Negative waist ease (${easeCm}cm). Waistband will be constrictive.`;
+      } else {
+        status = "acceptable";
+        rationale = `Comfort stretch (${easeCm}cm waist tension) accommodated by elastic waistband.`;
+      }
+    } else if (waistEaseMm >= targetWaistEase.min && waistEaseMm <= targetWaistEase.max) {
+      status = "ideal";
+      rationale = `Provides +${easeCm}cm waistband ease, perfectly in target range (${targetMinCm}–${targetMaxCm}cm) for ${fitType} fit.`;
+    } else if (waistEaseMm < targetWaistEase.min) {
+      status = "tight";
+      rationale = `Provides +${easeCm}cm ease, snugger than standard (${targetMinCm}–${targetMaxCm}cm).`;
+    } else {
+      status = "loose";
+      rationale = `Provides +${easeCm}cm ease, roomier than standard (${targetMinCm}–${targetMaxCm}cm); may need a belt or drawstring.`;
+    }
+
+    dimensionBreakdown.push({
+      dimension: "Waist Circumference",
+      bodyMeasurementMm: bodyWaistMm,
+      garmentSpecMm: garmentWaistCircMm,
+      easeDeltaMm: waistEaseMm,
+      easeTargetMm: { min: targetWaistEase.min, max: targetWaistEase.max },
+      status,
+      rationale,
+    });
+  }
+
+  // Inseam Dimension Explanation (for bottoms)
+  if (bodyInseamMm !== undefined && garmentInseamMm !== undefined) {
+    const deltaMm = garmentInseamMm - bodyInseamMm;
+    const deltaCm = Math.round(deltaMm / 10);
+    let status: "ideal" | "tight" | "loose" | "acceptable" = "ideal";
+    let rationale = "";
+
+    if (Math.abs(deltaMm) <= 25) {
+      status = "ideal";
+      rationale = `Inseam (${Math.round(garmentInseamMm / 10)}cm) breaks naturally at your ankle with no hem pooling.`;
+    } else if (deltaMm > 25) {
+      status = "acceptable";
+      rationale = `Inseam is +${deltaCm}cm longer than ankle height; may stack slightly over shoes or can be cuffed.`;
+    } else {
+      status = "acceptable";
+      rationale = `Inseam is ${Math.abs(deltaCm)}cm shorter than ankle height; offers a clean modern cropped ankle look.`;
+    }
+
+    dimensionBreakdown.push({
+      dimension: "Inseam Length",
+      bodyMeasurementMm: bodyInseamMm,
+      garmentSpecMm: garmentInseamMm,
+      easeDeltaMm: deltaMm,
+      easeTargetMm: { min: -10, max: 25 },
+      status,
+      rationale,
+    });
+  }
+
+  // Chest Dimension Explanation (Primary for tops)
+  if (garmentChestCircMm !== undefined && (!isBottom || dimensionBreakdown.length === 0)) {
     const easeCm = Math.round(chestEaseMm / 10);
     const targetMinCm = Math.round(targetEase.min / 10);
     const targetMaxCm = Math.round(targetEase.max / 10);
@@ -101,7 +183,7 @@ export function buildExplanationTree(params: BuildExplanationParams): Explanatio
   }
 
   // Shoulder Dimension Explanation
-  if (bodyShoulderMm !== undefined && garmentShoulderMm !== undefined && shoulderDeltaMm !== undefined) {
+  if (bodyShoulderMm !== undefined && garmentShoulderMm !== undefined && shoulderDeltaMm !== undefined && !isBottom) {
     const shoulderDeltaCm = Math.round(shoulderDeltaMm / 10);
     const gShoulderCm = Math.round(garmentShoulderMm / 10);
     const bShoulderCm = Math.round(bodyShoulderMm / 10);
@@ -137,14 +219,23 @@ export function buildExplanationTree(params: BuildExplanationParams): Explanatio
   }
 
   // Summary Text Generation
-  const bodyChestCm = Math.round(bodyChestMm / 10);
-  const easeCm = Math.round(chestEaseMm / 10);
   let summaryText = "";
-
-  if (layerUsed === "Layer3_Garment") {
-    summaryText = `Your chest (${bodyChestCm}cm) fits best in size ${recommendedSize} with +${easeCm}cm ease for a ${fitType} fit.`;
+  if (isBottom && bodyWaistMm !== undefined) {
+    const bodyWaistCm = Math.round(bodyWaistMm / 10);
+    const easeCm = Math.round(waistEaseMm / 10);
+    if (layerUsed === "Layer3_Garment") {
+      summaryText = `Your waist (${bodyWaistCm}cm) fits best in size ${recommendedSize} with +${easeCm}cm waistband ease for a ${fitType} fit.`;
+    } else {
+      summaryText = `Your waist (${bodyWaistCm}cm) fits best in size ${recommendedSize} based on brand fit guidelines.`;
+    }
   } else {
-    summaryText = `Your chest (${bodyChestCm}cm) fits best in size ${recommendedSize} based on brand fit guidelines.`;
+    const bodyChestCm = Math.round(bodyChestMm / 10);
+    const easeCm = Math.round(chestEaseMm / 10);
+    if (layerUsed === "Layer3_Garment") {
+      summaryText = `Your chest (${bodyChestCm}cm) fits best in size ${recommendedSize} with +${easeCm}cm ease for a ${fitType} fit.`;
+    } else {
+      summaryText = `Your chest (${bodyChestCm}cm) fits best in size ${recommendedSize} based on brand fit guidelines.`;
+    }
   }
 
   return {

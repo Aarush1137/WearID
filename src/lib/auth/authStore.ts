@@ -19,6 +19,7 @@ interface AuthState {
   user: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  hasInitialized: boolean;
   authError: string | null;
   lastActiveAt: number | null;
   sessionExpiresAt: number | null;
@@ -38,21 +39,26 @@ interface AuthState {
   clearError: () => void;
 }
 
+let isAuthListenerAttached = false;
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
       user: null,
       isAuthenticated: false,
       isLoading: false,
+      hasInitialized: false,
       authError: null,
       lastActiveAt: null,
       sessionExpiresAt: null,
       sessionTimeoutReason: null,
 
       touchSession: () => {
-        const { isAuthenticated } = get();
+        const { isAuthenticated, lastActiveAt } = get();
         if (!isAuthenticated) return;
         const now = Date.now();
+        // Throttle updates: only persist new timestamp if more than 60 seconds have elapsed
+        if (lastActiveAt && now - lastActiveAt < 60_000) return;
         set({
           lastActiveAt: now,
           sessionExpiresAt: now + DEFAULT_SESSION_DURATION_MS,
@@ -70,67 +76,24 @@ export const useAuthStore = create<AuthState>()(
       },
 
       initAuth: async () => {
-        try {
-          set({ isLoading: true, authError: null });
-          const now = Date.now();
-          const current = get();
+        const current = get();
+        // If already initialized, do non-blocking session check and return immediately
+        if (current.hasInitialized) {
+          current.checkSessionExpiry();
+          return;
+        }
 
-          // Check if persisted session has expired due to inactivity
-          if (current.sessionExpiresAt && now > current.sessionExpiresAt) {
-            await get().signOut("inactivity");
-            return;
-          }
+        const now = Date.now();
+        // Check if persisted session has expired due to inactivity
+        if (current.sessionExpiresAt && now > current.sessionExpiresAt) {
+          await get().signOut("inactivity");
+          set({ hasInitialized: true });
+          return;
+        }
 
-          const { data, error } = await supabase.auth.getSession();
-          if (error) {
-            // If offline or network error, preserve persisted local session if valid
-            if (current.isAuthenticated && current.user) {
-              set({ isLoading: false });
-              return;
-            }
-            set({ isLoading: false, authError: error.message });
-            return;
-          }
-
-          if (data?.session?.user) {
-            const u = data.session.user;
-            set({
-              user: {
-                id: u.id,
-                email: u.email,
-                phone: u.phone,
-                fullName:
-                  u.user_metadata?.full_name ||
-                  u.user_metadata?.name ||
-                  u.email?.split("@")[0] ||
-                  "WearID Member",
-                avatarUrl: u.user_metadata?.avatar_url,
-              },
-              isAuthenticated: true,
-              lastActiveAt: now,
-              sessionExpiresAt: now + DEFAULT_SESSION_DURATION_MS,
-              isLoading: false,
-            });
-          } else {
-            // Keep local/test session if already authenticated and not expired
-            if (current.isAuthenticated && current.user) {
-              set({
-                lastActiveAt: now,
-                sessionExpiresAt: now + DEFAULT_SESSION_DURATION_MS,
-                isLoading: false,
-              });
-            } else {
-              set({
-                user: null,
-                isAuthenticated: false,
-                lastActiveAt: null,
-                sessionExpiresAt: null,
-                isLoading: false,
-              });
-            }
-          }
-
-          // Listen to auth changes
+        // Attach Supabase listener exactly once across application lifecycle
+        if (!isAuthListenerAttached) {
+          isAuthListenerAttached = true;
           supabase.auth.onAuthStateChange((event: string, session: any) => {
             if (event === "SIGNED_OUT") {
               set({
@@ -139,6 +102,7 @@ export const useAuthStore = create<AuthState>()(
                 lastActiveAt: null,
                 sessionExpiresAt: null,
                 isLoading: false,
+                hasInitialized: true,
               });
               return;
             }
@@ -162,17 +126,65 @@ export const useAuthStore = create<AuthState>()(
                 lastActiveAt: updateTime,
                 sessionExpiresAt: updateTime + DEFAULT_SESSION_DURATION_MS,
                 isLoading: false,
+                hasInitialized: true,
               });
             }
           });
-        } catch (err: any) {
-          // Fallback: If network fails, do not wipe valid local session
-          const current = get();
-          if (current.isAuthenticated && current.user) {
-            set({ isLoading: false });
-          } else {
-            set({ isLoading: false, authError: err?.message || "Auth initialization error" });
+        }
+
+        // If local persisted session exists, keep it active immediately without UI freeze
+        if (current.isAuthenticated && current.user) {
+          set({
+            hasInitialized: true,
+            lastActiveAt: now,
+            sessionExpiresAt: now + DEFAULT_SESSION_DURATION_MS,
+          });
+        }
+
+        try {
+          const { data, error } = await supabase.auth.getSession();
+          if (error) {
+            set({ hasInitialized: true, isLoading: false });
+            return;
           }
+
+          if (data?.session?.user) {
+            const u = data.session.user;
+            set({
+              user: {
+                id: u.id,
+                email: u.email,
+                phone: u.phone,
+                fullName:
+                  u.user_metadata?.full_name ||
+                  u.user_metadata?.name ||
+                  u.email?.split("@")[0] ||
+                  "WearID Member",
+                avatarUrl: u.user_metadata?.avatar_url,
+              },
+              isAuthenticated: true,
+              lastActiveAt: now,
+              sessionExpiresAt: now + DEFAULT_SESSION_DURATION_MS,
+              isLoading: false,
+              hasInitialized: true,
+            });
+          } else {
+            // No remote session found; if no persisted user, mark unauthenticated
+            if (!get().user) {
+              set({
+                user: null,
+                isAuthenticated: false,
+                lastActiveAt: null,
+                sessionExpiresAt: null,
+                isLoading: false,
+                hasInitialized: true,
+              });
+            } else {
+              set({ hasInitialized: true, isLoading: false });
+            }
+          }
+        } catch (_) {
+          set({ hasInitialized: true, isLoading: false });
         }
       },
 
