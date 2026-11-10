@@ -246,6 +246,23 @@ export function AuthModal({ isOpen, onClose, onSuccess }: AuthModalProps) {
                     </>
                   )}
                 </button>
+
+                {/* Configured Test Account Quick-Fill */}
+                <div className="p-2 rounded-card bg-accent/5 border border-accent/20 text-center">
+                  <p className="text-[10px] text-text-secondary">
+                    Test Account: <span className="font-mono font-bold text-text-primary">+91 7722890254</span> (Code: <span className="font-mono font-bold text-accent">958921</span>)
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setPhone("7722890254");
+                      setPhoneOtp("958921");
+                    }}
+                    className="text-[10px] font-semibold text-accent hover:underline mt-0.5 inline-block"
+                  >
+                    Auto-fill Test Credentials
+                  </button>
+                </div>
               </form>
             ) : (
               <form onSubmit={handlePhoneVerifyOtp} className="space-y-4">

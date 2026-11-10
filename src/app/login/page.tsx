@@ -278,6 +278,23 @@ function LoginContent() {
                   >
                     {isLoading ? "Sending Code..." : "Send Verification Code"}
                   </button>
+
+                  {/* Configured Test Account Quick-Fill */}
+                  <div className="p-2 rounded-card bg-accent/5 border border-accent/20 text-center">
+                    <p className="text-[10px] text-text-secondary">
+                      Firebase Test Number: <span className="font-mono font-bold text-text-primary">+91 7722890254</span> (Code: <span className="font-mono font-bold text-accent">958921</span>)
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPhoneNumber("7722890254");
+                        setOtpCode("958921");
+                      }}
+                      className="text-[10px] font-semibold text-accent hover:underline mt-0.5 inline-block"
+                    >
+                      Click to Auto-fill Test Credentials
+                    </button>
+                  </div>
                 </form>
               ) : (
                 <form onSubmit={handleVerifyPhoneOtp} className="space-y-4">
