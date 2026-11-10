@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>WearID — Launch Video</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- GSAP -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --ground: #141613;
+        --surface: #1c1e1b;
+        --elevated: #252722;
+        --ink: #f0ede6;
+        --ink-muted: #a5a9a1;
+        --accent: #7aaf8a;
+        --terracotta: #d4987a;
+        --ideal-green: #68b988;
+        --border: #2e312c;
+        --font-serif: "DM Serif Display", serif;
+        --font-sans: "DM Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--ground);
+        font-family: var(--font-sans);
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+      }
+
+      /* Subtle ambient background glow */
+      .ambient-glow {
+        position: absolute;
+        width: 900px;
+        height: 900px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(122, 175, 138, 0.16) 0%, rgba(20, 22, 19, 0) 70%);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      /* Scenes Containers */
+      .scene {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* Badge */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 22px;
+        border-radius: 9999px;
+        background: rgba(122, 175, 138, 0.16);
+        border: 1px solid rgba(122, 175, 138, 0.45);
+        color: var(--accent);
+        font-family: var(--font-mono);
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+      }
+
+      /* Big Headings */
+      .title-hero {
+        font-family: var(--font-serif);
+        font-size: 88px;
+        line-height: 1.05;
+        text-align: center;
+        color: var(--ink);
+        letter-spacing: -0.02em;
+        max-width: 1400px;
+      }
+
+      .subtitle-hero {
+        font-size: 28px;
+        line-height: 1.45;
+        color: var(--ink-muted);
+        text-align: center;
+        max-width: 960px;
+        margin-top: 20px;
+      }
+
+      /* Brand Chaos Cards Grid */
+      .chaos-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        width: 1240px;
+        margin-top: 44px;
+      }
+      .chaos-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 34px 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      }
+      .chaos-brand {
+        font-size: 22px;
+        color: var(--ink-muted);
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+      .chaos-size {
+        font-family: var(--font-serif);
+        font-size: 76px;
+        color: var(--ink);
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+      .chaos-note {
+        font-size: 16px;
+        color: var(--accent);
+        font-family: var(--font-mono);
+        font-weight: 600;
+      }
+
+      /* Passport & Mannequin Showcase */
+      .passport-showcase {
+        display: flex;
+        align-items: center;
+        gap: 60px;
+        width: 1300px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        padding: 44px 60px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      }
+      .mannequin-frame {
+        width: 320px;
+        height: 460px;
+        background: var(--elevated);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .passport-metrics {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+      }
+      .metric-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px 24px;
+        background: var(--elevated);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+      }
+      .metric-label {
+        font-size: 20px;
+        color: var(--ink-muted);
+        font-weight: 500;
+      }
+      .metric-val {
+        font-family: var(--font-mono);
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      /* 2D Drape & Radar Showcase */
+      .drape-showcase {
+        display: flex;
+        align-items: center;
+        gap: 60px;
+        width: 1360px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        padding: 44px 60px;
+      }
+      .drape-svg-box {
+        width: 480px;
+        height: 420px;
+        background: var(--elevated);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      .confidence-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 30px;
+        border-radius: 16px;
+        background: rgba(104, 185, 136, 0.16);
+        border: 1px solid rgba(104, 185, 136, 0.45);
+        margin-top: 18px;
+      }
+
+      /* Final Brand Outro */
+      .outro-emblem {
+        width: 120px;
+        height: 120px;
+        border-radius: 32px;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-serif);
+        font-size: 68px;
+        color: #ffffff;
+        box-shadow: 0 15px 40px rgba(122, 175, 138, 0.4);
+        margin-bottom: 26px;
+      }
+      .domain-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 40px;
+        border-radius: 9999px;
+        background: var(--elevated);
+        border: 1px solid var(--border);
+        color: var(--ink);
+        font-family: var(--font-mono);
+        font-size: 24px;
+        font-weight: 600;
+        margin-top: 36px;
+        letter-spacing: -0.01em;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="18"
+      data-width="1920"
+      data-height="1080"
+    >
+      <!-- Ambient Glow -->
+      <div class="ambient-glow" id="ambientGlow"></div>
+
+      <!-- Audio Tracks -->
+      <audio
+        id="bg-music"
+        data-start="0"
+        data-duration="18"
+        data-track-index="10"
+        data-volume="0.32"
+        src="assets/music.mp3"
+      ></audio>
+      <audio
+        id="sfx-switch"
+        data-start="3.2"
+        data-duration="0.32"
+        data-track-index="11"
+        data-volume="0.6"
+        src="assets/switch1.ogg"
+      ></audio>
+      <audio
+        id="sfx-click"
+        data-start="7.5"
+        data-duration="0.10"
+        data-track-index="12"
+        data-volume="0.6"
+        src="assets/click1.ogg"
+      ></audio>
+
+      <!-- SCENE 1: The Sizing Chaos (0.0s - 3.2s) -->
+      <div id="scene1" class="scene" style="opacity: 1; pointer-events: auto">
+        <div class="badge" id="s1-badge">The Reality of Apparel Sizing</div>
+        <h1 class="title-hero" id="s1-title">One Body.<br />Four Different Sizes.</h1>
+        <div class="chaos-grid" id="s1-grid">
+          <div class="chaos-card" id="card-zara">
+            <span class="chaos-brand">Zara</span>
+            <span class="chaos-size">L</span>
+            <span class="chaos-note" data-layout-ignore="true">European Cut</span>
+          </div>
+          <div class="chaos-card" id="card-hm">
+            <span class="chaos-brand">H&M</span>
+            <span class="chaos-size">M</span>
+            <span class="chaos-note" data-layout-ignore="true">Commercial Grade</span>
+          </div>
+          <div class="chaos-card" id="card-westside">
+            <span class="chaos-brand">Westside</span>
+            <span class="chaos-size">S</span>
+            <span class="chaos-note" data-layout-ignore="true">Vanity Relaxed</span>
+          </div>
+          <div class="chaos-card" id="card-snitch">
+            <span class="chaos-brand">Snitch</span>
+            <span class="chaos-size">XL</span>
+            <span class="chaos-note" data-layout-ignore="true">Streetwear Drop</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 2: The Sovereign Passport (3.2s - 7.5s) -->
+      <div id="scene2" class="scene">
+        <div class="badge" id="s2-badge">Sovereign Biometric Identity</div>
+        <h1 class="title-hero" id="s2-title">Calibrated in Pure Millimeters.</h1>
+        <p class="subtitle-hero" id="s2-sub">
+          Decouple human anatomy from arbitrary brand labels.
+        </p>
+        <div class="passport-showcase" id="s2-card">
+          <!-- Mannequin SVG -->
+          <div class="mannequin-frame">
+            <svg viewBox="0 0 100 160" width="220" height="360" data-layout-ignore="true">
+              <circle cx="50" cy="22" r="11" fill="var(--accent)" opacity="0.4" stroke="var(--accent)" stroke-width="2" />
+              <path
+                d="M34 40 Q28 65, 30 85 Q32 105, 36 150 L64 150 Q68 105, 70 85 Q72 65, 66 40 Z"
+                fill="var(--accent)"
+                fill-opacity="0.2"
+                stroke="var(--accent)"
+                stroke-width="2.5"
+              />
+              <!-- Chest Landmark -->
+              <line id="s2-chest-line" x1="26" y1="56" x2="74" y2="56" stroke="var(--ideal-green)" stroke-width="3" stroke-dasharray="3 3" />
+              <circle cx="74" cy="56" r="4.5" fill="var(--ideal-green)" />
+              <!-- Waist Landmark -->
+              <line id="s2-waist-line" x1="29" y1="84" x2="71" y2="84" stroke="var(--terracotta)" stroke-width="3" stroke-dasharray="3 3" />
+              <circle cx="71" cy="84" r="4.5" fill="var(--terracotta)" />
+            </svg>
+          </div>
+          <!-- Metrics -->
+          <div class="passport-metrics">
+            <div class="metric-row">
+              <span class="metric-label">Chest Apex Girth</span>
+              <span class="metric-val">1016 mm (40.0")</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Natural Waistline</span>
+              <span class="metric-val">838 mm (33.0")</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Inseam to Floor</span>
+              <span class="metric-val">812 mm (32.0")</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Biometric Sovereignty</span>
+              <span class="metric-val" style="color: var(--ideal-green)">100% Private</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 3: Deterministic 2D Drape & Radar (7.5s - 12.5s) -->
+      <div id="scene3" class="scene">
+        <div class="badge" id="s3-badge">Layer 3 Garment Engineering</div>
+        <h1 class="title-hero" id="s3-title">Deterministic Drape & Ease.</h1>
+        <p class="subtitle-hero" id="s3-sub">
+          Real cutting-table flat dimensions matched to body contours.
+        </p>
+        <div class="drape-showcase" id="s3-card">
+          <!-- 2D Drape SVG -->
+          <div class="drape-svg-box">
+            <svg viewBox="0 0 100 120" width="360" height="320" data-layout-ignore="true">
+              <!-- Garment Outer Outline -->
+              <path
+                d="M20 20 L35 15 L65 15 L80 20 L76 110 L24 110 Z"
+                fill="none"
+                stroke="var(--ideal-green)"
+                stroke-width="3"
+                filter="drop-shadow(0 0 8px rgba(104, 185, 136, 0.4))"
+              />
+              <!-- Body Inner Shaded Silhouette -->
+              <path
+                d="M28 26 L38 22 L62 22 L72 26 L68 102 L32 102 Z"
+                fill="var(--accent)"
+                fill-opacity="0.25"
+                stroke="var(--accent)"
+                stroke-width="1.8"
+              />
+              <!-- Ease Measurement Callout -->
+              <line x1="20" y1="55" x2="28" y2="55" stroke="var(--ideal-green)" stroke-width="2" />
+              <line x1="72" y1="55" x2="80" y2="55" stroke="var(--ideal-green)" stroke-width="2" />
+              <text x="50" y="58" text-anchor="middle" fill="var(--ink)" font-size="6.5" font-family="var(--font-mono)" font-weight="600">
+                +60 mm Ease
+              </text>
+            </svg>
+          </div>
+          <!-- Fit Breakdown Content -->
+          <div style="flex: 1">
+            <div style="font-size: 22px; color: var(--ink-muted); margin-bottom: 8px">Snitch Oxford Shirt</div>
+            <div style="font-family: var(--font-serif); font-size: 52px; color: var(--ink); margin-bottom: 12px">
+              Recommended: Size L
+            </div>
+            <p style="font-size: 20px; color: var(--ink-muted); line-height: 1.5; margin-bottom: 20px">
+              Flat spec of 560mm gives +60mm breathing ease over chest. 100% cotton with zero fabric strain.
+            </p>
+            <div class="confidence-badge">
+              <span style="font-size: 30px; font-weight: 700; color: var(--ideal-green); font-family: var(--font-mono)">96%</span>
+              <span style="font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ideal-green)">
+                Fit Confidence Match
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 4: Everywhere Portability (12.5s - 15.5s) -->
+      <div id="scene4" class="scene">
+        <div class="badge" id="s4-badge">Universal Portability</div>
+        <h1 class="title-hero" id="s4-title">Your Size. Everywhere.</h1>
+        <p class="subtitle-hero" id="s4-sub">
+          One sovereign identity across partner brands and bespoke tailors.
+        </p>
+        <div style="display: flex; gap: 32px; margin-top: 40px; width: 1100px" id="s4-grid">
+          <div class="chaos-card" style="flex: 1; padding: 40px">
+            <span style="font-size: 40px; margin-bottom: 12px">✂️</span>
+            <span style="font-size: 22px; font-weight: 600; color: var(--ink); margin-bottom: 8px">Tailor Card Export</span>
+            <span style="font-size: 16px; color: var(--ink-muted); text-align: center">
+              Instant PDF & WhatsApp specs ready for master bespoke tailors.
+            </span>
+          </div>
+          <div class="chaos-card" style="flex: 1; padding: 40px">
+            <span style="font-size: 40px; margin-bottom: 12px">🔒</span>
+            <span style="font-size: 22px; font-weight: 600; color: var(--ink); margin-bottom: 8px">Zero-Knowledge Token</span>
+            <span style="font-size: 16px; color: var(--ink-muted); text-align: center">
+              Retailers receive your verified fit — never raw biometrics.
+            </span>
+          </div>
+          <div class="chaos-card" style="flex: 1; padding: 40px">
+            <span style="font-size: 40px; margin-bottom: 12px">👨‍👩‍👧</span>
+            <span style="font-size: 22px; font-weight: 600; color: var(--ink); margin-bottom: 8px">Multi-Profile Ready</span>
+            <span style="font-size: 16px; color: var(--ink-muted); text-align: center">
+              Manage clothing passports for yourself and your family.
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCENE 5: Brand Outro (15.5s - 18.0s) -->
+      <div id="scene5" class="scene">
+        <div class="outro-emblem" id="s5-emblem">W</div>
+        <h1 class="title-hero" id="s5-title" style="font-size: 96px; margin-bottom: 12px">
+          Wear<span style="color: var(--accent)">ID</span>
+        </h1>
+        <p class="subtitle-hero" id="s5-sub" style="font-size: 32px; margin-top: 0">
+          Your clothing identity, everywhere.
+        </p>
+        <div class="domain-pill" id="s5-pill">
+          <span>wear-id.vercel.app</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- GSAP Master Animation Timeline -->
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // Frame 0 settled state for instant thumbnail
+      tl.set("#scene1", { opacity: 1, pointerEvents: "auto" }, 0);
+      tl.set("#s1-badge", { opacity: 1, y: 0 }, 0);
+      tl.set("#s1-title", { opacity: 1, y: 0, scale: 1 }, 0);
+      tl.set("#s1-grid .chaos-card", { opacity: 1, y: 0, scale: 1 }, 0);
+
+      // Scene 1 Exit
+      tl.to("#scene1", { opacity: 0, scale: 0.97, duration: 0.35, ease: "power2.in" }, 2.85);
+
+      // Scene 2: Sovereign Passport (3.2s - 7.5s)
+      tl.set("#scene2", { opacity: 1, pointerEvents: "auto" }, 3.2);
+      tl.fromTo(
+        "#s2-badge",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
+        3.25
+      );
+      tl.fromTo(
+        "#s2-title",
+        { opacity: 0, y: 25 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        3.4
+      );
+      tl.fromTo(
+        "#s2-sub",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: "power2.out" },
+        3.55
+      );
+      tl.fromTo(
+        "#s2-card",
+        { opacity: 0, y: 30, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" },
+        3.7
+      );
+      tl.fromTo(
+        ["#s2-chest-line", "#s2-waist-line"],
+        { opacity: 0, strokeDashoffset: 40 },
+        { opacity: 1, strokeDashoffset: 0, duration: 0.8, ease: "power2.out" },
+        4.1
+      );
+      tl.to("#scene2", { opacity: 0, scale: 0.97, duration: 0.35, ease: "power2.in" }, 7.15);
+
+      // Scene 3: Deterministic 2D Drape & Radar (7.5s - 12.5s)
+      tl.set("#scene3", { opacity: 1, pointerEvents: "auto" }, 7.5);
+      tl.fromTo(
+        "#s3-badge",
+        { opacity: 0, y: -20 },
+        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
+        7.55
+      );
+      tl.fromTo(
+        "#s3-title",
+        { opacity: 0, y: 25 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        7.7
+      );
+      tl.fromTo(
+        "#s3-card",
+        { opacity: 0, y: 30, scale: 0.95 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.6, ease: "power3.out" },
+        7.9
+      );
+      tl.fromTo(
+        ".confidence-badge",
+        { scale: 0.8, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.6)" },
+        8.5
+      );
+      tl.to("#scene3", { opacity: 0, scale: 0.97, duration: 0.35, ease: "power2.in" }, 12.15);
+
+      // Scene 4: Portability (12.5s - 15.5s)
+      tl.set("#scene4", { opacity: 1, pointerEvents: "auto" }, 12.5);
+      tl.fromTo(
+        "#s4-title",
+        { opacity: 0, y: 25 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        12.65
+      );
+      tl.fromTo(
+        "#s4-grid .chaos-card",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.1, ease: "power3.out" },
+        12.85
+      );
+      tl.to("#scene4", { opacity: 0, scale: 0.97, duration: 0.35, ease: "power2.in" }, 15.15);
+
+      // Scene 5: Outro Brand Lockup (15.5s - 18.0s)
+      tl.set("#scene5", { opacity: 1, pointerEvents: "auto" }, 15.5);
+      tl.fromTo(
+        "#s5-emblem",
+        { opacity: 0, scale: 0.6, rotation: -10 },
+        { opacity: 1, scale: 1, rotation: 0, duration: 0.6, ease: "back.out(1.7)" },
+        15.6
+      );
+      tl.fromTo(
+        "#s5-title",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        15.85
+      );
+      tl.fromTo(
+        "#s5-sub",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4, ease: "power2.out" },
+        16.0
+      );
+      tl.fromTo(
+        "#s5-pill",
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        16.15
+      );
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

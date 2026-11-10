@@ -1,0 +1,542 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "composition_file_too_large",
+        "severity": "warning",
+        "message": "This HTML composition file has 357 lines. Smaller sub-compositions are easier to read, iterate on, and diff.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "E:\\Projects\\WearID\\brag-output\\composition\\index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 0,
+        "fixHint": "Split coherent scenes or layers into separate .html files under compositions/, then mount them from the parent with data-composition-src so each file stays small enough to inspect, revise, and validate independently."
+      }
+    ],
+    "filesScanned": 1
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "duration": 18,
+    "samples": [
+      1,
+      3,
+      5,
+      7,
+      9,
+      11,
+      13,
+      15,
+      17
+    ],
+    "transitionSamples": [],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 0,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 1,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 2.52:1; WCAG AA requires 3:1.",
+        "text": "W",
+        "fg": "rgb(255,255,255)",
+        "bg": "rgb(122,175,138)",
+        "ratio": 2.52,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(84,84,84)",
+        "large": true,
+        "selector": "#s5-emblem",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 900,
+          "y": 338.90625,
+          "width": 120,
+          "height": 120
+        },
+        "time": 17,
+        "times": [
+          17
+        ]
+      }
+    ],
+    "enabled": true,
+    "samples": [
+      1,
+      5,
+      9,
+      13,
+      17
+    ],
+    "checked": 43,
+    "passed": 42
+  },
+  "craft": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 4,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 26 text elements stay under it for 0.5 s or more, the smallest \"Fit Confidence Match\" at 15 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "Fit Confidence Match",
+        "selector": "div.confidence-badge > span:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 984.46,
+          "y": 750.13,
+          "width": 200.03,
+          "height": 19.71
+        },
+        "time": 8.625,
+        "times": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          3.375,
+          3.875,
+          3.875,
+          3.875,
+          3.875,
+          3.875,
+          3.875,
+          3.875,
+          3.875,
+          7.75,
+          8,
+          8,
+          8.625,
+          12.5,
+          13,
+          13,
+          13.125,
+          13.125,
+          13.25,
+          13.25,
+          16.25
+        ],
+        "fontPx": 15.02,
+        "floorPx": 28,
+        "seconds": 3.875,
+        "elements": [
+          {
+            "selector": "div.confidence-badge > span:nth-of-type(2)",
+            "text": "Fit Confidence Match",
+            "fontPx": 15.02,
+            "time": 8.625,
+            "seconds": 3.875
+          },
+          {
+            "selector": "#s4-grid > div:nth-of-type(1) > span:nth-of-type(3)",
+            "text": "Instant PDF & WhatsApp specs ready for master bespoke tailors.",
+            "fontPx": 15.89,
+            "time": 13,
+            "seconds": 2.5
+          },
+          {
+            "selector": "#s4-grid > div:nth-of-type(2) > span:nth-of-type(3)",
+            "text": "Retailers receive your verified fit — never raw biometrics.",
+            "fontPx": 15.89,
+            "time": 13.125,
+            "seconds": 2.375
+          },
+          {
+            "selector": "#s4-grid > div:nth-of-type(3) > span:nth-of-type(3)",
+            "text": "Manage clothing passports for yourself and your family.",
+            "fontPx": 15.89,
+            "time": 13.25,
+            "seconds": 2.25
+          },
+          {
+            "selector": "#s1-badge",
+            "text": "The Reality of Apparel Sizing",
+            "fontPx": 17.8,
+            "time": 0,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#s2-badge",
+            "text": "Sovereign Biometric Identity",
+            "fontPx": 17.87,
+            "time": 3.375,
+            "seconds": 4.125
+          },
+          {
+            "selector": "#s3-badge",
+            "text": "Layer 3 Garment Engineering",
+            "fontPx": 17.87,
+            "time": 7.75,
+            "seconds": 4.75
+          },
+          {
+            "selector": "#s4-badge",
+            "text": "Universal Portability",
+            "fontPx": 17.87,
+            "time": 12.5,
+            "seconds": 3
+          },
+          {
+            "selector": "#s3-card > div:nth-of-type(2) > p:nth-of-type(1)",
+            "text": "Flat spec of 560mm gives +60mm breathing ease over chest. 100% cotton with zero fabric strain.",
+            "fontPx": 19.52,
+            "time": 8,
+            "seconds": 4.5
+          },
+          {
+            "selector": "div.passport-metrics > div:nth-of-type(1) > span:nth-of-type(1)",
+            "text": "Chest Apex Girth",
+            "fontPx": 19.73,
+            "time": 3.875,
+            "seconds": 3.625
+          },
+          {
+            "selector": "div.passport-metrics > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "Natural Waistline",
+            "fontPx": 19.73,
+            "time": 3.875,
+            "seconds": 3.625
+          },
+          {
+            "selector": "div.passport-metrics > div:nth-of-type(3) > span:nth-of-type(1)",
+            "text": "Inseam to Floor",
+            "fontPx": 19.73,
+            "time": 3.875,
+            "seconds": 3.625
+          },
+          {
+            "selector": "div.passport-metrics > div:nth-of-type(4) > span:nth-of-type(1)",
+            "text": "Biometric Sovereignty",
+            "fontPx": 19.73,
+            "time": 3.875,
+            "seconds": 3.625
+          },
+          {
+            "selector": "#s3-card > div:nth-of-type(2) > div:nth-of-type(1)",
+            "text": "Snitch Oxford Shirt",
+            "fontPx": 21.47,
+            "time": 8,
+            "seconds": 4.5
+          },
+          {
+            "selector": "#card-zara > span:nth-of-type(1)",
+            "text": "Zara",
+            "fontPx": 21.76,
+            "time": 0,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#card-hm > span:nth-of-type(1)",
+            "text": "H&M",
+            "fontPx": 21.76,
+            "time": 0,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#card-westside > span:nth-of-type(1)",
+            "text": "Westside",
+            "fontPx": 21.76,
+            "time": 0,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#card-snitch > span:nth-of-type(1)",
+            "text": "Snitch",
+            "fontPx": 21.76,
+            "time": 0,
+            "seconds": 3.25
+          },
+          {
+            "selector": "#s4-grid > div:nth-of-type(1) > span:nth-of-type(2)",
+            "text": "Tailor Card Export",
+            "fontPx": 21.84,
+            "time": 13,
+            "seconds": 2.5
+          },
+          {
+            "selector": "#s4-grid > div:nth-of-type(2) > span:nth-of-type(2)",
+            "text": "Zero-Knowledge Token",
+            "fontPx": 21.84,
+            "time": 13.125,
+            "seconds": 2.375
+          },
+          {
+            "selector": "#s4-grid > div:nth-of-type(3) > span:nth-of-type(2)",
+            "text": "Multi-Profile Ready",
+            "fontPx": 21.84,
+            "time": 13.25,
+            "seconds": 2.25
+          },
+          {
+            "selector": "#s5-pill > span:nth-of-type(1)",
+            "text": "wear-id.vercel.app",
+            "fontPx": 24,
+            "time": 16.25,
+            "seconds": 1.75
+          },
+          {
+            "selector": "div.passport-metrics > div:nth-of-type(1) > span:nth-of-type(2)",
+            "text": "1016 mm (40.0\")",
+            "fontPx": 25.65,
+            "time": 3.875,
+            "seconds": 3.625
+          },
+          {
+            "selector": "div.passport-metrics > div:nth-of-type(2) > span:nth-of-type(2)",
+            "text": "838 mm (33.0\")",
+            "fontPx": 25.65,
+            "time": 3.875,
+            "seconds": 3.625
+          },
+          {
+            "selector": "div.passport-metrics > div:nth-of-type(3) > span:nth-of-type(2)",
+            "text": "812 mm (32.0\")",
+            "fontPx": 25.65,
+            "time": 3.875,
+            "seconds": 3.625
+          },
+          {
+            "selector": "div.passport-metrics > div:nth-of-type(4) > span:nth-of-type(2)",
+            "text": "100% Private",
+            "fontPx": 25.65,
+            "time": 3.875,
+            "seconds": 3.625
+          }
+        ]
+      },
+      {
+        "code": "dead_stretch",
+        "severity": "warning",
+        "message": "Nothing on screen changes for 3.13 s (9.00–12.13 s): start the next move within 3 s, or put data-hold on the element whose stillness is deliberate; see references/motion.md.",
+        "selector": "[data-composition-id]",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0
+        },
+        "time": 9,
+        "seconds": 3.125,
+        "floorSeconds": 3,
+        "until": 12.125
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "The film's last line \"Your clothing identity, everywhere.\" (4 words) is on screen 1.90 s (±0.01 s), under the 2.00 s a closing line needs: hold it about 0.5 s + 0.3 s a word and at least 2 s before the film ends; see references/motion.md.",
+        "text": "Your clothing identity, everywhere.",
+        "selector": "#s5-sub",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 720.27,
+          "y": 599.7,
+          "width": 479.45000000000005,
+          "height": 42
+        },
+        "time": 16.102,
+        "words": 4,
+        "seconds": 1.902,
+        "floorSeconds": 2,
+        "measured": [
+          {
+            "time": 15.75,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 15.875,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 16,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 16.125,
+            "opacity": 0.58,
+            "heightPx": 42
+          },
+          {
+            "time": 16.25,
+            "opacity": 0.93,
+            "heightPx": 42
+          },
+          {
+            "time": 16.375,
+            "opacity": 1,
+            "heightPx": 42
+          },
+          {
+            "time": 16.5,
+            "opacity": 1,
+            "heightPx": 42
+          },
+          {
+            "time": 17.5,
+            "opacity": 1,
+            "heightPx": 42
+          },
+          {
+            "time": 17.625,
+            "opacity": 1,
+            "heightPx": 42
+          },
+          {
+            "time": 17.75,
+            "opacity": 1,
+            "heightPx": 42
+          },
+          {
+            "time": 17.875,
+            "opacity": 1,
+            "heightPx": 42
+          }
+        ]
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "The film's last line \"wear-id.vercel.app\" (4 words) is on screen 1.77 s (±0.01 s), under the 2.00 s a closing line needs: hold it about 0.5 s + 0.3 s a word and at least 2 s before the film ends; see references/motion.md.",
+        "text": "wear-id.vercel.app",
+        "selector": "#s5-pill > span:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "index.html",
+        "bbox": {
+          "x": 832.55,
+          "y": 702.33,
+          "width": 254.8900000000001,
+          "height": 31
+        },
+        "time": 16.234,
+        "words": 4,
+        "seconds": 1.77,
+        "floorSeconds": 2,
+        "measured": [
+          {
+            "time": 15.875,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 16,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 16.125,
+            "opacity": null,
+            "heightPx": null
+          },
+          {
+            "time": 16.25,
+            "opacity": 0.52,
+            "heightPx": 31
+          },
+          {
+            "time": 16.375,
+            "opacity": 0.9,
+            "heightPx": 31
+          },
+          {
+            "time": 16.5,
+            "opacity": 0.99,
+            "heightPx": 31
+          },
+          {
+            "time": 16.625,
+            "opacity": 1,
+            "heightPx": 31
+          },
+          {
+            "time": 17.5,
+            "opacity": 1,
+            "heightPx": 31
+          },
+          {
+            "time": 17.625,
+            "opacity": 1,
+            "heightPx": 31
+          },
+          {
+            "time": 17.75,
+            "opacity": 1,
+            "heightPx": 31
+          },
+          {
+            "time": 17.875,
+            "opacity": 1,
+            "heightPx": 31
+          }
+        ]
+      }
+    ],
+    "enabled": true,
+    "step": 0.125,
+    "samples": 144
+  },
+  "audio": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": false,
+    "files": [],
+    "times": [],
+    "findingFiles": []
+  }
+}
