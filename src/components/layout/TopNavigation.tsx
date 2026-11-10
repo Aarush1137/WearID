@@ -17,6 +17,7 @@ import {
   Sparkles,
   MessageSquarePlus,
   UserPlus,
+  MoreHorizontal,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { AuthModal } from "@/components/auth/AuthModal";
@@ -39,6 +40,7 @@ export function TopNavigation() {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   const [isInviteOpen, setIsInviteOpen] = useState(false);
+  const [isMoreMenuOpen, setIsMoreMenuOpen] = useState(false);
 
   useEffect(() => {
     initAuth();
@@ -65,11 +67,11 @@ export function TopNavigation() {
             </div>
           </Link>
 
-          {/* Navigation Links (Desktop) */}
+          {/* Navigation Links (Desktop: Decluttered & Focused) */}
           <nav className="hidden md:flex items-center gap-1">
             <Link
               href="/app"
-              className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
+              className={`min-h-[40px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
                 pathname === "/app"
                   ? "text-accent bg-accent-subtle/50 font-semibold"
                   : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
@@ -79,7 +81,7 @@ export function TopNavigation() {
             </Link>
             <Link
               href="/app/recommendations"
-              className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
+              className={`min-h-[40px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
                 pathname.startsWith("/app/recommend")
                   ? "text-accent bg-accent-subtle/50 font-semibold"
                   : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
@@ -88,18 +90,8 @@ export function TopNavigation() {
               Size Matcher
             </Link>
             <Link
-              href="/app/explore"
-              className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
-                pathname === "/app/explore"
-                  ? "text-accent bg-accent-subtle/50 font-semibold"
-                  : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
-              }`}
-            >
-              Brands
-            </Link>
-            <Link
               href="/app/compare"
-              className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
+              className={`min-h-[40px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
                 pathname === "/app/compare"
                   ? "text-accent bg-accent-subtle/50 font-semibold"
                   : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
@@ -108,71 +100,84 @@ export function TopNavigation() {
               Compare
             </Link>
             <Link
-              href="/app/tailor"
-              className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
-                pathname === "/app/tailor"
+              href="/app/explore"
+              className={`min-h-[40px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
+                pathname === "/app/explore"
                   ? "text-accent bg-accent-subtle/50 font-semibold"
                   : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
               }`}
             >
-              Tailor Card
+              Brands
             </Link>
-            <Link
-              href="/app/profile"
-              className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
-                pathname === "/app/profile"
-                  ? "text-accent bg-accent-subtle/50 font-semibold"
-                  : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
-              }`}
-            >
-              Profile
-            </Link>
-            <Link
-              href="/app/privacy-settings"
-              className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
-                pathname === "/app/privacy-settings"
-                  ? "text-accent bg-accent-subtle/50 font-semibold"
-                  : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
-              }`}
-            >
-              Privacy & Tokens
-            </Link>
-            <Link
-              href="/sandbox/retailer"
-              className={`min-h-[44px] px-3.5 inline-flex items-center text-sm font-medium rounded-btn transition-colors ${
-                pathname === "/sandbox/retailer"
-                  ? "text-accent bg-accent-subtle/50 font-semibold"
-                  : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
-              }`}
-            >
-              Connect Sandbox
-            </Link>
+
+            {/* Tools Dropdown for Secondary Features */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setIsMoreMenuOpen(!isMoreMenuOpen)}
+                className={`min-h-[40px] px-3 inline-flex items-center gap-1 text-sm font-medium rounded-btn transition-colors ${
+                  pathname === "/app/tailor" ||
+                  pathname === "/app/profile" ||
+                  pathname === "/app/privacy-settings" ||
+                  pathname === "/sandbox/retailer"
+                    ? "text-accent bg-accent-subtle/50 font-semibold"
+                    : "text-text-secondary hover:text-text-primary hover:bg-bg-elevated"
+                }`}
+                aria-expanded={isMoreMenuOpen}
+              >
+                <span>Tools</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+
+              {isMoreMenuOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setIsMoreMenuOpen(false)}
+                  />
+                  <div className="absolute left-0 mt-2 w-56 rounded-card border border-border bg-bg-surface shadow-md py-1.5 z-50">
+                    <Link
+                      href="/app/tailor"
+                      onClick={() => setIsMoreMenuOpen(false)}
+                      className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-text-primary hover:bg-bg-elevated transition-colors"
+                    >
+                      <span>Tailor Card & PDF</span>
+                      <span className="text-[10px] text-text-secondary">Export</span>
+                    </Link>
+                    <Link
+                      href="/app/profile"
+                      onClick={() => setIsMoreMenuOpen(false)}
+                      className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-text-primary hover:bg-bg-elevated transition-colors"
+                    >
+                      <span>Profile & Family</span>
+                      <span className="text-[10px] text-text-secondary">Manage</span>
+                    </Link>
+                    <Link
+                      href="/app/privacy-settings"
+                      onClick={() => setIsMoreMenuOpen(false)}
+                      className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-text-primary hover:bg-bg-elevated transition-colors"
+                    >
+                      <span>Privacy & Tokens</span>
+                      <span className="text-[10px] text-text-secondary">Keys</span>
+                    </Link>
+                    <div className="border-t border-border my-1" />
+                    <Link
+                      href="/sandbox/retailer"
+                      onClick={() => setIsMoreMenuOpen(false)}
+                      className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-accent hover:bg-accent-subtle/40 transition-colors"
+                    >
+                      <span>Connect Retailer Sandbox</span>
+                      <span className="text-[9px] uppercase font-bold px-1.5 py-0.5 rounded-full bg-accent/15 text-accent">Demo</span>
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
           </nav>
         </div>
 
-        {/* Right Controls: Unit Toggle, Theme Toggle & Profile Switcher */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Quick Invite Button */}
-          <button
-            type="button"
-            onClick={() => setIsInviteOpen(true)}
-            className="min-h-[44px] px-3 rounded-btn border border-accent/30 bg-accent/10 text-accent hover:bg-accent/20 transition-colors hidden md:inline-flex items-center gap-1.5 text-xs font-semibold shadow-xs"
-            title="Invite friends & family to WearID"
-          >
-            <UserPlus className="w-3.5 h-3.5" />
-            <span>Invite</span>
-          </button>
-
-          {/* Quick Beta Feedback Button */}
-          <button
-            type="button"
-            onClick={() => setIsFeedbackOpen(true)}
-            className="min-h-[44px] px-3 rounded-btn border border-border bg-bg-surface hover:bg-bg-elevated transition-colors hidden lg:inline-flex items-center gap-1.5 text-xs font-semibold text-text-secondary hover:text-text-primary shadow-xs"
-            title="Submit Beta feedback or request brand"
-          >
-            <MessageSquarePlus className="w-3.5 h-3.5 text-accent" />
-            <span>Feedback</span>
-          </button>
+        {/* Right Controls: Unit Toggle, Theme Toggle & Profile Switcher (Decluttered) */}
+        <div className="flex items-center gap-2">
 
           {/* Unit Toggle Switch */}
           <button
@@ -266,6 +271,27 @@ export function TopNavigation() {
                         )}
                       </button>
                     ))}
+
+                    {/* Suggested Addition: Partner Profile (shown as an option, not auto-added) */}
+                    {profiles.length === 1 && (
+                      <div className="mx-3 my-2 p-2.5 rounded-btn bg-accent-subtle/30 border border-accent/20">
+                        <div className="flex items-center gap-1.5 text-[11px] font-semibold text-text-primary">
+                          <Sparkles className="w-3.5 h-3.5 text-accent" />
+                          <span>Shop for a partner?</span>
+                        </div>
+                        <p className="text-[10px] text-text-secondary mt-0.5 mb-2 leading-relaxed">
+                          Add a partner or family member to carry their clothing sizing everywhere.
+                        </p>
+                        <Link
+                          href="/onboarding?mode=add_member"
+                          onClick={() => setIsProfileMenuOpen(false)}
+                          className="w-full inline-flex items-center justify-center gap-1 py-1.5 px-2 rounded-btn bg-bg-surface hover:bg-bg-elevated border border-border text-[11px] font-semibold text-accent transition-colors"
+                        >
+                          <Plus className="w-3 h-3" />
+                          <span>Add Partner Profile</span>
+                        </Link>
+                      </div>
+                    )}
 
                     <div className="border-t border-border mt-1 pt-1 space-y-0.5">
                       <Link

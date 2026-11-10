@@ -256,6 +256,39 @@ export default function ProfilePage() {
                 </div>
               );
             })}
+
+            {/* Suggested Partner / Family Addition */}
+            {profiles.length === 1 && (
+              <div
+                onClick={() => {
+                  setNewMemberRelation("partner");
+                  setNewMemberGender("female");
+                  setIsAddMemberOpen(true);
+                }}
+                className="p-4 rounded-card border-2 border-dashed border-accent/40 bg-accent-subtle/20 hover:bg-accent-subtle/40 cursor-pointer transition-all flex flex-col justify-between min-h-[120px] group"
+              >
+                <div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-accent/15 text-accent flex items-center justify-center text-xs font-semibold group-hover:bg-accent group-hover:text-white transition-colors">
+                      <Plus className="w-4 h-4" />
+                    </div>
+                    <span className="font-semibold text-sm text-text-primary">
+                      Add Partner Profile
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-text-secondary block mt-2 leading-relaxed">
+                    Carry their measurements in your passport for instant gift and sizing accuracy.
+                  </span>
+                </div>
+
+                <div className="mt-3 pt-2 border-t border-border/40 flex items-center justify-between text-[11px]">
+                  <span className="text-text-secondary">Optional multi-member</span>
+                  <span className="text-accent font-semibold flex items-center gap-1">
+                    <span>+ Add Suggestion</span>
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Add Family Member Modal */}

@@ -140,7 +140,7 @@ export const useProfileStore = create<ProfileState>()(
     (set, get) => ({
       displayUnit: "cm",
       activeProfileId: DEFAULT_PROFILE_ID,
-      profiles: [INITIAL_DEFAULT_PROFILE, SECONDARY_PROFILE],
+      profiles: [INITIAL_DEFAULT_PROFILE],
 
       setDisplayUnit: (unit: DisplayUnit) => set({ displayUnit: unit }),
 
@@ -261,11 +261,20 @@ export const useProfileStore = create<ProfileState>()(
         set({
           displayUnit: "cm",
           activeProfileId: DEFAULT_PROFILE_ID,
-          profiles: [INITIAL_DEFAULT_PROFILE, SECONDARY_PROFILE],
+          profiles: [INITIAL_DEFAULT_PROFILE],
         }),
     }),
     {
-      name: "wearid-profile-storage-v1",
+      name: "wearid-profile-storage-v2",
+      version: 2,
+      migrate: (persistedState: any) => {
+        if (persistedState && Array.isArray(persistedState.profiles)) {
+          persistedState.profiles = persistedState.profiles.filter(
+            (p: any) => p.id !== "profile_partner_ananya"
+          );
+        }
+        return persistedState;
+      },
     }
   )
 );
