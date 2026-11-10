@@ -1,6 +1,6 @@
 {
-  "name": "Fit — Universal Size Profile",
-  "short_name": "Fit",
+  "name": "WearID — Universal Clothing Identity",
+  "short_name": "WearID",
   "description": "Universal clothing identity, deterministic body-to-garment fitting, and sovereign measurement portability.",
   "start_url": "/app",
   "scope": "/",
