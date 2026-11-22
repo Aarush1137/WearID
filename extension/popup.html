@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WearID Size Passport</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="popup-container">
+    <div class="popup-header">
+      <div class="brand-wrapper">
+        <div class="brand-logo">W</div>
+        <span class="brand-title">WearID</span>
+      </div>
+      <span class="status-pill" id="status-pill">Active</span>
+    </div>
+
+    <div class="popup-body">
+      <!-- Profile Selector -->
+      <div class="card">
+        <div class="card-label">Active Body Profile</div>
+        <select class="profile-select" id="profile-select" aria-label="Select Profile">
+          <option value="regular">Regular Profile (98cm chest)</option>
+          <option value="athletic">Athletic Profile (104cm chest)</option>
+          <option value="slim">Slim Profile (90cm chest)</option>
+        </select>
+      </div>
+
+      <!-- Retailer Detector Card -->
+      <div class="card">
+        <div class="card-label">Current Shopping Tab</div>
+        <div class="retailer-status">
+          <span class="retailer-dot" id="retailer-dot"></span>
+          <span id="retailer-text">Detecting retailer...</span>
+        </div>
+      </div>
+
+      <!-- Web App Link -->
+      <a href="http://localhost:3000/app" target="_blank" rel="noopener" class="btn-passport" id="open-app-btn">
+        Open WearID Passport &rarr;
+      </a>
+    </div>
+
+    <div class="popup-footer">
+      Zero Biometric Leakage • Deterministic Fit
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

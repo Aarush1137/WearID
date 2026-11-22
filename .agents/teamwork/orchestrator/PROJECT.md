@@ -6,7 +6,9 @@
 - **Layer 3: Garment Physical Finished Dimensions**: Finished textile flat measurements in mm (pit-to-pit flat, waist flat, center back length, sleeve span, etc.) multiplied by 2 for circumference.
 - **Layer 4: User Fit Preferences**: Category-specific fit intentions (slim, regular, relaxed, oversized) with ease intervals in mm and fabric elasticity modifiers.
 - **Deterministic Sizing Engine**: Pure mathematical functions with Gaussian ease scoring, category weighting, reference garment calibration ($\pm 0.15$), borderline detection ($|\Delta| < 0.08$), and structured `ExplanationTree` generation. Zero measurement hallucination.
-- **Next.js App Router PWA**: Editorial fashion-tech design tokens, standalone installability, service worker caching, offline fallback, and local zero-credential mock services.
+- **Cross-Device Cloud Sync & Sovereign Privacy**: Bidirectional sync between localStorage and Supabase with offline buffering, and cryptographic zero-biometric sharing tokens (`wearid_tok_...`).
+- **Growth & Social Tools**: Brand request voting, bilingual i18n (EN/HI), multi-garment outfit builder, and family size comparison matrix.
+- **Advanced AI & Platform Integrations**: Grounded AI fit assistant, Chrome extension scaffold (/extension), return rate predictor, and public REST sizing API.
 
 ## Feature Inventory
 | # | Feature | Description | Milestone | Source |
@@ -38,6 +40,20 @@
 | 25 | PWA UI Pages & Navigation | App Router pages: Landing page (`/`), 3-path onboarding (`/onboarding`), Dashboard (`/app`), Recommendation Explorer (`/app/recommendations`) | M4 | MASTER_PROMPT / R4 |
 | 26 | E2E Testing Suite (Tiers 1-4) | Comprehensive opaque-box test runner and test cases covering feature, boundary, combinatorial, and real-world application tiers | M0 / M5 | tests.md |
 | 27 | Adversarial Hardening (Tier 5) | White-box adversarial testing, stress testing, edge-case coverage audit, bug hunting, and verification hardening | M5 | Project Pattern |
+| 28 | Supabase Cloud Sync | Cross-device profile sync between localStorage and Supabase with offline queue and LWW conflict resolution | M6 | ORIGINAL_REQUEST / Cat A |
+| 29 | Share Fit Report Link | Read-only share link (/fit/[token] or /app/fit/[token]) with zero raw biometric leakage per Invariant 7 | M6 | ORIGINAL_REQUEST / Cat A |
+| 30 | Wishlist & Save for Later | Bookmark catalog products with instant deterministic sizing tags saved to profile | M6 | ORIGINAL_REQUEST / Cat A |
+| 31 | Measurement History & Trend Tracker | Date-stamped measurement snapshots over time with landmark delta trends in canonical mm | M6 | ORIGINAL_REQUEST / Cat A |
+| 32 | Visual Ease Guide & Fit Photos | Visual silhouette ease representations across slim, regular, relaxed, and oversized fits | M6 | ORIGINAL_REQUEST / Cat A |
+| 33 | Brand Request Voting Board | Community upvoting UI for requesting new Indian/international brands with anti-duplicate debounce | M7 | ORIGINAL_REQUEST / Cat B |
+| 34 | Multi-Language Support / i18n | Lightweight bilingual dictionary & context provider supporting English and Hindi (हिन्दी) | M7 | ORIGINAL_REQUEST / Cat B |
+| 35 | Outfit Builder | Multi-garment builder combining Top + Bottom + Shoes with composite fit scoring and ease harmony | M7 | ORIGINAL_REQUEST / Cat B |
+| 36 | Family Comparison Matrix | Side-by-side dashboard comparing sizes across all family profiles with role badges & private export | M7 | ORIGINAL_REQUEST / Cat B |
+| 37 | AI Fit Assistant | Conversational fit assistant grounded in deterministic sizing engine with zero hallucination | M8 | ORIGINAL_REQUEST / Cat CD |
+| 38 | Chrome Extension Scaffold | Manifest V3 extension bundle under `/extension` with DOM scrapers for Zara, H&M, Uniqlo, Myntra | M8 | ORIGINAL_REQUEST / Cat CD |
+| 39 | Return Rate Predictor | Statistical 4-vector return-risk prediction model based on ease delta, borderline status, and fabric | M8 | ORIGINAL_REQUEST / Cat CD |
+| 40 | Public REST Sizing API | `/api/v1/sizing/recommend` REST route handler with scoped token auth and strict privacy guarantee | M8 | ORIGINAL_REQUEST / Cat CD |
+| 41 | Full Verification & Forensic Audit | Verification across all 13 features: 100% vitest pass, typecheck, lint, Next.js build, and Forensic Audit | M9 | Project Pattern |
 
 ## Milestones
 | # | Name | Scope | Dependencies | Status |
@@ -48,72 +64,42 @@
 | M3 | Deterministic Sizing Recommendation Engine | Implement `src/core/` (types, units, ease, calibration, borderline, explanation, engine) + unit tests | none | DONE |
 | M4 | Phase 1 PWA Proof of Concept & Local Dev | Implement PWA manifest, service worker, icons, offline fallback, mock Supabase store, and App Router pages | M2, M3 | DONE |
 | M5 | E2E Test Pass & Adversarial Hardening | Pass 100% of E2E tests (Tiers 1-4) followed by Phase 2 adversarial coverage hardening (Tier 5) | M0, M1, M2, M3, M4 | DONE |
+| M6 | Category A: High-Impact User Features | Features 28-32: Cloud Sync, Share Link, Wishlist, Measurement History, Visual Ease Guide | M3, M4 | DONE |
+| M7 | Category B: Growth, Social & Localization | Features 33-36: Brand Voting, i18n (EN/HI), Outfit Builder, Family Comparison Matrix | M3, M4 | DONE |
+| M8 | Category C & D: Advanced AI & Platform | Features 37-40: AI Fit Assistant, Extension Scaffold, Return Rate Predictor, Public REST API | M3, M4 | DONE |
+| M9 | Full Suite Integration & Forensic Gate | Feature 41: Full E2E & unit test verification (100% pass), Next.js build, Forensic Integrity Audit | M6, M7, M8 | DONE |
 
 ## Interface Contracts
-### Layer 1 AnatomicalProfile ↔ Layer 3 GarmentDimensions (Bridge via Ease)
-```typescript
-interface AnatomicalProfile {
-  chestCircumference: number;      // mm
-  naturalWaistCircumference: number; // mm
-  highHipCircumference?: number;   // mm
-  sleeveSpan?: number;             // mm
-  inseam?: number;                 // mm
-  sourceProvenance: SourceProvenance;
-}
+### Category A Contracts (M6)
+- `ProfileSyncService`: Bidirectional sync with `syncProfile(profileId, token)`, `getOfflineQueue()`, `drainQueue()`, LWW conflict resolution.
+- `ShareFitToken`: Cryptographic zero-knowledge share token (`wearid_tok_...`) embedding recommendation IDs and category results, never biometric measurements (`chestMm`, `waistMm`, etc.).
+- `WishlistItem`: `id`, `productId`, `brandId`, `category`, `savedSize`, `fitScore`, `confidenceLabel`, `addedAt`.
+- `MeasurementSnapshot`: `id`, `date`, `measurements: AnatomicalProfile`, `note`.
+- `SilhouetteEaseGuide`: 4-way visual representation (`slim`: 40-60mm, `regular`: 60-100mm, `relaxed`: 100-140mm, `oversized`: 140-220mm+).
 
-interface GarmentDimensions {
-  pitToPitFlat: number;            // mm (circumference = 2 * pitToPitFlat)
-  waistFlat?: number;              // mm
-  centerBackLength: number;        // mm
-  sleeveLengthCrownToCuff?: number;// mm
-  fabricStretchFactor: number;     // 0.0 to 0.3 (0% to 30% elastane expansion)
-  sourceProvenance: SourceProvenance;
-}
+### Category B Contracts (M7)
+- `BrandRequestStore`: `requests: BrandRequest[]`, `upvoteBrand(id)`, `requestBrand(name, category, url)`, anti-duplicate debounce.
+- `I18nContext`: `locale: 'en' | 'hi'`, `setLocale(locale)`, `t(key, params)`, bilingual dictionary covering sizing & biometrics.
+- `OutfitScore`: Top (35%) + Bottom (35%) + Shoes (30%), composite score, bottleneck floor, silhouette ease harmony.
+- `FamilyMatrixService`: `generateFamilyMatrix(profiles, benchmarkBrands)`, side-by-side comparison, zero biometric export.
 
-interface FitPreference {
-  category: 'tops' | 'bottoms' | 'outerwear' | 'ethnic';
-  intent: 'slim' | 'regular' | 'relaxed' | 'oversized';
-  customEaseOffsetMm?: number;
-}
-
-interface RecommendationResult {
-  recommendedSize: string;
-  fitScore: number;                // 0.0 to 1.0
-  confidenceScore: number;         // 0.0 to 1.0
-  isBorderline: boolean;
-  borderlineAlternative?: {
-    size: string;
-    scoreDelta: number;
-    tradeoffRationale: string;
-  };
-  explanationTree: ExplanationTree;
-  status: 'recommended' | 'insufficient_data' | 'unsupported_category';
-}
-```
-
-### Recommendation Engine ↔ UI / Client
-```typescript
-function recommendSize(
-  profile: AnatomicalProfile,
-  brandChartOrGarment: {
-    sizeChart?: BrandSizeChart;
-    garmentDimensions?: Record<string, GarmentDimensions>;
-  },
-  preference: FitPreference,
-  referenceGarments?: ReferenceGarmentCalibration[]
-): RecommendationResult;
-```
+### Category C & D Contracts (M8)
+- `FitAssistantEngine`: Natural language intent classifier, zero measurement hallucination grounding, tool-calling to `recommendSize()`.
+- `ExtensionScaffold`: MV3 manifest, DOM scraper interfaces for Zara, H&M, Uniqlo, Myntra, overlay sizing pill.
+- `ReturnRatePredictor`: 4-vector model: `predictedReturnRate: number` (0-100%), `riskLevel: 'low' | 'moderate' | 'high'`, `drivers: string[]`.
+- `PublicSizingAPI`: `POST /api/v1/sizing/recommend`, Bearer/Token auth, canonical mm input validation, zero biometric leakage in response.
 
 ## Code Layout
-- `docs/`: All Phase 0 research and architectural specification documents.
-- `styles/tokens.css`: Editorial design system tokens and component classes.
-- `src/core/`: Deterministic sizing recommendation engine pure logic and mathematical formulas.
-- `src/components/ui/`: Accessible UI primitive components adhering to tokens.css and 44px touch targets.
-- `src/components/pwa/`: Service worker registration, install prompts, offline indicators.
-- `src/components/sizing/`: Explanation tree viewers, fit radar, comparison cards.
-- `src/lib/mocks/`: In-memory mock store and seed data for the 8 pilot brands.
-- `src/lib/supabase/`: Isomorphic Supabase client and local mock adapter.
-- `src/app/`: Next.js App Router pages (`/`, `/onboarding`, `/app`, `/offline`).
-- `public/`: Web App manifest, service worker (`sw.js`), icons (`icons/`), offline HTML fallback.
-- `tests/unit/`: Vitest unit tests for measurements, ease, sizing engine, and calibration.
-- `tests/e2e/`: Opaque-box E2E test suite (Tiers 1-4).
+- `src/core/sync/`: Cloud synchronization and offline mutation queue.
+- `src/core/assistant/`: Grounded AI Fit Assistant engine and tool dispatchers.
+- `src/core/i18n/`: Bilingual translation dictionary and context provider.
+- `src/core/sizing/`: Sizing engine, calibration, borderline, return rate predictor, outfit scoring, family matrix.
+- `src/core/state/`: Zustand stores for profiles, brand requests, outfits.
+- `src/components/brands/`: Brand request voting UI.
+- `src/components/outfit/`: Outfit builder and composite score card.
+- `src/components/family/`: Family size comparison matrix.
+- `src/components/assistant/`: AI Fit Assistant chat UI.
+- `src/components/visual/`: Visual ease guide and silhouette overlays.
+- `src/app/api/v1/`: Public REST Sizing API, share token API, portability API.
+- `extension/`: Chrome Manifest V3 extension bundle.
+- `tests/unit/`: Vitest unit tests for all features.

@@ -15,6 +15,41 @@ export interface ReferenceGarmentItem {
   notes?: string;
 }
 
+export interface WishlistItem {
+  id: string;
+  productId: string;
+  brandId: string;
+  brandName: string;
+  productName: string;
+  category: string;
+  priceInr: number;
+  imageUrl?: string;
+  savedSize: string;
+  fitScore: number;
+  confidenceLabel: "high" | "medium" | "low" | "insufficient";
+  fitSilhouette: "slim" | "regular" | "relaxed" | "oversized";
+  notes?: string;
+  savedAt: string;
+}
+
+export interface MeasurementSnapshot {
+  id: string;
+  profileId: string;
+  recordedAt: string;
+  source: "physical_tape" | "calibrated_garment" | "tailor" | "manual";
+  notes?: string;
+  measurements: {
+    chestMm: number;
+    waistMm?: number;
+    hipsMm?: number;
+    shoulderWidthMm?: number;
+    heightMm?: number;
+    inseamMm?: number;
+    neckMm?: number;
+    weightG?: number;
+  };
+}
+
 export interface UserProfile {
   id: string;
   name: string;
@@ -24,6 +59,8 @@ export interface UserProfile {
   measurements: AnatomicalProfile;
   preferences: Record<string, FitType>;
   referenceGarments: ReferenceGarmentItem[];
+  wishlist?: WishlistItem[];
+  measurementHistory?: MeasurementSnapshot[];
   createdAt: string;
   updatedAt: string;
 }
@@ -44,6 +81,11 @@ interface ProfileState {
   updatePreference: (profileId: string, category: string, fitType: FitType) => void;
   addReferenceGarment: (profileId: string, garment: Omit<ReferenceGarmentItem, "id">) => void;
   removeReferenceGarment: (profileId: string, garmentId: string) => void;
+  addToWishlist: (profileId: string, item: Omit<WishlistItem, "id" | "savedAt">) => void;
+  removeFromWishlist: (profileId: string, itemId: string) => void;
+  addMeasurementSnapshot: (profileId: string, snapshot: Omit<MeasurementSnapshot, "id" | "profileId" | "recordedAt">) => void;
+  deleteMeasurementSnapshot: (profileId: string, snapshotId: string) => void;
+  applyRemoteSync: (remoteProfiles: UserProfile[]) => void;
   resetToSampleData: () => void;
 }
 
@@ -103,6 +145,25 @@ const INITIAL_DEFAULT_PROFILE: UserProfile = {
       notes: "Waist sits right at natural waist with zero belt bunching.",
     },
   ],
+  wishlist: [],
+  measurementHistory: [
+    {
+      id: "snap_initial",
+      profileId: DEFAULT_PROFILE_ID,
+      recordedAt: "2026-03-01T08:00:00Z",
+      source: "physical_tape",
+      notes: "Baseline measurement session",
+      measurements: {
+        chestMm: 980,
+        shoulderWidthMm: 450,
+        waistMm: 820,
+        hipsMm: 960,
+        heightMm: 1780,
+        inseamMm: 790,
+        neckMm: 390,
+      },
+    },
+  ],
   createdAt: "2026-03-01T08:00:00Z",
   updatedAt: "2026-03-01T08:00:00Z",
 };
@@ -131,6 +192,8 @@ const SECONDARY_PROFILE: UserProfile = {
     shirt_casual: "relaxed",
   },
   referenceGarments: [],
+  wishlist: [],
+  measurementHistory: [],
   createdAt: "2026-03-01T08:30:00Z",
   updatedAt: "2026-03-01T08:30:00Z",
 };
@@ -163,6 +226,8 @@ export const useProfileStore = create<ProfileState>()(
         const newProfile: UserProfile = {
           ...profileData,
           id: newId,
+          wishlist: profileData.wishlist || [],
+          measurementHistory: profileData.measurementHistory || [],
           createdAt: now,
           updatedAt: now,
           measurements: {
@@ -255,6 +320,86 @@ export const useProfileStore = create<ProfileState>()(
               updatedAt: new Date().toISOString(),
             };
           }),
+        })),
+
+      addToWishlist: (profileId, itemData) => {
+        const id = `wish_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+        const newItem: WishlistItem = {
+          ...itemData,
+          id,
+          savedAt: new Date().toISOString(),
+        };
+
+        set((state) => ({
+          profiles: state.profiles.map((p) => {
+            if (p.id !== profileId) return p;
+            const currentWishlist = p.wishlist || [];
+            const exists = currentWishlist.some((w) => w.productId === itemData.productId);
+            const updated = exists
+              ? currentWishlist.map((w) => (w.productId === itemData.productId ? newItem : w))
+              : [...currentWishlist, newItem];
+            return {
+              ...p,
+              wishlist: updated,
+              updatedAt: new Date().toISOString(),
+            };
+          }),
+        }));
+      },
+
+      removeFromWishlist: (profileId, itemId) =>
+        set((state) => ({
+          profiles: state.profiles.map((p) => {
+            if (p.id !== profileId) return p;
+            return {
+              ...p,
+              wishlist: (p.wishlist || []).filter((w) => w.id !== itemId && w.productId !== itemId),
+              updatedAt: new Date().toISOString(),
+            };
+          }),
+        })),
+
+      addMeasurementSnapshot: (profileId, snapshotData) => {
+        const snapId = `snap_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+        const now = new Date().toISOString();
+        const newSnapshot: MeasurementSnapshot = {
+          ...snapshotData,
+          id: snapId,
+          profileId,
+          recordedAt: now,
+        };
+
+        set((state) => ({
+          profiles: state.profiles.map((p) => {
+            if (p.id !== profileId) return p;
+            return {
+              ...p,
+              measurementHistory: [...(p.measurementHistory || []), newSnapshot],
+              updatedAt: now,
+            };
+          }),
+        }));
+      },
+
+      deleteMeasurementSnapshot: (profileId, snapshotId) =>
+        set((state) => ({
+          profiles: state.profiles.map((p) => {
+            if (p.id !== profileId) return p;
+            return {
+              ...p,
+              measurementHistory: (p.measurementHistory || []).filter((s) => s.id !== snapshotId),
+              updatedAt: new Date().toISOString(),
+            };
+          }),
+        })),
+
+      applyRemoteSync: (remoteProfiles) =>
+        set((state) => ({
+          profiles: remoteProfiles,
+          activeProfileId:
+            remoteProfiles.find((p) => p.id === state.activeProfileId)?.id ||
+            remoteProfiles[0]?.id ||
+            state.activeProfileId,
         })),
 
       resetToSampleData: () =>

@@ -1,0 +1,37 @@
+{
+  "manifest_version": 3,
+  "name": "WearID — Universal Clothing Identity & Size Match",
+  "version": "1.0.0",
+  "description": "Deterministic size recommendations directly on Zara, H&M, Uniqlo, and Myntra without sharing raw biometrics.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://*.zara.com/*",
+    "https://*.hm.com/*",
+    "https://*.uniqlo.com/*",
+    "https://*.myntra.com/*",
+    "https://wearid.in/*",
+    "http://localhost:3000/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.zara.com/*",
+        "https://*.hm.com/*",
+        "https://*.uniqlo.com/*",
+        "https://*.myntra.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "WearID Size Passport"
+  }
+}

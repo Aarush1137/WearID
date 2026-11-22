@@ -20,6 +20,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { LanguageSelector } from "@/components/ui/LanguageSelector";
 import { AuthModal } from "@/components/auth/AuthModal";
 import { FeedbackModal } from "@/components/feedback/FeedbackModal";
 import { InviteModal } from "@/components/invite/InviteModal";
@@ -135,14 +136,30 @@ export function TopNavigation() {
                     className="fixed inset-0 z-40"
                     onClick={() => setIsMoreMenuOpen(false)}
                   />
-                  <div className="absolute left-0 mt-2 w-56 rounded-card border border-border bg-bg-surface shadow-md py-1.5 z-50">
+                  <div className="absolute left-0 mt-2 w-64 rounded-card border border-border bg-bg-surface shadow-md py-1.5 z-50 max-h-[80vh] overflow-y-auto">
+                    <Link
+                      href="/app/assistant"
+                      onClick={() => setIsMoreMenuOpen(false)}
+                      className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-text-primary hover:bg-bg-elevated transition-colors"
+                    >
+                      <span className="font-semibold text-accent">AI Fit Assistant</span>
+                      <span className="text-[10px] text-accent font-semibold px-1.5 py-0.5 rounded-badge bg-accent-subtle">AI</span>
+                    </Link>
                     <Link
                       href="/app/quick-lookup"
                       onClick={() => setIsMoreMenuOpen(false)}
                       className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-text-primary hover:bg-bg-elevated transition-colors"
                     >
-                      <span className="font-semibold text-accent">What Size Am I?</span>
-                      <span className="text-[10px] text-accent font-semibold px-1.5 py-0.5 rounded-badge bg-accent-subtle">Instant</span>
+                      <span>What Size Am I?</span>
+                      <span className="text-[10px] text-text-secondary">Instant</span>
+                    </Link>
+                    <Link
+                      href="/app/outfits"
+                      onClick={() => setIsMoreMenuOpen(false)}
+                      className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-text-primary hover:bg-bg-elevated transition-colors"
+                    >
+                      <span>Outfit Builder</span>
+                      <span className="text-[10px] text-text-secondary">Ensemble</span>
                     </Link>
                     <Link
                       href="/app/wardrobe"
@@ -151,6 +168,47 @@ export function TopNavigation() {
                     >
                       <span>My Wardrobe Closet</span>
                       <span className="text-[10px] text-text-secondary">Calibrate</span>
+                    </Link>
+                    <Link
+                      href="/app/wishlist"
+                      onClick={() => setIsMoreMenuOpen(false)}
+                      className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-text-primary hover:bg-bg-elevated transition-colors"
+                    >
+                      <span>Saved Wishlist</span>
+                      <span className="text-[10px] text-text-secondary">Saved</span>
+                    </Link>
+                    <div className="border-t border-border my-1" />
+                    <Link
+                      href="/app/family"
+                      onClick={() => setIsMoreMenuOpen(false)}
+                      className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-text-primary hover:bg-bg-elevated transition-colors"
+                    >
+                      <span>Family Size Matrix</span>
+                      <span className="text-[10px] text-text-secondary">Family</span>
+                    </Link>
+                    <Link
+                      href="/app/ease-guide"
+                      onClick={() => setIsMoreMenuOpen(false)}
+                      className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-text-primary hover:bg-bg-elevated transition-colors"
+                    >
+                      <span>Visual Ease Guide</span>
+                      <span className="text-[10px] text-text-secondary">Silhouettes</span>
+                    </Link>
+                    <Link
+                      href="/app/brand-requests"
+                      onClick={() => setIsMoreMenuOpen(false)}
+                      className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-text-primary hover:bg-bg-elevated transition-colors"
+                    >
+                      <span>Vote on Brands</span>
+                      <span className="text-[10px] text-text-secondary">Community</span>
+                    </Link>
+                    <Link
+                      href="/app/history"
+                      onClick={() => setIsMoreMenuOpen(false)}
+                      className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-text-primary hover:bg-bg-elevated transition-colors"
+                    >
+                      <span>Measurement Trends</span>
+                      <span className="text-[10px] text-text-secondary">History</span>
                     </Link>
                     <div className="border-t border-border my-1" />
                     <Link
@@ -166,7 +224,7 @@ export function TopNavigation() {
                       onClick={() => setIsMoreMenuOpen(false)}
                       className="w-full text-left px-3.5 py-2 flex items-center justify-between text-xs font-medium text-text-primary hover:bg-bg-elevated transition-colors"
                     >
-                      <span>Profile & Family</span>
+                      <span>Profile & Biometrics</span>
                       <span className="text-[10px] text-text-secondary">Manage</span>
                     </Link>
                     <Link
@@ -207,6 +265,9 @@ export function TopNavigation() {
             <ArrowRightLeft className="w-3.5 h-3.5 text-text-secondary" />
             <span className="font-semibold uppercase tracking-wider">{displayUnit}</span>
           </button>
+
+          {/* Language Selector (EN / HI) */}
+          <LanguageSelector variant="minimal" />
 
           {/* Theme Toggle */}
           <ThemeToggle />
