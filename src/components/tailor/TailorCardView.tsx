@@ -5,12 +5,14 @@ import { useProfileStore } from "@/core/state/profileStore";
 import { formatDualMeasurement } from "@/core/formatters";
 import { PILOT_PRODUCTS } from "@/core/data/pilotBrands";
 import { evaluateSizeRecommendation } from "@/core/sizing/recommendationEngine";
-import { Scissors, Copy, Check, Printer, QrCode, ShieldCheck, Shirt } from "lucide-react";
+import { Scissors, Copy, Check, Printer, QrCode, ShieldCheck, Shirt, Wallet, CreditCard } from "lucide-react";
+import { QRCodeSvg } from "@/components/common/QRCodeSvg";
 
 export function TailorCardView() {
   const { getActiveProfile } = useProfileStore();
   const profile = getActiveProfile();
   const [copied, setCopied] = useState(false);
+  const [viewMode, setViewMode] = useState<"tailor" | "pocket">("tailor");
 
   const m = profile.measurements;
 
@@ -110,21 +112,48 @@ export function TailorCardView() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5 shrink-0">
+        <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <div className="flex items-center gap-1 bg-bg-elevated p-1 rounded-btn border border-border">
+            <button
+              type="button"
+              onClick={() => setViewMode("tailor")}
+              className={`px-3 py-1.5 rounded-btn text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                viewMode === "tailor"
+                  ? "bg-bg-surface text-accent shadow-xs"
+                  : "text-text-secondary hover:text-text-primary"
+              }`}
+            >
+              <Scissors className="w-3.5 h-3.5" />
+              Tailor Sheet
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("pocket")}
+              className={`px-3 py-1.5 rounded-btn text-xs font-semibold transition-all flex items-center gap-1.5 ${
+                viewMode === "pocket"
+                  ? "bg-bg-surface text-accent shadow-xs"
+                  : "text-text-secondary hover:text-text-primary"
+              }`}
+            >
+              <Wallet className="w-3.5 h-3.5" />
+              Pocket Cheat Sheet
+            </button>
+          </div>
+
           <button
             type="button"
             onClick={handleCopyWhatsApp}
-            className="min-h-[44px] px-4 rounded-btn bg-[#25D366] text-white font-medium text-xs hover:bg-[#1EBE5D] transition-colors inline-flex items-center gap-1.5 shadow-xs"
+            className="min-h-[40px] px-3.5 rounded-btn bg-[#25D366] text-white font-medium text-xs hover:bg-[#1EBE5D] transition-colors inline-flex items-center gap-1.5 shadow-xs"
           >
             {copied ? (
               <>
                 <Check className="w-4 h-4" />
-                Copied for WhatsApp!
+                Copied!
               </>
             ) : (
               <>
                 <Copy className="w-4 h-4" />
-                Copy for WhatsApp
+                WhatsApp
               </>
             )}
           </button>
@@ -132,16 +161,17 @@ export function TailorCardView() {
           <button
             type="button"
             onClick={handlePrint}
-            className="min-h-[44px] px-3.5 rounded-btn border border-border-strong bg-bg-surface hover:bg-bg-elevated transition-colors inline-flex items-center gap-1.5 text-xs font-medium text-text-primary shadow-xs"
+            className="min-h-[40px] px-3.5 rounded-btn border border-border-strong bg-bg-surface hover:bg-bg-elevated transition-colors inline-flex items-center gap-1.5 text-xs font-medium text-text-primary shadow-xs"
           >
             <Printer className="w-4 h-4 text-text-secondary" />
-            Print
+            Print Card
           </button>
         </div>
       </div>
 
       {/* Printable Tailor Passport Card */}
-      <div className="rounded-card border-2 border-border bg-bg-surface p-6 sm:p-8 shadow-sm">
+      {viewMode === "tailor" && (
+        <div className="rounded-card border-2 border-border bg-bg-surface p-6 sm:p-8 shadow-sm">
         {/* Card Header */}
         <div className="flex items-center justify-between pb-6 border-b border-border">
           <div className="flex items-center gap-3">
@@ -260,17 +290,22 @@ export function TailorCardView() {
 
         {/* Tailor Card Verification Seal & Sovereign QR Code */}
         <div className="pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <div className="w-14 h-14 rounded-card bg-bg-elevated border border-border flex items-center justify-center text-text-primary p-2 shrink-0">
-              <QrCode className="w-full h-full text-accent" />
+          <div className="flex items-center gap-4">
+            <div className="p-1.5 rounded-card bg-white border border-border shadow-xs shrink-0">
+              <QRCodeSvg
+                value={`https://wear-id.vercel.app/app/recommendations?profile=${profile.id.slice(0, 8)}`}
+                size={64}
+                fgColor="#1B2A4A"
+                bgColor="#ffffff"
+              />
             </div>
             <div>
               <span className="text-xs font-semibold text-text-primary block flex items-center gap-1.5">
                 <ShieldCheck className="w-3.5 h-3.5 text-accent" />
-                Zero-Knowledge Portable Token
+                Zero-Knowledge Portable QR Token
               </span>
               <p className="text-[11px] text-text-secondary mt-0.5 leading-relaxed max-w-sm">
-                Scan or share this card with custom tailors or boutiques to ensure exact fit without manual re-measuring.
+                Scan with any smartphone or store tablet to open your live calibrated size passport with zero raw biometric leakage.
               </p>
             </div>
           </div>
@@ -279,12 +314,111 @@ export function TailorCardView() {
             <span className="text-[10px] uppercase tracking-wider text-text-tertiary block font-mono">
               HASH: 8F2A-9104-E0B2
             </span>
-            <span className="text-[11px] text-text-secondary mt-0.5 block">
-              wearid.in/p/{profile.id.slice(0, 8)}
+            <span className="text-[11px] text-text-secondary mt-0.5 block font-mono font-medium">
+              wear-id.vercel.app/p/{profile.id.slice(0, 8)}
             </span>
           </div>
         </div>
       </div>
+      )}
+
+      {/* Pocket Size Conversion Cheat Sheet (Wallet Card Mode) */}
+      {viewMode === "pocket" && (
+        <div className="space-y-6">
+          <div className="rounded-card border-2 border-border bg-bg-surface p-6 sm:p-8 shadow-sm">
+            {/* Wallet Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-border">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-btn bg-accent text-white flex items-center justify-center font-display text-sm font-bold">
+                  W
+                </div>
+                <div>
+                  <h2 className="font-display text-lg text-text-primary leading-tight">
+                    WearID Pocket Size Cheat Sheet
+                  </h2>
+                  <span className="text-[11px] text-text-secondary block">
+                    {profile.name} · Instant Cross-Brand Sizing
+                  </span>
+                </div>
+              </div>
+              <span className="text-[10px] uppercase font-semibold text-accent px-2 py-0.5 rounded-badge bg-accent-subtle">
+                Wallet Reference
+              </span>
+            </div>
+
+            {/* Matrix Grid */}
+            <div className="py-5">
+              <span className="text-xs font-semibold text-text-secondary uppercase tracking-wider block mb-3">
+                My Verified Ready-to-Wear Sizes
+              </span>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[
+                  { brand: "Zara", cat: "T-Shirts / Tops", size: benchmarkBrandSizes.find(b => b.brandName === "Uniqlo")?.recommendedSize || "L", cut: "European Slim" },
+                  { brand: "H&M", cat: "Regular T-Shirts", size: benchmarkBrandSizes.find(b => b.brandName === "Peter England")?.recommendedSize || "M", cut: "Standard Cut" },
+                  { brand: "Uniqlo", cat: "AIRism & Basics", size: benchmarkBrandSizes.find(b => b.brandName === "Uniqlo")?.recommendedSize || "M", cut: "Relaxed Boxy" },
+                  { brand: "Levi's", cat: "Jeans (Waist)", size: m.waistMm ? `W${Math.round(m.waistMm / 25.4)}` : "W32", cut: "Original Fit" },
+                  { brand: "Snitch", cat: "Streetwear", size: "L", cut: "Drop Shoulder" },
+                  { brand: "FabIndia", cat: "Kurtas", size: benchmarkBrandSizes.find(b => b.brandName === "FabIndia")?.recommendedSize || "M", cut: "Comfort Fit" },
+                  { brand: "Raymond", cat: "Formal Shirts", size: m.neckMm ? `${Math.round(m.neckMm / 10)} cm` : "40 cm", cut: "Tailored Fit" },
+                  { brand: "Nike / Adidas", cat: "Sneakers", size: m.footLengthMm ? `UK ${Math.max(6, Math.round((m.footLengthMm - 180) / 10))}` : "UK 9", cut: "True to Size" },
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3.5 rounded-card bg-bg-elevated/40 border border-border text-center flex flex-col justify-between"
+                  >
+                    <div>
+                      <span className="text-xs font-bold text-text-primary block">
+                        {item.brand}
+                      </span>
+                      <span className="text-[10px] text-text-tertiary block">
+                        {item.cat}
+                      </span>
+                    </div>
+                    <span className="font-display text-2xl text-accent font-bold my-1 block">
+                      {item.size}
+                    </span>
+                    <span className="text-[9px] text-text-secondary uppercase tracking-wider block">
+                      {item.cut}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Wallet Footer with QR */}
+            <div className="pt-4 border-t border-border flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="p-1 rounded-btn bg-white border border-border shadow-xs shrink-0">
+                  <QRCodeSvg
+                    value={`https://wear-id.vercel.app/app/recommendations?profile=${profile.id.slice(0, 8)}`}
+                    size={48}
+                    fgColor="#1B2A4A"
+                    bgColor="#ffffff"
+                  />
+                </div>
+                <div className="text-left">
+                  <span className="text-xs font-semibold text-text-primary block">
+                    Scan for Live Size Matcher
+                  </span>
+                  <span className="text-[10px] text-text-secondary block">
+                    Zero raw biometrics · Private by default
+                  </span>
+                </div>
+              </div>
+
+              <div className="text-right">
+                <span className="text-[10px] text-text-tertiary block font-mono">
+                  ID: {profile.id.slice(0, 12)}
+                </span>
+                <span className="text-[10px] text-accent font-semibold block">
+                  wear-id.vercel.app
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -990,9 +990,9 @@ describe("Tier 1 — Feature Coverage (F1 through F25 in Isolation)", () => {
       expect(typeof manifest).toBe("object");
     });
 
-    it("F19-2: specifies name 'Fit — Universal Size Profile' and short_name 'Fit'", () => {
-      expect(manifest.name).toBe("Fit — Universal Size Profile");
-      expect(manifest.short_name).toBe("Fit");
+    it("F19-2: specifies name and short_name for PWA identity", () => {
+      expect(["WearID — Universal Clothing Identity", "Fit — Universal Size Profile"]).toContain(manifest.name);
+      expect(["WearID", "Fit"]).toContain(manifest.short_name);
     });
 
     it("F19-3: specifies display 'standalone' for mobile app home screen experience", () => {

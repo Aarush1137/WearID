@@ -37,3 +37,21 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Master Tailor Sheet Print Styling */
+@media print {
+  header, nav, footer, .no-print, button {
+    display: none !important;
+  }
+  body, main {
+    background: #ffffff !important;
+    color: #111827 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .rounded-card {
+    border: 1px solid #d1d5db !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+}

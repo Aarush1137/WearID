@@ -6,25 +6,40 @@ import { Sun, Moon, Monitor } from "lucide-react";
 type ThemeMode = "system" | "light" | "dark";
 
 function applyTheme(mode: ThemeMode) {
+  if (typeof document === "undefined") return;
   const root = document.documentElement;
   root.classList.remove("dark", "light");
   if (mode === "dark") {
     root.classList.add("dark");
   } else if (mode === "light") {
     root.classList.add("light");
+  } else if (mode === "system") {
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      root.classList.add("dark");
+    }
   }
-  // "system" — no class, CSS media query handles it
 }
 
 export function ThemeToggle() {
   const [mode, setMode] = useState<ThemeMode>("system");
 
-  // On mount: read persisted preference
+  // On mount: read persisted preference & listen to system changes
   useEffect(() => {
     const stored = localStorage.getItem("wearid-theme") as ThemeMode | null;
     const resolved = stored ?? "system";
     setMode(resolved);
     applyTheme(resolved);
+
+    const mql = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = () => {
+      const current = localStorage.getItem("wearid-theme") as ThemeMode | null;
+      if (!current || current === "system") {
+        applyTheme("system");
+      }
+    };
+
+    mql.addEventListener("change", handleChange);
+    return () => mql.removeEventListener("change", handleChange);
   }, []);
 
   const cycle = () => {

@@ -20,6 +20,8 @@ export default function robots(): MetadataRoute.Robots {
           "/app",
           "/app/compare",
           "/app/explore",
+          "/app/quick-lookup",
+          "/app/wardrobe",
           "/methodology",
           "/privacy",
           "/login",
